@@ -7,7 +7,7 @@
 
 <p>This is the index page</p>
 
-<a href="createindividual.php">Create Invidual</a>
+<a href="createindividual.php">Create Individual</a>
 
 </body>
 </html>

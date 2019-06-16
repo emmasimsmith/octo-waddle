@@ -11,6 +11,3 @@ if (!$conn) {
     echo "Debugging error: " . mysqli_connect_error() . "<br/>";
     exit;
 }
-
-echo "Success: A proper connection to MySQL was made." . "<br/>";
-echo "Host information: " . mysqli_get_host_info($conn) . "<br/>";
