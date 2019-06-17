@@ -33,23 +33,17 @@ if (isset($_POST["submit"])) {
         foreach ($errors as $error) {
             echo $error . "</br>";
         }
-        mysqli_close($conn); ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createindividual.php">Submit another response</a>
-        <?php
+        mysqli_close($conn);
         exit;
     };
 
-
     $sql = "INSERT INTO regattascoring.INDIVIDUAL (first_name, last_name, dob, comments) VALUES ('$first_name','$last_name','$dob','$comments');";
     if (!mysqli_query($conn, $sql)) {
-        echo "Records added successfully.";
-    } else {
-        echo "ERROR: Could not execute $sql." . mysqli_error($conn);
-    };
-    mysqli_close($conn); ?>
+        echo "ERROR: Could add data" . mysqli_error($conn) . "</br>";
+    }
+
+    mysqli_close($conn);
+    header('Location: viewindividual.php?first='.$first_name.'&last='.$last_name.'&dob='.$dob, true, 302); ?>
     <br>
     <a href="/">Return Home</a>
     <br>
