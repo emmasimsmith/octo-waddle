@@ -41,9 +41,10 @@ if (isset($_POST["submit"])) {
     if (!mysqli_query($conn, $sql)) {
         echo "ERROR: Could add data" . mysqli_error($conn) . "</br>";
     }
+    $individual_id = mysqli_insert_id($conn);
 
     mysqli_close($conn);
-    header('Location: viewindividual.php?first='.$first_name.'&last='.$last_name.'&dob='.$dob, true, 302); ?>
+    header("Location: viewindividual.php?id=$individual_id", true, 302); ?>
     <br>
     <a href="/">Return Home</a>
     <br>

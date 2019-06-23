@@ -26,11 +26,11 @@ if (!$use) {
 echo "database used successfully" . "<br/>";
 
 $sql = "CREATE TABLE INDIVIDUAL (
+  individual_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(20) NOT NULL,
   last_name VARCHAR(40) NOT NULL,
   dob DATE NOT NULL,
-  comments VARCHAR(60),
-  PRIMARY KEY (first_name, last_name, dob)
+  comments VARCHAR(60)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -40,8 +40,9 @@ if (!$result) {
 echo "INDIVIDUAL table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE EVENT (
+  event_id INT AUTO_INCREMENT PRIMARY KEY,
   location VARCHAR (20) NOT NULL,
-  event_date DATE PRIMARY KEY
+  event_date DATE
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -51,7 +52,8 @@ if (!$result) {
 echo "EVENT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE CLASS (
-  class_name VARCHAR (20) PRIMARY KEY,
+  class_id INT AUTO_INCREMENT PRIMARY KEY,
+  class_name VARCHAR (20),
   min_age DECIMAL(2,1) NOT NULL,
   max_age DECIMAL(2,1) NOT NULL
 );";
@@ -63,8 +65,8 @@ if (!$result) {
 echo "CLASS table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE UNIT (
-  unit_name VARCHAR(20) PRIMARY KEY,
-  unit_id INT NOT NULL
+  unit_name VARCHAR(20),
+  unit_id  INT AUTO_INCREMENT PRIMARY KEY
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -74,7 +76,8 @@ if (!$result) {
 echo "UNIT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE ACTIVITY (
-  activity_name VARCHAR (20) PRIMARY KEY,
+  activity_id INT AUTO_INCREMENT PRIMARY KEY,
+  activity_name VARCHAR (20),
   scoring VARCHAR (20) NOT NULL
 );";
 $result = mysqli_query($conn, $sql);
@@ -85,7 +88,8 @@ if (!$result) {
 echo "ACTIVITY table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE CERTIFICATE (
-  certificate_name VARCHAR (20) PRIMARY KEY,
+  certificate_id INT AUTO_INCREMENT PRIMARY KEY,
+  certificate_name VARCHAR (20),
   calculation VARCHAR (20) NOT NULL,
   placing INT
 );";
@@ -97,13 +101,12 @@ if (!$result) {
 echo "CERTIFICATE table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE PARTICIPANT (
-  participant_id INT PRIMARY KEY,
-  class_name VARCHAR(20) NOT NULL,
-  first_name VARCHAR(20) NOT NULL,
-  last_name VARCHAR(40) NOT NULL,
-  dob DATE NOT NULL,
-  FOREIGN KEY (class_name) REFERENCES CLASS (class_name),
-  FOREIGN KEY (first_name, last_name, dob) REFERENCES INDIVIDUAL (first_name, last_name, dob)
+  participant_id INT AUTO_INCREMENT PRIMARY KEY,
+  participant_tag INT NOT NULL,
+  class_id INT NOT NULL,
+  individual_id INT NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
+  FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -115,9 +118,9 @@ echo "PARTICIPANT table made successfully" . "<br/>";
 $sql = "CREATE TABLE BOAT (
   sail_number INT PRIMARY KEY,
   boat_class VARCHAR(20) NOT NULL,
-  unit_name VARCHAR (20) NOT NULL,
+  unit_id INT NOT NULL,
   handicap VARCHAR (20) NOT NULL,
-  FOREIGN KEY (unit_name) REFERENCES UNIT (unit_name)
+  FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -128,12 +131,12 @@ echo "BOAT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE RACE_ENROLMENT (
   race_id INT PRIMARY KEY AUTO_INCREMENT,
-  activity_name VARCHAR(20) NOT NULL,
-  unit_name VARCHAR(20),
-  participant_id INT,
+  activity_id INT NOT NULL,
+  unit_id INT NOT NULL,
+  participant_id INT NOT NULL,
   score INT NOT NULL,
-  FOREIGN KEY (activity_name) REFERENCES ACTIVITY (activity_name),
-  FOREIGN KEY (unit_name) REFERENCES UNIT (unit_name),
+  FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
+  FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id)
 );";
 $result = mysqli_query($conn, $sql);
@@ -145,15 +148,13 @@ echo "RACE_ENROLMENT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE AWARD (
   award_id INT PRIMARY KEY AUTO_INCREMENT,
-  unit_name VARCHAR(20),
+  unit_id INT NOT NULL,
   place INT,
-  certificate_name VARCHAR(20) NOT NULL,
-  first_name VARCHAR (20),
-  last_name VARCHAR(40),
-  dob date,
-  FOREIGN KEY (unit_name) REFERENCES UNIT (unit_name),
-  FOREIGN KEY (certificate_name) REFERENCES CERTIFICATE (certificate_name),
-  FOREIGN KEY (first_name, last_name, dob) REFERENCES INDIVIDUAL (first_name, last_name, dob)
+  certificate_id INT NOT NULL,
+  individual_id INT NOT NULL,
+  FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
+  FOREIGN KEY (certificate_id) REFERENCES CERTIFICATE (certificate_id),
+  FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {

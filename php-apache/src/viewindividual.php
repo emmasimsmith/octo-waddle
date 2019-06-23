@@ -1,91 +1,112 @@
 <?php
 include_once "connection.php";
 
+if (isset($_POST["delete"])) {
+    // TODO delete individual
+    $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
+    $individual_id = $_GET['id'];
 
-$first_name = mysqli_real_escape_string($conn, $_GET['first']);
-$last_name = mysqli_real_escape_string($conn, $_GET['last']);
-$dob = mysqli_real_escape_string($conn, $_GET['dob']);
+    $sql = "SELECT first_name, last_name FROM regattascoring.INDIVIDUAL;";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $first_name = $row['first_name'];
+    $last_name = $row['last_name'];
 
-$errors = array();
+    $sql = "DELETE FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id_escaped';";
 
-
-if ($first_name == "") {
-    array_push($errors, "First name must be entered");
-}
-
-if (preg_match('/[^A-Za-z \-]/', $first_name)) {
-    array_push($errors, "Please enter a valid first name");
-}
-
-if ($last_name == "") {
-    array_push($errors, "Last name must be entered");
-}
-if (preg_match('/[^A-Za-z \-]/', $last_name)) {
-    array_push($errors, "Please enter a valid last name");
-}
-
-if ($dob == "") {
-    array_push($errors, "Date of birth must be entered");
-}
-
-if (count($errors) != 0) {
-    foreach ($errors as $error) {
-        echo $error . "</br>";
+    if (!mysqli_query($conn, $sql)) {
+        echo "Could not delete individual" . mysqli_error($conn) . "</br>";
+        exit;
     }
-    mysqli_close($conn); ?>
+    echo "$first_name" . " " . "$last_name" . " deleted"; ?>
+    <html>
+    <body>
     <br>
     <a href="/">Return Home</a>
     <br>
     <a href="createindividual.php">Submit another response</a>
+    </body>
+    </html>
     <?php
-    exit;
-}
+} elseif (isset($_POST["update"])) {
+        $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
+        $individual_id = $_GET['id'];
 
-$sql = "SELECT * FROM regattascoring.INDIVIDUAL WHERE
-first_name = '$first_name' AND last_name = '$last_name' AND dob = '$dob';";
-if (!$sql) {
-    echo "Could not select from INDIVIDUAL table";
-    exit;
-}
-echo "successfully selected from INDIVIDUAL table" . "</br>";
+        $new_first_name_escaped = mysqli_real_escape_string($conn, $_POST['first']);
+        $new_last_name_escaped = mysqli_real_escape_string($conn, $_POST['last']);
+        $new_dob_escaped = mysqli_real_escape_string($conn, $_POST['dob']);
+        $new_comments_escaped = mysqli_real_escape_string($conn, $_POST['comments']);
+        $first_name = $_POST['first'];
+        $last_name = $_POST['last'];
 
-$select = mysqli_query($conn, $sql);
-if (!$select) {
-    echo "Could not select INDIVIDUAL table" . mysqli_error($conn) . "<br/>";
-    exit;
-}
-echo "selected table successfully" . "</br>";
+        $sql = "UPDATE regattascoring.INDIVIDUAL set first_name =
+        '$new_first_name_escaped', last_name = '$new_last_name_escaped',
+        dob = '$new_dob_escaped', comments = '$new_comments_escaped'
+        WHERE individual_id = '$individual_id_escaped';";
 
-if (mysqli_num_rows($select) > 0) {
-    while ($row = mysqli_fetch_assoc($select)) {
-        echo "First Name: " ."<div contenteditable=true>". $row["first_name"] . "</div>" . "</br>" . "Last Name: " .
-    $row["last_name"] . "</br>". "Date of Birth: " . $row["dob"] . "</br>";
+        if (!mysqli_query($conn, $sql)) {
+            echo "Could not update individual" . mysqli_error($conn) . "</br>";
+            exit;
+        }
+        echo "$first_name $last_name updated"; ?>
+        <html>
+        <body>
+        <br>
+        <a href="/">Return Home</a>
+        <br>
+        <a href="createindividual.php">Submit another response</a>
+        <br>
+        <a href="searchindividual.php">View all individuals</a>
+        </body>
+        </html>
+        <?php
+    } else {
+        $individual_id = mysqli_real_escape_string($conn, $_GET['id']);
+
+        $sql = "SELECT * FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id';";
+
+        $select = mysqli_query($conn, $sql);
+        if (!$select) {
+            echo "Could not select INDIVIDUAL table" . "</br>" .mysqli_error($conn) . "<br/>";
+            exit;
+        }
+        echo "selected table successfully" . "</br>";
+
+        if (mysqli_num_rows($select) == 0) {
+            echo "Nothing Selected";
+            exit;
+        } elseif (mysqli_num_rows($select) >1) {
+            echo "Too many people selected";
+            exit;
+        }
+
+        $row = mysqli_fetch_assoc($select); ?>
+  <html>
+  <body>
+
+  <form action= <?php echo "viewindividual.php?id=" . $_GET['id'] ?> method ="POST">
+    First Name:
+    <input type="text" name="first" value= "<?php echo $row['first_name'] ?>" placeholder="First Name">
+    <br>
+    Last Name:
+    <input type="text" name="last" value="<?php echo $row['last_name'] ?>" placeholder="Last Name">
+    <br>
+    Date of Birth:
+    <input type="date" name="dob" value="<?php echo $row['dob'] ?>" placeholder="Date of Birth">
+    <br>
+    Comments:
+    <input type="text" name="comments" value="<?php echo $row['comments'] ?>" placeholder="Comments">
+    <br>
+    <button type="submit" name="update">Update</button>
+    <button type="submit" name="delete">Delete</button>
+  </form>
+  <br>
+  <a href="/">Return Home</a>
+  <br>
+  <a href="createindividual.php">Submit another response</a>
+  </body>
+  </html>
+  <?php
+  mysqli_close($conn);
     }
-} else {
-    echo "Nothing selected";
-}
 ?>
-<html>
-<body>
-
-<form action="viewindividual.php" method ="POST">
-  <input type="text" name="first" value= "<?php $first_name ?>" placeholder="First name">
-  <br>
-  <input type="text" name="last" placeholder="Last name">
-  <br>
-  <input type="date" name="dob" placeholder="Date of Birth">
-  <br>
-  <input type="text" name="comments" placeholder="Comments">
-  <br>
-  <button type="submit" name="submit">Enter</button>
-</form>
-
-</body>
-</html>
-<?php
-mysqli_close($conn);
- ?>
- <br>
- <a href="/">Return Home</a>
- <br>
- <a href="createindividual.php">Submit another response</a>
