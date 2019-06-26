@@ -2,7 +2,6 @@
 include_once "connection.php";
 
 if (isset($_POST["delete"])) {
-    // TODO delete individual
     $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
     $individual_id = $_GET['id'];
 
@@ -11,7 +10,7 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
     $first_name = $row['first_name'];
     $last_name = $row['last_name'];
-
+    
     $sql = "DELETE FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id_escaped';";
 
     if (!mysqli_query($conn, $sql)) {
@@ -23,6 +22,8 @@ if (isset($_POST["delete"])) {
     <body>
     <br>
     <a href="/">Return Home</a>
+    <br>
+    <a href="searchindividual.php">View all Individuals</a>
     <br>
     <a href="createindividual.php">Submit another response</a>
     </body>
@@ -36,6 +37,48 @@ if (isset($_POST["delete"])) {
         $new_last_name_escaped = mysqli_real_escape_string($conn, $_POST['last']);
         $new_dob_escaped = mysqli_real_escape_string($conn, $_POST['dob']);
         $new_comments_escaped = mysqli_real_escape_string($conn, $_POST['comments']);
+
+        $errors = array();
+
+        if ($new_first_name_escaped == "") {
+            array_push($errors, "First name must be entered");
+        }
+
+        if (preg_match('/[^A-Za-z \-]/', $new_first_name_escaped)) {
+            array_push($errors, "Please enter a valid first name");
+        }
+
+        if ($new_last_name_escaped == "") {
+            array_push($errors, "Last name must be entered");
+        }
+        if (preg_match('/[^A-Za-z \-]/', $new_last_name_escaped)) {
+            array_push($errors, "Please enter a valid last name");
+        }
+
+        if ($new_dob_escaped == "") {
+            array_push($errors, "Date of birth must be entered");
+        }
+        if (strlen($new_dob_escaped) != 10) {
+            array_push($errors, "Please enter a valid date of birth");
+        }
+
+        if (count($errors) != 0) {
+            foreach ($errors as $error) {
+                echo $error . "</br>";
+            }
+            mysqli_close($conn); ?>
+            <br>
+            <a href = <?php echo "viewindividual.php?id=" . $_GET['id'] ?>>Return to update</a>
+            <br>
+            <a href="/">Return Home</a>
+            <br>
+            <a href="createindividual.php">Submit another response</a>
+            <br>
+            <a href="searchindividual.php">View all individuals</a>
+            <?php
+            exit;
+        };
+
         $first_name = $_POST['first'];
         $last_name = $_POST['last'];
 
@@ -73,11 +116,23 @@ if (isset($_POST["delete"])) {
         echo "selected table successfully" . "</br>";
 
         if (mysqli_num_rows($select) == 0) {
-            echo "Nothing Selected";
+            echo "Nothing Selected"; ?>
+          <a href="/">Return Home</a>
+          <br>
+          <a href="createindividual.php">Submit another response</a>
+          <br>
+          <a href="searchindividual.php">View all individuals</a>
+          <?php
             exit;
         } elseif (mysqli_num_rows($select) >1) {
             echo "Too many people selected";
-            exit;
+            exit; ?>
+          <a href="/">Return Home</a>
+          <br>
+          <a href="createindividual.php">Submit another response</a>
+          <br>
+          <a href="searchindividual.php">View all individuals</a>
+          <?php
         }
 
         $row = mysqli_fetch_assoc($select); ?>
@@ -104,6 +159,8 @@ if (isset($_POST["delete"])) {
   <a href="/">Return Home</a>
   <br>
   <a href="createindividual.php">Submit another response</a>
+  <br>
+  <a href="searchindividual.php">View all individuals</a>
   </body>
   </html>
   <?php
