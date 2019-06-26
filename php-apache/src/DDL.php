@@ -116,10 +116,11 @@ if (!$result) {
 echo "PARTICIPANT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE BOAT (
-  sail_number INT PRIMARY KEY,
-  boat_class VARCHAR(20) NOT NULL,
+  boat_id INT AUTO_INCREMENT PRIMARY KEY,
+  boat_number INT NOT NULL,
+  boat_type VARCHAR(20) NOT NULL,
   unit_id INT NOT NULL,
-  handicap VARCHAR (20) NOT NULL,
+  boat_handicap VARCHAR (20) NOT NULL,
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id)
 );";
 $result = mysqli_query($conn, $sql);
