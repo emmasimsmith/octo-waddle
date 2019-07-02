@@ -1,21 +1,26 @@
 <?php
+include_once '../navbar.php';
+function unit_form()
+{
+    ?>
+  <html>
+  <head>
+      <title>Create Unit</title>
+  </head>
+  <h1>Create New Unit</h1>
+  <body>
+  <form action= <?php echo "createunit.php" . $_GET['id'] ?> method ="POST">
+    Unit Name:
+    <input type="text" name="unit_name" placeholder="Unit Name" >*
+    <br>
+    <button type="submit" name="submit">Enter</button>
+  </form>
+  </body>
+  </html>
+  <?php
+}
 if (isset($_POST["submit"])) {
-    include_once 'connection.php'; ?>
-    <html>
-    <head>
-        <title>Create Unit</title>
-    </head>
-    <h1>Create New Unit</h1>
-    <body>
-    <form action= <?php echo "createunit.php" . $_GET['id'] ?> method ="POST">
-      Unit Name:
-      <input type="text" name="unit_name" placeholder="Unit Name">
-      <br>
-      <button type="submit" name="submit">Enter</button>
-    </form>
-    </body>
-    </html>
-    <?php
+    include_once '../connection.php';
 
     $unit_name = mysqli_real_escape_string($conn, $_POST['unit_name']);
     $errors = array();
@@ -29,6 +34,7 @@ if (isset($_POST["submit"])) {
     }
 
     if (count($errors) != 0) {
+        echo unit_form();
         foreach ($errors as $error) {
             echo $error . "</br>";
         }

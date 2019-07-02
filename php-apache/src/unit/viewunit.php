@@ -1,5 +1,6 @@
 <?php
-include_once "connection.php";
+include_once "../connection.php";
+include_once '../navbar.php';
 
 if (isset($_POST["delete"])) {
     $unit_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);

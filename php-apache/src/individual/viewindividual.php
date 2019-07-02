@@ -1,5 +1,6 @@
 <?php
-include_once "connection.php";
+include_once '../navbar.php';
+include_once "../connection.php";
 
 if (isset($_POST["delete"])) {
     $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
@@ -10,7 +11,7 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
     $first_name = $row['first_name'];
     $last_name = $row['last_name'];
-    
+
     $sql = "DELETE FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id_escaped';";
 
     if (!mysqli_query($conn, $sql)) {
