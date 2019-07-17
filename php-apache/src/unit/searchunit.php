@@ -16,10 +16,21 @@ if (isset($_POST['search'])) {
     <?php
 
     $search_unit_name_escaped = mysqli_real_escape_string($conn, $_POST['search_unit']);
-    $search_unit_name = $_POST['search_unit'];
     $search_unit_id_escaped = mysqli_real_escape_string($conn, $_POST['search_unit_id']);
-    $search_unit_id = $_POST['search_unit_id'];
 
+    if (!$_POST['search_unit'] and !$_POST['search_unit_id']) {
+        echo "Please enter a valid search" . mysqli_error($conn);
+        mysqli_close($conn); ?>
+        <br>
+        <br>
+        <a href="/">Return Home</a>
+        <br>
+        <a href="createunit.php">Submit another response</a>
+        <br>
+        <a href="searchunit.php">View all UNITs</a>
+        <?php
+        exit;
+    }
     $search = array();
 
     $sql = "SELECT * FROM regattascoring.UNIT WHERE ";
