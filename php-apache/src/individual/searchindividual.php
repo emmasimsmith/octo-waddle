@@ -26,6 +26,19 @@ if (isset($_POST['search'])) {
     $search_comments_escaped = mysqli_real_escape_string($conn, $_POST['search_comments']);
     $search_comments = $_POST['search_comments'];
 
+    if (!$_POST['search_first'] and !$_POST['search_last'] and !$_POST['search_dob'] and !$_POST['search_comments']) {
+        echo "Please search a value" . mysqli_error($conn);
+        mysqli_close($conn); ?>
+        <br>
+        <br>
+        <a href="/">Return Home</a>
+        <br>
+        <a href="createindividual.php">Submit another response</a>
+        <br>
+        <a href="searchindividual.php">View all individuals</a>
+        <?php
+        exit;
+    }
     $search = array();
 
     $sql = "SELECT * FROM regattascoring.INDIVIDUAL WHERE ";

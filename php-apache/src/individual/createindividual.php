@@ -32,7 +32,6 @@ function individualform()
 }
 if (isset($_POST["submit"])) {
     include_once '../connection.php';
-    individualform();
 
     $first_name = mysqli_real_escape_string($conn, $_POST['first']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last']);
@@ -86,12 +85,13 @@ if (isset($_POST["submit"])) {
     echo $_POST['first'] . " " . $_POST['last'] . " Created"; ?>
     <br>
     <a href = <?php echo "viewindividual.php?id=$individual_id"?>>Edit <?php echo $_POST['first'] . " " . $_POST['last'] ?></a>
+    <php>
     <?php
+    individualform();
     mysqli_close($conn); ?>
     <br>
     <a href="/">Return Home</a>
     <br>
-    <a href="createindividual.php">Submit another response</a>
     <?php
 } else {
         individualform();
