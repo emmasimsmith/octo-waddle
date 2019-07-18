@@ -54,8 +54,8 @@ echo "EVENT table made successfully" . "<br/>";
 $sql = "CREATE TABLE CLASS (
   class_id INT AUTO_INCREMENT PRIMARY KEY,
   class_name VARCHAR (20),
-  min_age DECIMAL(2,1) NOT NULL,
-  max_age DECIMAL(2,1) NOT NULL
+  min_age DECIMAL(3,1) NOT NULL,
+  max_age DECIMAL(3,1) NOT NULL
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -91,7 +91,8 @@ $sql = "CREATE TABLE CERTIFICATE (
   certificate_id INT AUTO_INCREMENT PRIMARY KEY,
   certificate_name VARCHAR (20),
   calculation VARCHAR (20) NOT NULL,
-  placing INT
+  placing INT NOT NULL,
+  recipient VARCHAR (20) NOT NULL
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
