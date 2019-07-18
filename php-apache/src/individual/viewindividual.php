@@ -126,14 +126,14 @@ if (isset($_POST["delete"])) {
           <?php
             exit;
         } elseif (mysqli_num_rows($select) >1) {
-            echo "Too many people selected";
-            exit; ?>
+            echo "Too many people selected"; ?>
           <a href="/">Return Home</a>
           <br>
           <a href="createindividual.php">Submit another response</a>
           <br>
           <a href="searchindividual.php">View all individuals</a>
           <?php
+          exit;
         }
 
         $row = mysqli_fetch_assoc($select); ?>
