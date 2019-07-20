@@ -3,7 +3,7 @@
 include_once '../navbar.php';
 include_once '../connection.php';
 
-//function to echo errors, links and closing the connection to database
+//function to echo errors and links
 function closeclass($error)
 {
     if ($error) {
@@ -121,9 +121,6 @@ if (isset($_POST["submit"])) {
         mysqli_close($conn);
         exit;
     }
-    //call class form
-    classform();
-
     //insert variables into class table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.CLASS (class_name, min_age, max_age)
     VALUES ('$class_name', '$min_age','$max_age');";
@@ -135,12 +132,17 @@ if (isset($_POST["submit"])) {
     }
 
     //echo class created
-    echo $_POST['class_name'] . " Class Created"; ?>
-
+    echo $_POST['class_name'] . " Class Created";
+    $class_id = mysqli_insert_id($conn); ?>
     <br>
     <a href= <?php echo "viewclass.php?id=$class_id" ?>>Edit <?php echo
     $_POST['class_name'] ?></a>
     <?php
+
+    //call class form
+    classform();
+
+    //call closing function
     closeclass($error);
     mysqli_close($conn);
 } else {
