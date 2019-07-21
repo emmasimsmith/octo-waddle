@@ -28,11 +28,8 @@ if (isset($_POST['search'])) {
 
     //define searched variables
     $certificate_name_escaped = mysqli_real_escape_string($conn, $_POST['certificate_name']);
-    $certificate_name = $_POST['certificate_name'];
     $calculation_escaped = mysqli_real_escape_string($conn, $_POST['calculation']);
-    $calculation = $_POST['calculation'];
     $placing_escaped = mysqli_real_escape_string($conn, $_POST['placing']);
-    $placing = $_POST['placing'];
 
     //validation check incase strings are empty
     if (!$_POST['certificate_name'] and !$_POST['calculation'] and !$_POST['placing']) {
