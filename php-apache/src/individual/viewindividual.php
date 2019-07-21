@@ -1,145 +1,131 @@
 <?php
+//include navigation bar , functions and connection php files
 include_once '../navbar.php';
 include_once "../connection.php";
+include_once '../functions.php';
 
+//function variables
+$name = "individual";
+$table_name = "INDIVIDUAL";
+
+//if delete is selected in form
 if (isset($_POST["delete"])) {
+
+  // Get the id number
+    $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
+
+    //Select individual name from the table
+    $sql = "SELECT first_name, last_name FROM regattascoring.INDIVIDUAL WHERE
+    individual_id = '$individual_id_escaped';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    //call delete function
+    deletevariable($conn, $name, $individual_id, $table_name);
+
+    //echo individual deleted
+    echo $row['first_name'] . " " . $row['last_name'] . " deleted";
+    close($conn, $error, $name);
+
+//if update was selected
+} elseif (isset($_POST["update"])) {
+
+  //GET ID
     $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
     $individual_id = $_GET['id'];
 
-    $sql = "SELECT first_name, last_name FROM regattascoring.INDIVIDUAL;";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    $first_name = $row['first_name'];
-    $last_name = $row['last_name'];
+    //POST variables from form
+    $new_first_name_escaped = mysqli_real_escape_string($conn, $_POST['first']);
+    $new_last_name_escaped = mysqli_real_escape_string($conn, $_POST['last']);
+    $new_dob_escaped = mysqli_real_escape_string($conn, $_POST['dob']);
+    $new_comments_escaped = mysqli_real_escape_string($conn, $_POST['comments']);
 
-    $sql = "DELETE FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id_escaped';";
+    //array for errors
+    $errors = array();
 
-    if (!mysqli_query($conn, $sql)) {
-        echo "Could not delete individual" . mysqli_error($conn) . "</br>";
+    //input sanitsation
+    if (!$new_first_name_escaped) {
+        array_push($errors, "First name must be entered");
+    }
+    if (preg_match('/[^A-Za-z \-]/', $new_first_name_escaped)) {
+        array_push($errors, "Please enter a valid first name");
+    }
+    if (!$new_last_name_escaped) {
+        array_push($errors, "Last name must be entered");
+    }
+    if (preg_match('/[^A-Za-z \-]/', $new_last_name_escaped)) {
+        array_push($errors, "Please enter a valid last name");
+    }
+    if (!$new_dob_escaped) {
+        array_push($errors, "Date of birth must be entered");
+    }
+    if (strlen($new_dob_escaped) != 10) {
+        array_push($errors, "Please enter a valid date of birth");
+    }
+
+    if (count($errors) != 0) {
+        //call form with existing values?>
+      <html>
+        <head>
+          <title>Create Individual</title>
+        </head>
+        <h1>Create New Individual</h1>
+        <body>
+          <form action= <?php echo "viewindividual.php?id=" . $_GET['id']?> method ="POST">
+            First Name:
+            <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
+            <br>
+            Last Name:
+            <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
+            <br>
+            Date of Birth:
+            <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
+            <br>
+            Comments:
+            <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
+            <br>
+            <button type="submit" name="update">Update</button>
+            <button type="submit" name="delete">Delete</button>
+          </form>
+        </body>
+      </html>
+      <?php
+
+      //echo input sanitsation errors
+      foreach ($errors as $error) {
+          $issue = '';
+          $issue = $issue . $error . "</br>";
+      }
+        close($conn, $issue, $name);
         exit;
     }
-    echo "$first_name" . " " . "$last_name" . " deleted"; ?>
-    <html>
-    <body>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="searchindividual.php">View all Individuals</a>
-    <br>
-    <a href="createindividual.php">Submit another response</a>
-    </body>
-    </html>
-    <?php
-} elseif (isset($_POST["update"])) {
-        $individual_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
-        $individual_id = $_GET['id'];
 
-        $new_first_name_escaped = mysqli_real_escape_string($conn, $_POST['first']);
-        $new_last_name_escaped = mysqli_real_escape_string($conn, $_POST['last']);
-        $new_dob_escaped = mysqli_real_escape_string($conn, $_POST['dob']);
-        $new_comments_escaped = mysqli_real_escape_string($conn, $_POST['comments']);
+    //Update table
+    $sql = "UPDATE regattascoring.INDIVIDUAL set first_name =
+    '$new_first_name_escaped', last_name = '$new_last_name_escaped',
+    dob = '$new_dob_escaped', comments = '$new_comments_escaped'
+    WHERE individual_id = '$individual_id_escaped';";
 
-        $errors = array();
+    //Check table updated, if not exit
+    if (!mysqli_query($conn, $sql)) {
+        $error = "Could not update individual";
+        close($conn, $error, $name);
+        exit;
+    }
 
-        if ($new_first_name_escaped == "") {
-            array_push($errors, "First name must be entered");
-        }
+    //echo individual updated
+    echo $_POST['first'] . " " . $_POST['last'] . " updated";
+    close($conn, $error, $name);
+} else {
+    //GET ID from URL
+    $individual_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-        if (preg_match('/[^A-Za-z \-]/', $new_first_name_escaped)) {
-            array_push($errors, "Please enter a valid first name");
-        }
+    //call table select function
+    $row = viewselect($conn, $individual_id, $name, $table_name);
 
-        if ($new_last_name_escaped == "") {
-            array_push($errors, "Last name must be entered");
-        }
-        if (preg_match('/[^A-Za-z \-]/', $new_last_name_escaped)) {
-            array_push($errors, "Please enter a valid last name");
-        }
-
-        if ($new_dob_escaped == "") {
-            array_push($errors, "Date of birth must be entered");
-        }
-        if (strlen($new_dob_escaped) != 10) {
-            array_push($errors, "Please enter a valid date of birth");
-        }
-
-        if (count($errors) != 0) {
-            foreach ($errors as $error) {
-                echo $error . "</br>";
-            }
-            mysqli_close($conn); ?>
-            <br>
-            <a href = <?php echo "viewindividual.php?id=" . $_GET['id'] ?>>Return to update</a>
-            <br>
-            <a href="/">Return Home</a>
-            <br>
-            <a href="createindividual.php">Submit another response</a>
-            <br>
-            <a href="searchindividual.php">View all individuals</a>
-            <?php
-            exit;
-        };
-
-        $first_name = $_POST['first'];
-        $last_name = $_POST['last'];
-
-        $sql = "UPDATE regattascoring.INDIVIDUAL set first_name =
-        '$new_first_name_escaped', last_name = '$new_last_name_escaped',
-        dob = '$new_dob_escaped', comments = '$new_comments_escaped'
-        WHERE individual_id = '$individual_id_escaped';";
-
-        if (!mysqli_query($conn, $sql)) {
-            echo "Could not update individual" . mysqli_error($conn) . "</br>";
-            exit;
-        }
-        echo "$first_name $last_name updated"; ?>
-        <html>
-        <body>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createindividual.php">Submit another response</a>
-        <br>
-        <a href="searchindividual.php">View all individuals</a>
-        </body>
-        </html>
-        <?php
-    } else {
-        $individual_id = mysqli_real_escape_string($conn, $_GET['id']);
-
-        $sql = "SELECT * FROM regattascoring.INDIVIDUAL WHERE individual_id = '$individual_id';";
-
-        $select = mysqli_query($conn, $sql);
-        if (!$select) {
-            echo "Could not select INDIVIDUAL table" . "</br>" .mysqli_error($conn) . "<br/>";
-            exit;
-        }
-        echo "selected table successfully" . "</br>";
-
-        if (mysqli_num_rows($select) == 0) {
-            echo "Nothing Selected"; ?>
-          <a href="/">Return Home</a>
-          <br>
-          <a href="createindividual.php">Submit another response</a>
-          <br>
-          <a href="searchindividual.php">View all individuals</a>
-          <?php
-            exit;
-        } elseif (mysqli_num_rows($select) >1) {
-            echo "Too many people selected"; ?>
-          <a href="/">Return Home</a>
-          <br>
-          <a href="createindividual.php">Submit another response</a>
-          <br>
-          <a href="searchindividual.php">View all individuals</a>
-          <?php
-          exit;
-        }
-
-        $row = mysqli_fetch_assoc($select); ?>
+    //call form with previous values?>
   <html>
   <body>
-
   <form action= <?php echo "viewindividual.php?id=" . $_GET['id'] ?> method ="POST">
     First Name:
     <input type="text" name="first" value= "<?php echo $row['first_name'] ?>" placeholder="First Name">
@@ -156,15 +142,9 @@ if (isset($_POST["delete"])) {
     <button type="submit" name="update">Update</button>
     <button type="submit" name="delete">Delete</button>
   </form>
-  <br>
-  <a href="/">Return Home</a>
-  <br>
-  <a href="createindividual.php">Submit another response</a>
-  <br>
-  <a href="searchindividual.php">View all individuals</a>
-  </body>
-  </html>
   <?php
-  mysqli_close($conn);
-    }
+
+  //call closing function
+  close($conn, $error, $name);
+}
 ?>

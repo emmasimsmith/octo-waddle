@@ -1,5 +1,10 @@
 <?php
+//include navigation bar and connection php files
 include_once '../navbar.php';
+include_once '../connection.php';
+include_once '../functions.php';
+
+//function for the individual form
 function individualform()
 {
     ?>
@@ -30,17 +35,21 @@ function individualform()
   </html>
   <?php
 }
-if (isset($_POST["submit"])) {
-    include_once '../connection.php';
 
+//If Form is submitted
+if (isset($_POST["submit"])) {
+
+    //POST variables from form
     $first_name = mysqli_real_escape_string($conn, $_POST['first']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $comments = mysqli_real_escape_string($conn, $_POST['comments']);
 
+    //array for input sanitsation errors
     $errors = array();
 
-    if ($first_name == "") {
+    //input sanitsation
+    if (!$first_name) {
         array_push($errors, "First name must be entered");
     }
 
@@ -48,51 +57,82 @@ if (isset($_POST["submit"])) {
         array_push($errors, "Please enter a valid first name");
     }
 
-    if ($last_name == "") {
+    if (!$last_name) {
         array_push($errors, "Last name must be entered");
     }
     if (preg_match('/[^A-Za-z \-]/', $last_name)) {
         array_push($errors, "Please enter a valid last name");
     }
 
-    if ($dob == "") {
+    if (!$dob) {
         array_push($errors, "Date of birth must be entered");
     }
     if (strlen($dob) != 10) {
         array_push($errors, "Please enter a valid date of birth");
     }
 
+    //echo errors then exit
     if (count($errors) != 0) {
-        foreach ($errors as $error) {
-            echo $error . "</br>";
-        }
-        mysqli_close($conn); ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createindividual.php">Submit another response</a>
-        <br>
-        <a href="searchindividual.php">View all individuals</a>
+        //call form with existing values?>
+        <html>
+          <head>
+            <title>Create Individual</title>
+          </head>
+          <h1>Create New Individual</h1>
+          <body>
+            <form action="viewindividual.php" method ="POST">
+              First Name:
+              <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
+              <br>
+              Last Name:
+              <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
+              <br>
+              Date of Birth:
+              <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
+              <br>
+              Comments:
+              <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
+              <br>
+              <button type="submit" name="submit">Enter</button>
+            </form>
+          </body>
+        </html>
         <?php
+        //echo errors from the input sanitsation
+        foreach ($errors as $error) {
+            $issue = "";
+            $issue = $issue . $error . "</br>";
+        }
+        close($conn, $issue, $name);
         exit;
     }
 
-    $sql = "INSERT INTO regattascoring.INDIVIDUAL (first_name, last_name, dob, comments) VALUES ('$first_name','$last_name','$dob','$comments');";
+    //Insert variables into individual table, if false echo error and exit
+    $sql = "INSERT INTO regattascoring.INDIVIDUAL (first_name, last_name, dob,
+      comments) VALUES ('$first_name','$last_name','$dob','$comments');";
     if (!mysqli_query($conn, $sql)) {
-        echo "ERROR: Could not add data" . mysqli_error($conn) . "</br>";
+        $error = "Could not add data";
+        close($conn, $error, $name);
+        exit;
     }
-    $individual_id = mysqli_insert_id($conn);
-    echo $_POST['first'] . " " . $_POST['last'] . " Created"; ?>
+
+    //echo class created
+    echo $_POST['first'] . " " . $_POST['last'] . " Created";
+    $individual_id = mysqli_insert_id($conn); ?>
     <br>
     <a href = <?php echo "viewindividual.php?id=$individual_id"?>>Edit <?php echo $_POST['first'] . " " . $_POST['last'] ?></a>
     <php>
     <?php
+
+    //call individual form
     individualform();
-    mysqli_close($conn); ?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <?php
+
+    //call closing function
+    close($conn, $error, $name);
 } else {
-        individualform();
-    };
+    //call individual form
+    individualform();
+
+    ///call closing function
+    close($conn, $error, $name);
+};
