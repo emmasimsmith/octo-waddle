@@ -42,7 +42,6 @@ if (isset($_POST["delete"])) {
         exit;
     }
     echo "$class_name" . " deleted";
-    $error = '';
     closeclass($error);
 
 //if update button is selected
@@ -135,6 +134,8 @@ if (isset($_POST["delete"])) {
         mysqli_close($conn);
         exit;
     }
+
+    //echo class updated
     echo "$class_name class updated";
     closeclass($error);
     mysqli_close($conn);
@@ -167,7 +168,7 @@ if (isset($_POST["delete"])) {
         exit;
     }
 
-    //Echo form with previous values set as default
+    //Echo form with previous values
     $row = mysqli_fetch_assoc($select);
 
     //call form with existing values?>

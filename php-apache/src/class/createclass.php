@@ -7,12 +7,13 @@ include_once '../connection.php';
 function closeclass($error)
 {
     if ($error) {
-        echo $error . "</br>";
+        echo $error . "</br>"; ?>
+        <br>
+        <a href="createclass.php">Submit another response</a>
+        <?php
     } ?>
     <br>
     <a href="/">Return Home</a>
-    <br>
-    <a href="createclass.php">Submit another response</a>
     <br>
     <a href="searchclass.php">View all classes</a>
     <?php
