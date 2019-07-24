@@ -1,5 +1,14 @@
 <?php
+//include navigation bar, connection and function files
 include_once '../navbar.php';
+include_once '../connection.php';
+include_once '../functions.php';
+
+//variables for functions
+$name = "event";
+$plural_name = "Events";
+
+//function for event form
 function eventform()
 {
     ?>
@@ -24,20 +33,23 @@ function eventform()
   </html>
   <?php
 }
-if (isset($_POST["submit"])) {
-    include_once '../connection.php';
-    eventform();
 
+//if form submitted
+if (isset($_POST["submit"])) {
+
+  //POST variables from form
     $location = mysqli_real_escape_string($conn, $_POST['location']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
 
+    //array for input sanitsation errors
     $errors = array();
 
+    //input sanitsation
     if (!$location) {
         array_push($errors, "Location must be entered");
     }
 
-    if (preg_match('/[^A-Za-z \-]/', $location)) {
+    if (preg_match('/[^A-Za-z \-\']/', $location)) {
         array_push($errors, "Please enter a valid location");
     }
 
@@ -48,37 +60,61 @@ if (isset($_POST["submit"])) {
         array_push($errors, "Please enter a valid date");
     }
 
+    //echo errors then exit
     if (count($errors) != 0) {
+        //call form with existing values?>
+      <html>
+        <head>
+          <title>Create Event</title>
+        </head>
+        <h1>Create New Event</h1>
+        <body>
+          <form action="createevent.php" method ="POST">
+            Location:
+            <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
+            <br>
+            Date:
+            <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
+            <br>
+            <button type="submit" name="submit">Enter</button>
+          </form>
+        </body>
+      </html>
+      <?php
+      //echo errors from the input sanitsation
         foreach ($errors as $error) {
-            echo $error . "</br>";
+            $issue = "";
+            $issue = $issue . $error . "</br>";
         }
-        mysqli_close($conn); ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createevent.php">Submit another response</a>
-        <br>
-        <a href="searchevent.php">View all Events</a>
-        <?php
+        close($conn, $issue, $name, $plural_name);
         exit;
     }
 
+    //Insert variables into event table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.EVENT (location, event_date)
     VALUES ('$location','$date');";
     if (!mysqli_query($conn, $sql)) {
-        echo "ERROR: Could not add event" . mysqli_error($conn) . "</br>";
+        $error = "Could not add event";
+        close($conn, $error, $name, $plural_name);
+        exit;
     }
-    $event_id = mysqli_insert_id($conn);
-    echo "Regatta at " . $_POST['location'] . " created"; ?>
+
+    //echo event created
+    echo "Regatta at " . $_POST['location'] . " created";
+    $event_id = mysqli_insert_id($conn); ?>
     <br>
     <a href = <?php echo "viewevent.php?id=$event_id"?>><?php echo "Edit " . $_POST['location'] . " regatta"?></a>
     <?php
-    mysqli_close($conn); ?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="createevent.php">Submit another response</a>
-    <?php
+
+    //call event form
+    eventform();
+
+    //call closing function
+    close($conn, $error, $name, $plural_name);
 } else {
-        eventform();
-    };
+    //call event form
+    eventform();
+
+    //call closing function
+    close($conn, $error, $name, $plural_name);
+};
