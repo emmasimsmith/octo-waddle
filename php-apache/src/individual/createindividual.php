@@ -1,8 +1,12 @@
 <?php
-//include navigation bar and connection php files
+//include navigation bar, functions and connection php files
 include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
+
+//variables for functions
+$name = "individual";
+$plural_name = "Individuals";
 
 //function for the individual form
 function individualform()
@@ -80,7 +84,7 @@ if (isset($_POST["submit"])) {
           </head>
           <h1>Create New Individual</h1>
           <body>
-            <form action="viewindividual.php" method ="POST">
+            <form action="createindividual.php" method ="POST">
               First Name:
               <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
               <br>
@@ -103,7 +107,7 @@ if (isset($_POST["submit"])) {
             $issue = "";
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name);
+        close($conn, $issue, $name, $plural_name);
         exit;
     }
 
@@ -112,27 +116,26 @@ if (isset($_POST["submit"])) {
       comments) VALUES ('$first_name','$last_name','$dob','$comments');";
     if (!mysqli_query($conn, $sql)) {
         $error = "Could not add data";
-        close($conn, $error, $name);
+        close($conn, $error, $name, $plural_name);
         exit;
     }
 
-    //echo class created
+    //echo individual created
     echo $_POST['first'] . " " . $_POST['last'] . " Created";
     $individual_id = mysqli_insert_id($conn); ?>
     <br>
     <a href = <?php echo "viewindividual.php?id=$individual_id"?>>Edit <?php echo $_POST['first'] . " " . $_POST['last'] ?></a>
-    <php>
     <?php
 
     //call individual form
     individualform();
 
     //call closing function
-    close($conn, $error, $name);
+    close($conn, $error, $name, $plural_name);
 } else {
     //call individual form
     individualform();
 
     ///call closing function
-    close($conn, $error, $name);
-};
+    close($conn, $error, $name, $plural_name);
+}
