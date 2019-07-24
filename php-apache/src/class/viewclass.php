@@ -1,58 +1,40 @@
 <?php
-// include navigation bar and connection php files
+// include navigation bar, functions and connection php files
 include_once '../navbar.php';
 include_once "../connection.php";
+include_once '../functions.php';
 
-//function to echo errors and links
-function closeclass($error)
-{
-    if ($error) {
-        echo $error . "</br>";
-    } ?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="createclass.php">Submit another response</a>
-    <br>
-    <a href="searchclass.php">View all classes</a>
-    <?php
-}
+//function variables
+$name = 'class';
+$table_name = 'CLASS';
+$plural_name = 'Classes';
 
 //if delete button is selected in form
 if (isset($_POST["delete"])) {
 
   //GET the id number
     $class_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
-    $class_id = $_GET['id'];
 
     //Select class name from the table
     $sql = "SELECT class_name FROM regattascoring.CLASS WHERE class_id = '$class_id_escaped';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    $class_name = $row['class_name'];
 
-    //Delete class from table
-    $sql = "DELETE FROM regattascoring.CLASS WHERE class_id = '$class_id_escaped';";
+    //call delete function
+    deletevariable($conn, $name, $class_id_escaped, $table_name, $plural_name);
 
-    //Check if class has been deleted
-    if (!mysqli_query($conn, $sql)) {
-        $error = "Could not delete class";
-        closeclass($error);
-        mysqli_close($conn);
-        exit;
-    }
-    echo "$class_name" . " deleted";
-    closeclass($error);
+    //echo class deleted and call closing dunction
+    echo $row['class_name'] . " deleted";
+    close($conn, $error, $name, $plural_name);
 
 //if update button is selected
 } elseif (isset($_POST["update"])) {
-    // Get ID from URL
+
+    // GET ID
     $class_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
-    $class_id = $_GET['id'];
 
     //POST variables from form
     $new_class_name_escaped = mysqli_real_escape_string($conn, $_POST['class_name']);
-    $class_name = $_POST['class_name'];
     $new_min_age_escaped = mysqli_real_escape_string($conn, $_POST['min_age']);
     $new_max_age_escaped = mysqli_real_escape_string($conn, $_POST['max_age']);
 
@@ -117,59 +99,33 @@ if (isset($_POST["delete"])) {
             $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        closeclass($issue);
-        mysqli_close($conn);
+        close($conn, $issue, $name, $plural_name);
         exit;
     }
 
     //Update table
-    $sql = "UPDATE regattascoring.CLASS set class_name =
-        '$new_class_name_escaped', min_age = '$new_min_age_escaped',
-        max_age = '$new_max_age_escaped' WHERE class_id = '$class_id_escaped';";
+    $sql = "UPDATE regattascoring.CLASS set class_name = '$new_class_name_escaped',
+    min_age = '$new_min_age_escaped', max_age = '$new_max_age_escaped'
+    WHERE class_id = '$class_id_escaped';";
 
     //Check table updated, if not exit
     if (!mysqli_query($conn, $sql)) {
         $error = "Could not update class";
-        closeclass($error);
-        mysqli_close($conn);
+        close($conn, $error, $name, $plural_name);
         exit;
     }
 
     //echo class updated
-    echo "$class_name class updated";
-    closeclass($error);
-    mysqli_close($conn);
+    echo $_POST['class_name'] . " class updated";
+    close($conn, $error, $name, $plural_name);
+
 // if nothing has been selected
 } else {
     //GET ID from URL
     $class_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-    //Select class matching GET ID
-    $sql = "SELECT * FROM regattascoring.CLASS WHERE class_id = '$class_id';";
-    $select = mysqli_query($conn, $sql);
-    if (!$select) {
-        $error = "Could not select CLASS table";
-        closeclass($error);
-        mysqli_close($conn);
-        exit;
-    }
-    echo "selected table successfully" . "</br>";
-
-    //Check only one class selected
-    if (mysqli_num_rows($select) == 0) {
-        $error = "Nothing Selected";
-        closeclass($error);
-        mysqli_close($conn);
-        exit;
-    } elseif (mysqli_num_rows($select) >1) {
-        $error = "Too many classes selected";
-        closeclass($error);
-        mysqli_close($conn);
-        exit;
-    }
-
-    //Echo form with previous values
-    $row = mysqli_fetch_assoc($select);
+    //call table selet function
+    $row = viewselect($conn, $class_id, $name, $table_name, $plural_name);
 
     //call form with existing values?>
     <html>
@@ -196,9 +152,6 @@ if (isset($_POST["delete"])) {
     <?php
 
   //call closing function
-  closeclass($error);
-
-    //Close connection
-    mysqli_close($conn);
+  close($conn, $error, $name, $plural_name);
 }
 ?>

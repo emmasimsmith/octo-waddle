@@ -1,23 +1,12 @@
 <?php
-//include navigation bar and connection php files
+//include navigation bar, functions and connection php files
 include_once '../navbar.php';
 include_once '../connection.php';
+include_once '../functions.php';
 
-//function to echo errors and links
-function closeclass($error)
-{
-    if ($error) {
-        echo $error . "</br>"; ?>
-        <br>
-        <a href="createclass.php">Submit another response</a>
-        <?php
-    } ?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="searchclass.php">View all classes</a>
-    <?php
-}
+//variables for functions
+$name = 'class';
+$plural_name = 'Classes';
 
 //function for the class form
 function classform()
@@ -118,8 +107,7 @@ if (isset($_POST["submit"])) {
             $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        closeclass($issue);
-        mysqli_close($conn);
+        close($conn, $issue, $name, $plural_name);
         exit;
     }
     //insert variables into class table, if false echo error and exit
@@ -127,8 +115,7 @@ if (isset($_POST["submit"])) {
     VALUES ('$class_name', '$min_age','$max_age');";
     if (!mysqli_query($conn, $sql)) {
         $error = "Could not add class";
-        closeclass($error);
-        mysqli_close($conn);
+        close($conn, $error, $name, $plural_name);
         exit;
     }
 
@@ -144,13 +131,11 @@ if (isset($_POST["submit"])) {
     classform();
 
     //call closing function
-    closeclass($error);
-    mysqli_close($conn);
+    close($conn, $error, $name, $plural_name);
 } else {
     //call class form
     classform();
 
     //call class close
-    closeclass($error);
-    mysqli_close($conn);
+    close($conn, $error, $name, $plural_name);
 }
