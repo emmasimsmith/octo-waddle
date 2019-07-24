@@ -136,6 +136,6 @@ if (isset($_POST["submit"])) {
     //call individual form
     individualform();
 
-    ///call closing function
+    //call closing function
     close($conn, $error, $name, $plural_name);
 }
