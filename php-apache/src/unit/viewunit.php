@@ -1,135 +1,120 @@
 <?php
+//include navigation bar, functions and connection php files
 include_once "../connection.php";
 include_once '../navbar.php';
+include_once '../functions.php';
 
+//function variables
+$name = 'unit';
+$table_name = "UNIT";
+$plural_name = "Units";
+
+//if delete is selected in form
 if (isset($_POST["delete"])) {
+
+  //GET the id from url
     $unit_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
-    $unit_id = $_GET['id'];
 
-    $unit_name = $_POST['unit_name'];
+    //Select unit name from table
+    $sql = "SELECT unit_name FROM regattascoring.UNIT WHERE unit_id = '$unit_id_escaped';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
 
-    $sql = "DELETE FROM regattascoring.UNIT WHERE unit_id = '$unit_id_escaped';";
+    //call delete function
+    deletevariable($conn, $name, $unit_id_escaped, $table_name, $plural_name);
 
-    if (!mysqli_query($conn, $sql)) {
-        echo "Could not delete unit" . mysqli_error($conn) . "</br>";
-        exit;
-    }
-    echo "$unit_name" . " deleted"; ?>
-    <html>
-    <body>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="createunit.php">Submit another response</a>
-    <br>
-    <a href="searchunit.php">View all units</a>
-    </body>
-    </html>
-    <?php
+    //echo unit deleted and close
+    echo $_POST['unit_name'] . " deleted";
+    close($conn, $error, $name, $plural_name);
+
+//if update was selected
 } elseif (isset($_POST["update"])) {
-        $unit_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
-        $unit_id = $_GET['id'];
+    //GET ID
+    $unit_id_escaped = mysqli_real_escape_string($conn, $_GET['id']);
 
-        $new_unit_name_escaped = mysqli_real_escape_string($conn, $_POST['unit_name']);
+    //POST variables from form
+    $new_unit_name_escaped = mysqli_real_escape_string($conn, $_POST['unit_name']);
 
-        $errors = array();
+    //array for errors
+    $errors = array();
 
-        if ($new_unit_name_escaped == "") {
-            array_push($errors, "Unit name must be entered");
-        }
-
-        if (preg_match('/[^A-Za-z \-]/', $new_unit_name_escaped)) {
-            array_push($errors, "Please enter a valid unit name");
-        }
-
-        if (count($errors) != 0) {
-            foreach ($errors as $error) {
-                echo $error . "</br>";
-            }
-            mysqli_close($conn); ?>
-            <br>
-            <a href="/">Return Home</a>
-            <br>
-            <a href="createunit.php">Submit another response</a>
-            <br>
-            <a href="searchunit.php">View all Units</a>
-            <br>
-            <a href = <?php echo "viewunit.php?id=" . $_GET['id'] ?>>Return to update</a>
-            <?php
-            exit;
-        };
-
-        $unit_name = $_POST['unit_name'];
-
-        $sql = "UPDATE regattascoring.UNIT set unit_name =
-        '$new_unit_name_escaped' WHERE unit_id = '$unit_id_escaped';";
-
-        if (!mysqli_query($conn, $sql)) {
-            echo "Could not update unit" . mysqli_error($conn) . "</br>";
-            exit;
-        }
-        echo "$unit_name updated"; ?>
+    //input sanitsation
+    if ($new_unit_name_escaped == "") {
+        array_push($errors, "Unit name must be entered");
+    }
+    if (preg_match('/[^A-Za-z \-]/', $new_unit_name_escaped)) {
+        array_push($errors, "Please enter a valid unit name");
+    }
+    if (count($errors) != 0) {
+        //call form with existing values?>
         <html>
-        <body>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createunit.php">Submit another response</a>
-        <br>
-        <a href="searchunit.php">View all Units</a>
-        </body>
+          <head>
+              <title>Create Unit</title>
+          </head>
+              <h1>Create New Unit</h1>
+          <body>
+            <form action= <?php echo "viewunit.php?id=" . $_GET['id']?> method ="POST">
+              Unit Name:
+              <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name">
+              <br>
+              <button type="submit" name="update">Update</button>
+              <button type="submit" name="delete">Delete</button>
+            </form>
+          </body>
         </html>
         <?php
-    } else {
-        $unit_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-        $sql = "SELECT * FROM regattascoring.UNIT WHERE unit_id = '$unit_id';";
-        $select = mysqli_query($conn, $sql);
-        if (!$select) {
-            echo "Could not select UNIT table" . "</br>" .mysqli_error($conn) . "<br/>";
-            exit;
+        //echo input sanisation errors
+        foreach ($errors as $error) {
+            $issue = '';
+            $issue = $issue . $error . "</br>";
         }
-        echo "selected table successfully" . "</br>";
+        close($conn, $issue, $name, $plural_name);
+        exit;
+    }
 
-        if (mysqli_num_rows($select) == 0) {
-            echo "Nothing Selected"; ?>
-          <a href="/">Return Home</a>
-          <br>
-          <a href="createunit.php">Submit another response</a>
-          <br>
-          <a href="searchunit.php">View all individuals</a>
-          <?php
-            exit;
-        } elseif (mysqli_num_rows($select) >1) {
-            echo "Too many units selected";
-            exit; ?>
-          <a href="/">Return Home</a>
-          <br>
-          <a href="createunit.php">Submit another response</a>
-          <br>
-          <a href="searchunit.php">View all individuals</a>
-          <?php
-        }
+    //Update table
+    $sql = "UPDATE regattascoring.UNIT set unit_name =
+        '$new_unit_name_escaped' WHERE unit_id = '$unit_id_escaped';";
 
-        $row = mysqli_fetch_assoc($select); ?>
+    //Check table updated, if not exit
+    if (!mysqli_query($conn, $sql)) {
+        $error = "Could not update unit";
+        close($conn, $error, $name, $plural_name);
+        exit;
+    }
+
+    //echo table updated and close
+    echo $_POST['unit_name'] . " updated";
+    close($conn, $error, $name, $plural_name);
+} else {
+    //GET ID from URL
+    $unit_id = mysqli_real_escape_string($conn, $_GET['id']);
+
+    //call table select function
+    $row = viewselect($conn, $unit_id, $name, $table_name, $plural_name);
+
+    //call form with previous values?>
   <html>
-  <body>
-    <form action= <?php echo "viewunit.php?id=" . $_GET['id'] ?> method ="POST">
-      Unit Name:
-      <input type="text" name="unit_name" value="<?php echo $row['unit_name']?>"
-      placeholder="Unit Name">
-      <br>
-      <button type="submit" name="update">Update</button>
-      <button type="submit" name="delete">Delete</button>
-      <br>
-  <a href="/">Return Home</a>
-  <br>
-  <a href="createunit.php">Submit another response</a>
-  <br>
-  <a href="searchunit.php">View all units</a>
-  </body>
+    <head>
+        <title>Create Unit</title>
+    </head>
+        <h1>Create New Unit</h1>
+    <body>
+      <form action= <?php echo "viewunit.php?id=" . $_GET['id'] ?> method ="POST">
+        Unit Name:
+        <input type="text" name="unit_name" value="<?php echo $row['unit_name']?>"
+        placeholder="Unit Name">
+        <br>
+        <button type="submit" name="update">Update</button>
+        <button type="submit" name="delete">Delete</button>
+        <br>
+      </form>
+    </body>
   </html>
   <?php
-  mysqli_close($conn);
-    }
+
+  //call close
+  close($conn, $error, $name, $plural_name);
+}
 ?>

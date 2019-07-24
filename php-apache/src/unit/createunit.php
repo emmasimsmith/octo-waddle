@@ -1,116 +1,102 @@
 <?php
+//include navigation bar, functions and connection php files
 include_once '../navbar.php';
-function unit_form()
+include_once '../connection.php';
+include_once '../functions.php';
+
+//variables for functions
+$name = 'unit';
+$plural_name = 'Units';
+
+//function for the unit form
+function unitform()
 {
     ?>
   <html>
-  <head>
-      <title>Create Unit</title>
-  </head>
-  <h1>Create New Unit</h1>
-  <body>
-  <form action= <?php echo "createunit.php" . $_GET['id'] ?> method ="POST">
-    Unit Name:
-    <input type="text" name="unit_name" placeholder="Unit Name" >*
-    <br>
-    <button type="submit" name="submit">Enter</button>
-  </form>
-  </body>
+    <head>
+        <title>Create Unit</title>
+    </head>
+        <h1>Create New Unit</h1>
+    <body>
+      <form action="createunit.php" method ="POST">
+        Unit Name:
+        <input type="text" name="unit_name" placeholder="Unit Name" >
+        <br>
+        <button type="submit" name="submit">Enter</button>
+      </form>
+    </body>
   </html>
   <?php
 }
-if (isset($_POST["submit"])) {
-    include_once '../connection.php';
 
+//if form is submitted
+if (isset($_POST["submit"])) {
+
+    //POST variables from form
     $unit_name = mysqli_real_escape_string($conn, $_POST['unit_name']);
+
+    ///array for input sanitsation
     $errors = array();
 
+    //input sanitsation
     if ($unit_name == "") {
         array_push($errors, "Unit name must be entered");
     }
-
     if (preg_match('/[^A-Za-z \-]/', $unit_name)) {
         array_push($errors, "Please enter a valid unit name");
     }
 
+    //echo errors then exit
     if (count($errors) != 0) {
-        echo unit_form();
-        foreach ($errors as $error) {
-            echo $error . "</br>";
-        }
-        mysqli_close($conn); ?>
-
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href="createunit.php">Submit another response</a>
-        <br>
-        <a href="searchunit.php">View all Units</a>
-        <?php
+        //call form with existing values?>
+        <html>
+          <head>
+              <title>Create Unit</title>
+          </head>
+              <h1>Create New Unit</h1>
+          <body>
+            <form action="createunit.php" method ="POST">
+              Unit Name:
+              <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name" >
+              <br>
+              <button type="submit" name="submit">Enter</button>
+            </form>
+          </body>
+        </html>
+      <?php
+      //echo errors from the input sanisation
+      foreach ($errors as $error) {
+          $issue = '';
+          $issue = $issue . $error . "</br>";
+      }
+        close($conn, $issue, $name, $plural_name);
         exit;
     }
 
+    //Insert variables into unit table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.UNIT (unit_name) VALUES ('$unit_name');";
     if (!mysqli_query($conn, $sql)) {
-        echo "ERROR: Could not add unit" . mysqli_error($conn) . "</br>";
-    }
-    $unit_id = mysqli_insert_id($conn);
-    $sql = "SELECT * FROM regattascoring.UNIT WHERE unit_id = '$unit_id';";
-    $result = mysqli_query($conn, $sql);
-    if (!$result) {
-        echo "ERROR: Could not select unit" . mysqli_error($conn) . "</br>";
+        $error = "Could not add unit";
+        close($conn, $error, $name, $plural_name);
+        exit;
     }
 
-    if (mysqli_num_rows($result) == 0) {
-        echo "Nothing Selected"; ?>
-      <a href="/">Return Home</a>
-      <br>
-      <a href="createunit.php">Submit another response</a>
-      <br>
-      <a href="searchunit.php">View all Units</a>
-      <?php
-        exit;
-    } elseif (mysqli_num_rows($result) >1) {
-        echo "Too many units selected";
-        exit; ?>
-      <a href="/">Return Home</a>
-      <br>
-      <a href="createunit.php">Submit another response</a>
-      <br>
-      <a href="searchunit.php">View all Units</a>
-      <?php
-    }
-    $row = mysqli_fetch_assoc($result);
-    echo $row ['unit_name'] . " Unit Created"; ?>
+    //echo unit created
+    echo $_POST['unit_name'] . " Unit Created";
+    $unit_id = mysqli_insert_id($conn); ?>
     <br>
-    <a href= <?php echo "viewunit.php?id=$unit_id" ?>>Edit <?php echo $row['unit_name'] ?></a>
+    <a href= <?php echo "viewunit.php?id=$unit_id" ?>>Edit <?php echo $_POST['unit_name'] ?> Unit</a>
     <?php
-    mysqli_close($conn);
-    //header("Location: viewunit.php?id=$unit_id", true, 302);?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="createunit.php">Submit another response</a>
-    <?php
+
+    //call unit form
+    unitform();
+
+    //call close
+    close($conn, $error, $name, $plural_name);
 } else {
-        ?>
-    <html>
-    <head>
-        <title>Create Unit</title>
-    </head>
-  <h1>Create New Unit</h1>
-    <body>
-    <form action= "createunit.php" method ="POST">
-      Unit Name:
-      <input type="text" name="unit_name" placeholder="Unit Name">
-      <br>
-      <button type="submit" name="submit">Enter</button>
-    </form>
-    </bodys
-    </html>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href="searchunit.php">View all Units</a>
-  <?php
-    };
+    //call unit form
+    unitform();
+
+    //call close
+    close($conn, $error, $name, $plural_name);
+}
