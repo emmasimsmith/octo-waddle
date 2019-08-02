@@ -4,11 +4,6 @@ include_once '../navbar.php';
 include_once "../connection.php";
 include_once '../functions.php';
 
-//function variables
-$name = 'class';
-$table_name = 'CLASS';
-$plural_name = 'Classes';
-
 //if delete button is selected in form
 if (isset($_POST["delete"])) {
 
@@ -21,11 +16,11 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
 
     //call delete function
-    deletevariable($conn, $name, $class_id_escaped, $table_name, $plural_name);
+    deletevariable($conn, "class", $class_id_escaped, "regattascoring.CLASS", "Classes");
 
     //echo class deleted and call closing dunction
     echo $row['class_name'] . " deleted";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "class", "Classes");
 
 //if update button is selected
 } elseif (isset($_POST["update"])) {
@@ -95,11 +90,11 @@ if (isset($_POST["delete"])) {
           </body>
         </html>
         <?php
+        $issue = '';
         foreach ($errors as $error) {
-            $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "class", "Classes");
         exit;
     }
 
@@ -110,14 +105,13 @@ if (isset($_POST["delete"])) {
 
     //Check table updated, if not exit
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not update class";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not update class", "class", "Classes");
         exit;
     }
 
     //echo class updated
     echo $_POST['class_name'] . " class updated";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "class", "Classes");
 
 // if nothing has been selected
 } else {
@@ -125,7 +119,7 @@ if (isset($_POST["delete"])) {
     $class_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     //call table selet function
-    $row = viewselect($conn, $class_id, $name, $table_name, $plural_name);
+    $row = viewselect($conn, $class_id, "class", "regattascoring.CLASS", "Classes");
 
     //call form with existing values?>
     <html>
@@ -152,6 +146,6 @@ if (isset($_POST["delete"])) {
     <?php
 
   //call closing function
-  close($conn, $error, $name, $plural_name);
+  close($conn, $error, "class", "Classes");
 }
 ?>

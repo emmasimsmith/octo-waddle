@@ -4,13 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//function variables
-$name = 'class';
-$table_name = 'CLASS';
-$capitalised_name = 'Class';
-$name_id = 'class_id';
-$plural_name = 'Classes';
-
 //Form function
 function classform()
 {
@@ -41,8 +34,7 @@ if (isset($_POST['search'])) {
 
     //validation check for empty strings
     if (!$_POST['class_name'] and !$_POST['min_age'] and !$_POST['max_age']) {
-        $error = "Please search a valid value";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Please search a valid value", "class", "Classes");
         exit;
     }
 
@@ -52,10 +44,10 @@ if (isset($_POST['search'])) {
     'max_age' => array('Maximum Age' => $max_age_escaped));
 
     //call search function
-    search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name);
+    search($conn, "class", $variables, "regattascoring.CLASS", "Class", "Classes");
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "class", "Classes");
 } else {
     //call class form
     classform();
@@ -65,6 +57,6 @@ if (isset($_POST['search'])) {
     'max_age' => 'Maximum Age');
 
     //echo all data from table and close
-    viewall($conn, $name, $table_name, $variables, $name_id, $plural_name);
+    viewall($conn, "class", "regattascoring.CLASS", $variables, "class_id", "Classes");
 }
 ?>

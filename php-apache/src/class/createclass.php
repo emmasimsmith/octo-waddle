@@ -4,10 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//variables for functions
-$name = 'class';
-$plural_name = 'Classes';
-
 //function for the class form
 function classform()
 {
@@ -103,19 +99,18 @@ if (isset($_POST["submit"])) {
           </body>
         </html>
         <?php
+        $issue = '';
         foreach ($errors as $error) {
-            $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "class", "Classes");
         exit;
     }
     //insert variables into class table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.CLASS (class_name, min_age, max_age)
     VALUES ('$class_name', '$min_age','$max_age');";
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not add class";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not add class", "class", "Classes");
         exit;
     }
 
@@ -131,11 +126,11 @@ if (isset($_POST["submit"])) {
     classform();
 
     //call closing function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "class", "Classes");
 } else {
     //call class form
     classform();
 
     //call class close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "class", "Classes");
 }
