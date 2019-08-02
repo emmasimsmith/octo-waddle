@@ -4,11 +4,6 @@ include_once "../connection.php";
 include_once '../navbar.php';
 include_once '../functions.php';
 
-//function variables
-$name = 'unit';
-$table_name = "UNIT";
-$plural_name = "Units";
-
 //if delete is selected in form
 if (isset($_POST["delete"])) {
 
@@ -21,11 +16,11 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
 
     //call delete function
-    deletevariable($conn, $name, $unit_id_escaped, $table_name, $plural_name);
+    deletevariable($conn, "unit", $unit_id_escaped, "regattascoring.UNIT", "Units");
 
     //echo unit deleted and close
     echo $_POST['unit_name'] . " deleted";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "unit", "Units");
 
 //if update was selected
 } elseif (isset($_POST["update"])) {
@@ -65,11 +60,11 @@ if (isset($_POST["delete"])) {
         <?php
 
         //echo input sanisation errors
+        $issue = '';
         foreach ($errors as $error) {
-            $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "unit", "Units");
         exit;
     }
 
@@ -79,21 +74,20 @@ if (isset($_POST["delete"])) {
 
     //Check table updated, if not exit
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not update unit";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not update unit", "unit", "Units");
         exit;
     }
 
     //echo table updated and close
     echo $_POST['unit_name'] . " updated";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "unit", "Units");
 } else {
-  
+
     //GET ID from URL
     $unit_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     //call table select function
-    $row = viewselect($conn, $unit_id, $name, $table_name, $plural_name);
+    $row = viewselect($conn, $unit_id, "unit", "regattascoring.UNIT", "Units");
 
     //call form with previous values?>
   <html>
@@ -116,6 +110,6 @@ if (isset($_POST["delete"])) {
   <?php
 
   //call close
-  close($conn, $error, $name, $plural_name);
+  close($conn, $error, "unit", "Units");
 }
 ?>

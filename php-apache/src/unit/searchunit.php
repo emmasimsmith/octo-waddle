@@ -4,13 +4,6 @@ include_once '../navbar.php';
 include_once "../connection.php";
 include_once '../functions.php';
 
-//function variables
-$name = "unit";
-$table_name = "UNIT";
-$capitalised_name = "Unit";
-$name_id = "unit_id";
-$plural_name = "Units";
-
 //form function
 function unitform()
 {
@@ -37,8 +30,7 @@ if (isset($_POST['search'])) {
 
     //validation if strings are empty
     if (!$_POST['unit_name'] and !$_POST['unit_id']) {
-        $error = "Please enter a valid search";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Please enter a valid search", "unit", "Units");
         exit;
     }
 
@@ -47,10 +39,10 @@ if (isset($_POST['search'])) {
   'unit_id' => array('Unit ID' => $search_unit_id_escaped));
 
     //call search function
-    search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name);
+    search($conn, "unit", $variables, "regattascoring.UNIT", "Unit", "Units");
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "unit", "Units");
 } else {
     $sql = "SELECT * FROM regattascoring.UNIT;";
     $result = mysqli_query($conn, $sql);
@@ -64,5 +56,5 @@ if (isset($_POST['search'])) {
     $variables = array('unit_name' => 'Unit Name', 'unit_id' => 'Unit ID');
 
     //echo all data from table and close
-    viewall($conn, $name, $table_name, $variables, $name_id, $plural_name);
+    viewall($conn, "unit", "regattascoring.UNIT", $variables, "unit_id", "Units");
 }

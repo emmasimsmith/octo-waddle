@@ -4,10 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//variables for functions
-$name = 'unit';
-$plural_name = 'Units';
-
 //function for the unit form
 function unitform()
 {
@@ -65,19 +61,18 @@ if (isset($_POST["submit"])) {
         </html>
       <?php
       //echo errors from the input sanisation
-      foreach ($errors as $error) {
-          $issue = '';
-          $issue = $issue . $error . "</br>";
-      }
-        close($conn, $issue, $name, $plural_name);
+      $issue = '';
+        foreach ($errors as $error) {
+            $issue = $issue . $error . "</br>";
+        }
+        close($conn, $issue, "unit", "Units");
         exit;
     }
 
     //Insert variables into unit table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.UNIT (unit_name) VALUES ('$unit_name');";
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not add unit";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not add unit", "unit", "Units");
         exit;
     }
 
@@ -92,11 +87,11 @@ if (isset($_POST["submit"])) {
     unitform();
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "unit", "Units");
 } else {
     //call unit form
     unitform();
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "unit", "Units");
 }
