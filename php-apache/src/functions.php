@@ -3,7 +3,7 @@
 function deletevariable($conn, $name, $name_id, $table_name, $plural_name)
 {
     //Delete
-    $sql = "DELETE FROM regattascoring." . $table_name . " WHERE " . $name . "_id = '$name_id';";
+    $sql = "DELETE FROM " . $table_name . " WHERE " . $name . "_id = '$name_id';";
 
     //check if individual was deleted
     if (!mysqli_query($conn, $sql)) {
@@ -20,14 +20,33 @@ function deletevariable($conn, $name, $name_id, $table_name, $plural_name)
     }
 }
 
+function selectall($conn, $select_name, $select_table_name, $select_cap_name, $name, $plural_name)
+{
+    //select all
+    $sql = "SELECT * FROM " . $select_table_name . ";";
+    $result = mysqli_query($conn, $sql);
+    if (!mysqli_num_rows($result)) {
+        echo "Please create a " . $select_cap_name . " first" . mysqli_error($conn); ?>
+      <br>
+      <a href="/">Return Home</a>
+      <br>
+      <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
+      <br>
+      <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a>
+      <?php
+      mysqli_close($conn);
+        exit;
+    }
+    //$row = mysqli_fetch_assoc($result);
 
-
+    return $result;
+}
 
 //function for selecting entity matching ID
 function viewselect($conn, $name_id, $name, $table_name, $plural_name)
 {
     //Select individual matching GET ID
-    $sql = "SELECT * FROM regattascoring." . $table_name . " WHERE " . $name. "_id = '". $name_id ."';";
+    $sql = "SELECT * FROM " . $table_name . " WHERE " . $name. "_id = '". $name_id ."';";
     $select = mysqli_query($conn, $sql);
 
     //check if can select
@@ -102,7 +121,7 @@ function close($conn, $error, $name, $plural_name)
 function search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name)
 {
     $search = array();
-    $sql = "SELECT * FROM regattascoring.". $table_name ." WHERE ";
+    $sql = "SELECT * FROM ". $table_name ." WHERE ";
     foreach ($variables as $column => $array) {
         foreach ($array as $column_name => $variable) {
             if ($variable != "") {
@@ -160,7 +179,7 @@ function search($conn, $name, $variables, $table_name, $capitalised_name, $plura
 function viewall($conn, $name, $table_name, $variables, $name_id, $plural_name)
 {
     //echo all data from table
-    $sql = "SELECT * FROM regattascoring.".$table_name.";";
+    $sql = "SELECT * FROM ".$table_name.";";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {

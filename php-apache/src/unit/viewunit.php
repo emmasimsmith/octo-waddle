@@ -88,6 +88,7 @@ if (isset($_POST["delete"])) {
     echo $_POST['unit_name'] . " updated";
     close($conn, $error, $name, $plural_name);
 } else {
+  
     //GET ID from URL
     $unit_id = mysqli_real_escape_string($conn, $_GET['id']);
 
