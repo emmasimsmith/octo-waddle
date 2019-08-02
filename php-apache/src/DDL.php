@@ -25,20 +25,6 @@ if (!$use) {
 }
 echo "database used successfully" . "<br/>";
 
-$sql = "CREATE TABLE INDIVIDUAL (
-  individual_id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(20) NOT NULL,
-  last_name VARCHAR(40) NOT NULL,
-  dob DATE NOT NULL,
-  comments VARCHAR(60)
-);";
-$result = mysqli_query($conn, $sql);
-if (!$result) {
-    echo "Could not create INDIVIDUAL table" . mysqli_error($conn) . "<br/>";
-    exit;
-}
-echo "INDIVIDUAL table made successfully" . "<br/>";
-
 $sql = "CREATE TABLE EVENT (
   event_id INT AUTO_INCREMENT PRIMARY KEY,
   location VARCHAR (20) NOT NULL,
@@ -74,6 +60,23 @@ if (!$result) {
     exit;
 }
 echo "UNIT table made successfully" . "<br/>";
+
+$sql = "CREATE TABLE INDIVIDUAL (
+  individual_id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(20) NOT NULL,
+  last_name VARCHAR(40) NOT NULL,
+  dob DATE NOT NULL,
+  unit_id INT NOT NULL,
+  role VARCHAR(20) NOT NULL,
+  comments VARCHAR(60),
+  FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id)
+);";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    echo "Could not create INDIVIDUAL table" . mysqli_error($conn) . "<br/>";
+    exit;
+}
+echo "INDIVIDUAL table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE ACTIVITY (
   activity_id INT AUTO_INCREMENT PRIMARY KEY,
