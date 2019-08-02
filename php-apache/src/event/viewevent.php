@@ -4,11 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//function variables
-$name = "event";
-$table_name = "EVENT";
-$plural_name = "Events";
-
 //if delete is selected in form
 if (isset($_POST["delete"])) {
 
@@ -22,11 +17,11 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
 
     //call delete function
-    deletevariable($conn, $name, $event_id_escaped, $table_name, $plural_name);
+    deletevariable($conn, "event", $event_id_escaped, "regattascoring.EVENT", "Events");
 
     //echo event deleted and call closing function
     echo "Regatta at " . $row['location'] . " deleted";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "event", "Events");
 
 //if form submitted and update selected
 } elseif (isset($_POST["update"])) {
@@ -79,11 +74,11 @@ if (isset($_POST["delete"])) {
         <?php
 
         //echo input sanitsation errors
+        $issue = "";
         foreach ($errors as $error) {
-            $issue = "";
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "event", "Events");
         exit;
     }
 
@@ -93,20 +88,19 @@ if (isset($_POST["delete"])) {
 
     //Check table updated, if not exit
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not update event";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not update event", "event", "Events");
         exit;
     }
 
     //echo event updated and close
     echo $_POST['location'] . " regatta updated";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "event", "Events");
 } else {
     //GET ID
     $event_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     ///call table select function
-    $row = viewselect($conn, $event_id, $name, $table_name, $plural_name);
+    $row = viewselect($conn, $event_id, "event", "regattascoring.EVENT", "Events");
 
     //call form with previous values?>
   <html>
@@ -130,6 +124,6 @@ if (isset($_POST["delete"])) {
   <?php
 
   //call close
-  close($conn, $error, $name, $plural_name);
+  close($conn, $error, "event", "Events");
 }
 ?>

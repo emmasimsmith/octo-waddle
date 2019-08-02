@@ -4,10 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//variables for functions
-$name = "event";
-$plural_name = "Events";
-
 //function for event form
 function eventform()
 {
@@ -82,11 +78,11 @@ if (isset($_POST["submit"])) {
       </html>
       <?php
       //echo errors from the input sanitsation
+      $issue = "";
         foreach ($errors as $error) {
-            $issue = "";
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "event", "Events");
         exit;
     }
 
@@ -94,8 +90,7 @@ if (isset($_POST["submit"])) {
     $sql = "INSERT INTO regattascoring.EVENT (location, event_date)
     VALUES ('$location','$date');";
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not add event";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not add event", "event", "Events");
         exit;
     }
 
@@ -103,18 +98,18 @@ if (isset($_POST["submit"])) {
     echo "Regatta at " . $_POST['location'] . " created";
     $event_id = mysqli_insert_id($conn); ?>
     <br>
-    <a href = <?php echo "viewevent.php?id=$event_id"?>><?php echo "Edit " . $_POST['location'] . " regatta"?></a>
+    <a href = <?php echo "viewevent.php?id=$event_id"?>><?php echo "Edit " . $_POST['location'] . " Regatta"?></a>
     <?php
 
     //call event form
     eventform();
 
     //call closing function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "event", "Events");
 } else {
     //call event form
     eventform();
 
     //call closing function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "event", "Events");
 };

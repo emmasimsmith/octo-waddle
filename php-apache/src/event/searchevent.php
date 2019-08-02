@@ -4,12 +4,6 @@ include_once '../navbar.php';
 include_once "../connection.php";
 include_once '../functions.php';
 
-//function variables
-$name = "event";
-$table_name = "EVENT";
-$capitalised_name = "Event";
-$name_id = "event_id";
-$plural_name = "Events";
 //event form function
 function eventsearch()
 {
@@ -37,8 +31,7 @@ if (isset($_POST['search'])) {
 
     //validation if strings are empty
     if (!$_POST['location'] and !$_POST['date']) {
-        $error = "Please enter a valid search";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Please enter a valid search", "event", "Events");
         exit;
     }
 
@@ -47,10 +40,10 @@ if (isset($_POST['search'])) {
   'event_date' => array('Date' => $search_date_escaped));
 
     //call search function
-    search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name);
+    search($conn, "event", $variables, "regattascoring.EVENT", "Event", "Events");
 
     //call close function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "event", "Events");
 } else {
     //call event search form
     eventsearch();
@@ -59,5 +52,5 @@ if (isset($_POST['search'])) {
     $variables = array('location' => 'Location', 'event_date' => 'Date');
 
     //echo all data from table and close
-    viewall($conn, $name, $table_name, $variables, $name_id, $plural_name);
+    viewall($conn, "event", "regattascoring.EVENT", $variables, "event_id", "Events");
 }
