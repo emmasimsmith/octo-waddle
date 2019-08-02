@@ -44,11 +44,7 @@ if (isset($_POST['search'])) {
     //call close
     close($conn, $error, "unit", "Units");
 } else {
-    $sql = "SELECT * FROM regattascoring.UNIT;";
-    $result = mysqli_query($conn, $sql);
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo $row['unit_name'];
-    }
+
     //call unit form
     unitform();
 
