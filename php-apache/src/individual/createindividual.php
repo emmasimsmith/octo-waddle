@@ -4,12 +4,8 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//variables for functions
-$name = "individual";
-$plural_name = "Individuals";
-
 //function for the individual form
-function individualform()
+function individualform($result)
 {
     ?>
   <html>
@@ -29,6 +25,20 @@ function individualform()
     Date of Birth:
     <input type="date" name="dob" placeholder="Date of Birth">
     <br>
+    Unit:
+    <select name = "unit">
+    <?php
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
+    } ?>
+    </select>
+    <br>
+    Role:
+    <select name="role">
+      <option value="Mariner">Mariner</option>
+      <option value="other">Parent/Sibling/Leader</option>
+    </select>
+    <br>
     Commments:
     <input type="text" name="comments" placeholder="Comments">
     <br>
@@ -47,6 +57,8 @@ if (isset($_POST["submit"])) {
     $first_name = mysqli_real_escape_string($conn, $_POST['first']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
+    $unit = mysqli_real_escape_string($conn, $_POST['unit']);
+    $role = mysqli_real_escape_string($conn, $_POST['role']);
     $comments = mysqli_real_escape_string($conn, $_POST['comments']);
 
     //array for input sanitsation errors
@@ -75,6 +87,9 @@ if (isset($_POST["submit"])) {
         array_push($errors, "Please enter a valid date of birth");
     }
 
+    //select all function from specific table
+    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+
     //echo errors then exit
     if (count($errors) != 0) {
         //call form with existing values?>
@@ -94,6 +109,28 @@ if (isset($_POST["submit"])) {
               Date of Birth:
               <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
               <br>
+              Unit:
+              <select name="unit">
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value=" . $row['unit_id'] . " ";
+                    if ($_POST['unit'] == $row['unit_id']) {
+                        echo "selected";
+                    }
+                    echo " >" . $row['unit_name'] . "</option>";
+                } ?>
+              </select>
+              <br>
+              Role:
+              <select name="role">
+                <option value="Mariner" <?php if ($_POST['role'] == "mariner") {
+                    echo "selected";
+                } ?>>Mariner</option>
+                <option value="other" <?php if ($_POST['role'] == "other") {
+                    echo "selected";
+                } ?>>Parent/Sibling/Leader</option>
+              </select>
+              <br>
               Comments:
               <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
               <br>
@@ -103,20 +140,19 @@ if (isset($_POST["submit"])) {
         </html>
         <?php
         //echo errors from the input sanitsation
+        $issue = "";
         foreach ($errors as $error) {
-            $issue = "";
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "individual", "Individuals");
         exit;
     }
 
     //Insert variables into individual table, if false echo error and exit
     $sql = "INSERT INTO regattascoring.INDIVIDUAL (first_name, last_name, dob,
-      comments) VALUES ('$first_name','$last_name','$dob','$comments');";
+      unit_id, role, comments) VALUES ('$first_name','$last_name','$dob', '$unit', '$role', '$comments');";
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not add data";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not add data", "individual", "Individuals");
         exit;
     }
 
@@ -127,15 +163,22 @@ if (isset($_POST["submit"])) {
     <a href = <?php echo "viewindividual.php?id=$individual_id"?>>Edit <?php echo $_POST['first'] . " " . $_POST['last'] ?></a>
     <?php
 
+    //call select all function for form
+    $rows = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+
     //call individual form
-    individualform();
+    individualform($rows);
 
     //call closing function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "individual", "Individuals");
 } else {
+
+    //select all function from specific table
+    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+
     //call individual form
-    individualform();
+    individualform($result);
 
     //call closing function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "individual", "Individuals");
 }
