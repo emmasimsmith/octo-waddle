@@ -4,10 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//function variables
-$name = 'certificate';
-$plural_name = 'Certificates';
-
 //Form function
 function certificateform()
 {
@@ -115,11 +111,11 @@ if (isset($_POST["submit"])) {
         </html>
         <?php
         //echo errors from the input sanitsation
+        $issue = '';
         foreach ($errors as $error) {
-            $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "certificate", "Certificates");
         exit;
     }
 
@@ -127,8 +123,7 @@ if (isset($_POST["submit"])) {
     $sql = "INSERT INTO regattascoring.CERTIFICATE (certificate_name, calculation,
       placing, recipient) VALUES ('$certificate_name','$calculation','$placing', '$recipient');";
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not add data";
-        close($conn, $issue, $name, $plural_name);
+        close($conn, "Could not add data", "certificate", "Certificates");
         exit;
     }
 
@@ -144,11 +139,11 @@ if (isset($_POST["submit"])) {
     certificateform();
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 } else {
     //call certificate form
     certificateform();
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 }

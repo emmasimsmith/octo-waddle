@@ -4,13 +4,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//function variables
-$name = 'certificate';
-$table_name = 'CERTIFICATE';
-$capitalised_name = 'Certificate';
-$name_id = 'certificate_id';
-$plural_name = 'Certificates';
-
 // Form function
 function certificateform()
 {
@@ -44,8 +37,7 @@ if (isset($_POST['search'])) {
     //validation check incase strings are empty
     if (!$_POST['certificate_name'] and !$_POST['calculation'] and
     !$_POST['placing'] and !$_POST['recipient']) {
-        $error = "Please search a valid value";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Please search a valid value", "certificate", "Certificates");
         exit;
     }
     //variable array for function
@@ -55,10 +47,10 @@ if (isset($_POST['search'])) {
     'recipient' => array('Recipient' => $recipient_escaped));
 
     //call search function
-    search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name);
+    search($conn, "certificate", $variables, "regattascoring.CERTIFICATE", "Certificate", "Certificates");
 
     //call close function
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 } else {
     //call certificate form
     certificateform();
@@ -68,5 +60,5 @@ if (isset($_POST['search'])) {
     'Calculation', 'placing' => 'Placing', 'recipient' => 'Recipient');
 
     //echo all data from table and close
-    viewall($conn, $name, $table_name, $variables, $name_id, $plural_name);
+    viewall($conn, "certificate", "regattascoring.CERTIFICATE", $variables, "certificate_id", "Certificates");
 }

@@ -4,11 +4,6 @@ include_once '../navbar.php';
 include_once "../connection.php";
 include_once '../functions.php';
 
-//function variables
-$name = 'certificate';
-$table_name = 'CERTIFICATE';
-$plural_name = 'Certificates';
-
 //if delete button is selected in form
 if (isset($_POST["delete"])) {
 
@@ -22,11 +17,11 @@ if (isset($_POST["delete"])) {
     $row = mysqli_fetch_assoc($result);
 
     //call delete function
-    deletevariable($conn, $name, $certificate_id_escaped, $table_name, $plural_name);
+    deletevariable($conn, "certificate", $certificate_id_escaped, "regattascoring.CERTIFICATE", "Certificates");
 
     //echo certificate deleted and call close
     echo $row['certificate_name'] . " deleted";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 
 //if update button is selected
 } elseif (isset($_POST["update"])) {
@@ -106,11 +101,11 @@ if (isset($_POST["delete"])) {
       <?php
 
       //echo input sanitsation errors
+      $issue = '';
         foreach ($errors as $error) {
-            $issue = '';
             $issue = $issue . $error . "</br>";
         }
-        close($conn, $issue, $name, $plural_name);
+        close($conn, $issue, "certificate", "Certificates");
         exit;
     }
 
@@ -122,12 +117,11 @@ if (isset($_POST["delete"])) {
 
     //Check table updated, if not exit
     if (!mysqli_query($conn, $sql)) {
-        $error = "Could not update certificate";
-        close($conn, $error, $name, $plural_name);
+        close($conn, "Could not update certificate", "certificate", "Certificates");
         exit;
     }
     echo $_POST['certificate_name'] . " certificate updated";
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 
 // if nothing has been selected
 } else {
@@ -135,7 +129,7 @@ if (isset($_POST["delete"])) {
     $certificate_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     //call table select function
-    $row = viewselect($conn, $certificate_id, $name, $table_name, $plural_name);
+    $row = viewselect($conn, $certificate_id, "certificate", "regattascoring.CERTIFICATE", "Certificates");
 
     //call form with previous values?>
     <html>
@@ -191,6 +185,6 @@ if (isset($_POST["delete"])) {
     <?php
 
     //call close
-    close($conn, $error, $name, $plural_name);
+    close($conn, $error, "certificate", "Certificates");
 }
 ?>
