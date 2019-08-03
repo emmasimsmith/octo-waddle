@@ -121,10 +121,10 @@ echo "PARTICIPANT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE BOAT (
   boat_id INT AUTO_INCREMENT PRIMARY KEY,
-  boat_number INT NOT NULL,
+  boat_number VARCHAR(10) NOT NULL,
   boat_type VARCHAR(20) NOT NULL,
   unit_id INT NOT NULL,
-  boat_handicap VARCHAR (20) NOT NULL,
+  boat_handicap DECIMAL (3,2) NOT NULL,
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id)
 );";
 $result = mysqli_query($conn, $sql);
