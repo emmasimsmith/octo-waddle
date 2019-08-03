@@ -12,7 +12,7 @@ function individualform($result)
   <head>
       <title>Create Individual</title>
   </head>
-  <h1>Create New Individual</h1>
+    <h1>Create New Individual</h1>
   <body>
 
   <form action="createindividual.php" method ="POST">
@@ -50,7 +50,7 @@ function individualform($result)
   <?php
 }
 
-//If Form is submitted
+//if Form is submitted
 if (isset($_POST["submit"])) {
 
     //POST variables from form
@@ -88,7 +88,7 @@ if (isset($_POST["submit"])) {
     }
 
     //select all function from specific table
-    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+    $result = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //echo errors then exit
     if (count($errors) != 0) {
@@ -164,7 +164,7 @@ if (isset($_POST["submit"])) {
     <?php
 
     //call select all function for form
-    $rows = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+    $rows = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //call individual form
     individualform($rows);
@@ -174,7 +174,7 @@ if (isset($_POST["submit"])) {
 } else {
 
     //select all function from specific table
-    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+    $result = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //call individual form
     individualform($result);

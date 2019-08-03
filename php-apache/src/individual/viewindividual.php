@@ -59,7 +59,7 @@ if (isset($_POST["delete"])) {
     }
 
     //Select Unit table
-    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+    $result = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //if there are input sanitsation errors
     if (count($errors) != 0) {
@@ -144,7 +144,7 @@ if (isset($_POST["delete"])) {
     $row = viewselect($conn, $individual_id, "individual", "regattascoring.INDIVIDUAL", "Individuals");
 
     //select UNIT table
-    $result = selectall($conn, "unit_name", "UNIT", "Unit", "individual", "Individuals");
+    $result = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //call form with previous values?>
   <html>
