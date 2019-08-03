@@ -114,8 +114,17 @@ function close($conn, $error, $name, $plural_name)
   mysqli_close($conn);
 }
 
-
-
+function small_close($conn, $error)
+{
+    if ($error) {
+        echo $error . "</br>";
+    } ?>
+  <br>
+  <a href="/">Return Home</a>
+  <br>
+  <?php
+  mysqli_close($conn);
+}
 
 //Search function
 function search($conn, $name, $variables, $table_name, $capitalised_name, $plural_name)
