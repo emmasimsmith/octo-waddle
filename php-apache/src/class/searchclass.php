@@ -38,25 +38,100 @@ if (isset($_POST['search'])) {
         exit;
     }
 
-    //variable array for function
-    $variables = array('class_name' => array('Class Name' => $class_name_escaped),
-    'min_age' => array('Minimum Age' => $min_age_escaped),
-    'max_age' => array('Maximum Age' => $max_age_escaped));
-
     //call search function
-    search($conn, "class", $variables, "regattascoring.CLASS", "Class", "Classes");
+    $search = array();
+    $sql = "SELECT * FROM regattascoring.CLASS WHERE ";
+    if ($class_name_escaped) {
+        array_push($search, "class_name LIKE '%$class_name_escaped%'");
+    }
+    if ($min_age_escaped) {
+        array_push($search, "min_age LIKE '%$min_age_escaped%'");
+    }
+    if ($max_age_escaped) {
+        array_push($search, "max_age LIKE '%$max_age_escaped%'");
+    }
 
+    $join = join(" AND ", $search);
+    $sql = $sql . $join . ";";
+
+    //check if there are rows that match
+    $search = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($search) == 0) {
+        echo "No matches in table" . "</br>";
+        echo "<br>
+        <a href='/'>Return Home</a>
+        <br>
+        <a href= 'viewclass.php'>Edit Classes</a>
+        <br>
+        <a href='searchclass.php'>View all Classes</a>";
+        mysqli_close($conn);
+        exit;
+    }
+
+    //create html table
+    echo "<table border = '1'>
+    <tr>
+    <th>Class Name</th>
+    <th>Minimum Age</th>
+    <th>Maximum Age</th>
+    </tr>";
+
+    //echo data from table
+    while ($row = mysqli_fetch_assoc($search)) {
+        echo "<tr>";
+        echo "<td>" . $row["class_name"] . "</td>";
+        echo "<td>" . $row["min_age"] . "</td>";
+        echo "<td>" . $row["max_age"] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
     //call close
-    close($conn, $error, "class", "Classes");
+    echo "<br>
+    <a href='/'>Return Home</a>
+    <br>
+    <a href= 'viewclass.php'>Edit Classes</a>
+    <br>
+    <a href='searchclass.php'>View all Classes</a>";
+    mysqli_close($conn);
 } else {
     //call class form
     classform();
 
-    //variales array for function
-    $variables = array('class_name' => 'Class Name', 'min_age' => 'Minimum Age',
-    'max_age' => 'Maximum Age');
-
     //echo all data from table and close
-    viewall($conn, "class", "regattascoring.CLASS", $variables, "class_id", "Classes");
+    $sql = "SELECT * FROM regattascoring.CLASS;";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        //create html table
+        echo "<table border = '1'>
+        <tr>
+        <th>Class Name</th>
+        <th>Minimum Age</th>
+        <th>Maximum Age</th>
+        </tr>";
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>" . $row["class_name"] . "</td>";
+            echo "<td>" . $row["min_age"] . "</td>";
+            echo "<td>" . $row["max_age"] . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>
+        <br>
+        <a href='/'>Return Home</a>
+        <br>
+        <a href='viewclass.php>Edit Classes</a>'";
+    } else {
+        //if no data in the table
+        echo "No data to display" . "</br>"; ?>
+        <br>
+        <a href="/">Return Home</a>
+        <br>
+        <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+        <?php
+        mysqli_close($conn);
+        exit;
+    }
 }
 ?>
