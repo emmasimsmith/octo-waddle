@@ -33,6 +33,8 @@ if (isset($_POST["delete"])) {
     $new_first_name_escaped = mysqli_real_escape_string($conn, $_POST['first']);
     $new_last_name_escaped = mysqli_real_escape_string($conn, $_POST['last']);
     $new_dob_escaped = mysqli_real_escape_string($conn, $_POST['dob']);
+    $new_unit_id_escaped = mysqli_real_escape_string($conn, $_POST['unit']);
+    $new_role_escaped = mysqli_real_escape_string($conn, $_POST['role']);
     $new_comments_escaped = mysqli_real_escape_string($conn, $_POST['comments']);
 
     //array for errors
@@ -94,7 +96,7 @@ if (isset($_POST["delete"])) {
             <br>
             Role:
             <select name="role">
-              <option value="Mariner" <?php if ($_POST['role'] == "mariner") {
+              <option value="mariner" <?php if ($_POST['role'] == "mariner") {
                   echo "selected";
               } ?>>Mariner</option>
               <option value="other" <?php if ($_POST['role'] == "other") {
@@ -124,7 +126,8 @@ if (isset($_POST["delete"])) {
     //Update table
     $sql = "UPDATE regattascoring.INDIVIDUAL set first_name =
     '$new_first_name_escaped', last_name = '$new_last_name_escaped',
-    dob = '$new_dob_escaped', comments = '$new_comments_escaped'
+    dob = '$new_dob_escaped', unit_id = '$new_unit_id_escaped',
+    role = '$new_role_escaped', comments = '$new_comments_escaped'
     WHERE individual_id = '$individual_id_escaped';";
 
     //Check table updated, if not exit
@@ -177,7 +180,7 @@ if (isset($_POST["delete"])) {
         <br>
         Role:
         <select name="role">
-          <option value="Mariner" <?php if ($_POST['role'] == "mariner") {
+          <option value="mariner" <?php if ($_POST['role'] == "mariner") {
               echo "selected";
           } ?>>Mariner</option>
           <option value="other" <?php if ($_POST['role'] == "other") {

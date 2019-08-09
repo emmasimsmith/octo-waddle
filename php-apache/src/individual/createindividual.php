@@ -35,7 +35,7 @@ function individualform($result)
     <br>
     Role:
     <select name="role">
-      <option value="Mariner">Mariner</option>
+      <option value="mariner">Mariner</option>
       <option value="other">Parent/Sibling/Leader</option>
     </select>
     <br>
@@ -123,7 +123,7 @@ if (isset($_POST["submit"])) {
               <br>
               Role:
               <select name="role">
-                <option value="Mariner" <?php if ($_POST['role'] == "mariner") {
+                <option value="mariner" <?php if ($_POST['role'] == "mariner") {
                     echo "selected";
                 } ?>>Mariner</option>
                 <option value="other" <?php if ($_POST['role'] == "other") {
