@@ -39,7 +39,7 @@ echo "EVENT table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE CLASS (
   class_id INT AUTO_INCREMENT PRIMARY KEY,
-  class_name VARCHAR (20),
+  class_name VARCHAR (20) NOT NULL,
   min_age DECIMAL(3,1) NOT NULL,
   max_age DECIMAL(3,1) NOT NULL
 );";
@@ -106,8 +106,8 @@ echo "CERTIFICATE table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE PARTICIPANT (
   participant_id INT AUTO_INCREMENT PRIMARY KEY,
-  participant_tag INT NOT NULL,
-  class_id INT NOT NULL,
+  participant_tag INT,
+  class_id INT,
   individual_id INT NOT NULL,
   FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
   FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id)
@@ -167,3 +167,28 @@ if (!$result) {
     exit;
 }
 echo "AWARD table made successfully" . "<br/>";
+
+//Insert values into tables for testing
+$sql = "INSERT INTO UNIT (unit_name) VALUES ('Pakuranga');";
+$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO UNIT (unit_name) VALUES ('Akarana');";
+$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO UNIT (unit_name) VALUES ('Ohuirangi');";
+$result = mysqli_query($conn, $sql);
+
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role, comments) VALUES ('Emma', 'Sim-Smith', '2001-10-03', '1', 'mariner', 'nut allergy');";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    echo "Could not create Emma Sim-Smith" . mysqli_error($conn) . "<br/>";
+    exit;
+}
+echo "Emma Individual made successfully" . "<br/>";
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Carina', 'Sim-Smith', '1976-04-26', '1', 'other');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Alice', 'Denham', '2001-01-23', '3', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Kayla', 'Trumper', '2008-10-10', '1', 'mariner');";
+$result = mysqli_query($conn, $sql);
