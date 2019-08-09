@@ -140,7 +140,7 @@ function search($conn, $name, $variables, $table_name, $capitalised_name, $plura
     }
     $join = join(" AND ", $search);
     $sql = $sql . $join . ";";
-
+    
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
