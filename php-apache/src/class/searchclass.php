@@ -121,14 +121,12 @@ if (isset($_POST['search'])) {
         <br>
         <a href='/'>Return Home</a>
         <br>
-        <a href='viewclass.php>Edit Classes</a>'";
+        <a href='viewclass.php'>Edit Classes</a>";
     } else {
         //if no data in the table
         echo "No data to display" . "</br>"; ?>
         <br>
         <a href="/">Return Home</a>
-        <br>
-        <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
         <?php
         mysqli_close($conn);
         exit;
