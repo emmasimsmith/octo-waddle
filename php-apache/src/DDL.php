@@ -109,8 +109,10 @@ $sql = "CREATE TABLE PARTICIPANT (
   participant_tag INT,
   class_id INT,
   individual_id INT NOT NULL,
+  event_id INT NOT NULL,
   FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
-  FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id)
+  FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id),
+  FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
