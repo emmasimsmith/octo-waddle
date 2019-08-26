@@ -116,7 +116,11 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
             $count++;
             echo "Class " . $count . ":" . "<br>";
             echo "Class Name: ";
-            echo "<input type='text' name='class$count' value=" . $_POST["class$count"] . " placeholder='Class Name'>";
+            echo "<input type='text' name='class$count' ";
+            if ($_POST["class$count"]) {
+                echo "value=". $_POST["class$count"];
+            }
+            echo " placeholder='Class Name'>";
             echo "<br>" . "Minimum Age: ";
             echo "<input type='number' name='min_age$count' value=" . $_POST["min_age$count"] . " placeholder='Minimum Age' step='any'>";
             echo "<br>";
@@ -157,6 +161,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
 
             //check class added
             if (!mysqli_query($conn, $sql)) {
+                echo mysqli_error($conn);
                 close($conn, "Could not add class", "class", "Classes");
                 exit;
             }
