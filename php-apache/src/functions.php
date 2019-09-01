@@ -140,7 +140,7 @@ function search($conn, $name, $variables, $table_name, $capitalised_name, $plura
     }
     $join = join(" AND ", $search);
     $sql = $sql . $join . ";";
-    
+
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
@@ -229,5 +229,20 @@ function viewall($conn, $name, $table_name, $variables, $name_id, $plural_name)
     <br>
     <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
     <?php
+    mysqli_close($conn);
+}
+
+
+
+//function for closing
+function participant_close($conn, $error, $event_id)
+{
+    if ($error) {
+        echo $error . "</br>";
+    } ?>
+  <br>
+  <a href="/">Return Home</a>
+  <br>
+  <a href= <?php echo "searchparticipant.php?id=" . $event_id . ">View participants</a>";
     mysqli_close($conn);
 }
