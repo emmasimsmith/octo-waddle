@@ -21,7 +21,7 @@ $sql = "SELECT * FROM regattascoring.EVENT;";
 $result = mysqli_query($conn, $sql);
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
-        echo "<a href=/participant/selectparticipant.php?id=" . $row['event_id'] . ">Select " . $row['location'] . " Event</a>";
+        echo "<a href=/participant/selectparticipant.php?event_id=" . $row['event_id'] . ">Select " . $row['location'] . " Event</a>";
         echo "<br>";
     }
 } ?>

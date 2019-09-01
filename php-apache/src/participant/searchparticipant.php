@@ -4,9 +4,8 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-//define event id
-$event_id = $_GET['id'];
-echo $event_id . " Event ";
+//define event event_id
+$event_id = $_GET['event_id'];
 
 //Form function
 function participantform($event_id)
@@ -14,7 +13,7 @@ function participantform($event_id)
     ?>
 <html>
   <body>
-    <?php echo "<form action= searchparticipant.php?id=$event_id method='POST'>" ?>
+    <?php echo "<form action= searchparticipant.php?event_id=$event_id method='POST'>" ?>
       <input type="number" name="participant_tag" placeholder="Search participant tag">
       <input type="text" name="first_name" placeholder="Search first name">
       <input type="text" name="last_name" placeholder="Search last name">
@@ -34,7 +33,7 @@ function participantform($event_id)
 if (isset($_POST['search'])) {
 
     //call form
-    participantform($_GET['id']);
+    participantform($_GET['event_id']);
 
     //define POST variables
     $participant_tag = mysqli_real_escape_string($conn, $_POST['participant_tag']);
@@ -96,7 +95,7 @@ if (isset($_POST['search'])) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href= 'selectparticipant.php?id=$event_id'>Reselect participants</a>
+        <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
         <br>
         <a href='searchparticipant.php'>View all participants</a>";
         mysqli_close($conn);
@@ -134,14 +133,14 @@ if (isset($_POST['search'])) {
     echo "<br>
     <a href='/'>Return Home</a>
     <br>
-    <a href= 'selectparticipant.php?id=$event_id'>Reselect participants</a>
+    <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
     <br>
-    <a href='searchparticipant.php?id=$event_id'>View all participants</a>";
+    <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>";
     mysqli_close($conn);
 } else {
 
     //call participant form
-    participantform($_GET['id']);
+    participantform($_GET['event_id']);
 
     //echo all data from table and close
     $sql = "SELECT * FROM regattascoring.PARTICIPANT NATURAL JOIN regattascoring.INDIVIDUAL
@@ -184,9 +183,9 @@ if (isset($_POST['search'])) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href= 'selectparticipant.php?id=$event_id'>Reselect participants</a>
+        <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
         <br>
-        <a href='searchparticipant.php?id=$event_id'>View all participants</a>";
+        <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>";
         mysqli_close($conn);
     } else {
         //if no data in the table
@@ -194,7 +193,7 @@ if (isset($_POST['search'])) {
         <br>
         <a href='/'>Return Home</a>
         <br>
-        <a href='selectparticipant.php?id=$event_id'>Reselect participants</a>
+        <a href='selectparticipant.php?event_id=$event_id'>Reselect participants</a>
         <br>";
         mysqli_close($conn);
         exit;
