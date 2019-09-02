@@ -80,8 +80,11 @@ echo "INDIVIDUAL table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE ACTIVITY (
   activity_id INT AUTO_INCREMENT PRIMARY KEY,
-  activity_name VARCHAR (20),
-  scoring VARCHAR (20) NOT NULL
+  activity_name VARCHAR (20) NOT NULL,
+  activity_group INT NOT NULL,
+  scoring VARCHAR (20) NOT NULL,
+  class_id INT,
+  FOREIGN KEY (class_id) REFERENCES CLASS (class_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -140,11 +143,13 @@ $sql = "CREATE TABLE RACE_ENROLMENT (
   race_id INT PRIMARY KEY AUTO_INCREMENT,
   activity_id INT NOT NULL,
   unit_id INT NOT NULL,
-  participant_id INT NOT NULL,
+  participant_id INT,
   score INT NOT NULL,
+  boat_id INT,
   FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
-  FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id)
+  FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
+  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -158,10 +163,12 @@ $sql = "CREATE TABLE AWARD (
   unit_id INT NOT NULL,
   place INT,
   certificate_id INT NOT NULL,
-  individual_id INT NOT NULL,
+  participant_id INT NOT NULL,
+  race_id INT,
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (certificate_id) REFERENCES CERTIFICATE (certificate_id),
-  FOREIGN KEY (individual_id) REFERENCES INDIVIDUAL (individual_id)
+  FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
+  FOREIGN KEY (race_id) REFERENCES RACE_ENROLMENT (race_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
