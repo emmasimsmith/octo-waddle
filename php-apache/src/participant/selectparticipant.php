@@ -49,8 +49,7 @@ $sql = "SELECT *, regattascoring.INDIVIDUAL.individual_id AS individual_id FROM 
       <br>
       <?php
       while ($row = mysqli_fetch_assoc($result)) {
-          echo "<input type='checkbox' name='selected[]'
-          value=" . $row['individual_id'];
+          echo "<input type='checkbox' name='selected[]' value=" . $row['individual_id'];
           if ($row['participant_id']) {
               if ($row['event_id'] == $_GET['event_id'] or $row['event_id'] == "") {
                   echo " checked";
