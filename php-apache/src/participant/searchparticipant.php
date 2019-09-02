@@ -146,7 +146,8 @@ if (isset($_POST['search'])) {
     $sql = "SELECT * FROM regattascoring.PARTICIPANT NATURAL JOIN regattascoring.INDIVIDUAL
     LEFT JOIN regattascoring.CLASS ON regattascoring.CLASS.class_id =
     regattascoring.PARTICIPANT.class_id LEFT JOIN regattascoring.UNIT ON
-    regattascoring.UNIT.unit_id = regattascoring.INDIVIDUAL.unit_id WHERE event_id = '$event_id';";
+    regattascoring.UNIT.unit_id = regattascoring.INDIVIDUAL.unit_id WHERE
+    event_id = '$event_id' ORDER BY participant_tag ASC;";
     $result = mysqli_query($conn, $sql);
     if (!$result) {
         echo 'what ' . mysqli_error($conn);
