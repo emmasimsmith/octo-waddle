@@ -134,10 +134,9 @@ if (isset($_POST["submit"])) {
     }
 
     //echo activity created
-    echo $_POST['activity_name'] . " Activity Created";
-    $activity_id = mysqli_insert_id($conn); ?>
+    echo $_POST['activity_name'] . " Activity Created"; ?>
     <br>
-    <a href = <?php echo "viewactivity.php?id=$activity_id>Edit ";
+    <a href = <?php echo "viewactivity.php?id=$group>Edit ";
     echo $_POST['activity_name'] . " Activity</a>";
 
     //call select all function for form
@@ -147,7 +146,7 @@ if (isset($_POST["submit"])) {
     activityform($row);
 
     //call closing function
-    close($conn, $error, "actitivty", "Activities");
+    close($conn, $error, "activity", "Activities");
 } else {
 
   //call select all function for form
@@ -157,5 +156,5 @@ if (isset($_POST["submit"])) {
     activityform($row);
 
     //call close
-    close($conn, $error, "actitivty", "Activities");
+    close($conn, $error, "activity", "Activities");
 }
