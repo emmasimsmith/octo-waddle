@@ -12,6 +12,7 @@ function participantform($event_id)
 {
     ?>
 <html>
+<h1>Participants</h1>
   <body>
     <?php echo "<form action= searchparticipant.php?event_id=$event_id method='POST'>" ?>
       <input type="number" name="participant_tag" placeholder="Search participant tag">
@@ -86,7 +87,6 @@ if (isset($_POST['search'])) {
 
     $join = join(" AND ", $search);
     $sql = $sql . $join . ";";
-    echo "</br>" . $sql;
 
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
