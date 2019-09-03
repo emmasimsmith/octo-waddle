@@ -81,10 +81,8 @@ echo "INDIVIDUAL table made successfully" . "<br/>";
 $sql = "CREATE TABLE ACTIVITY (
   activity_id INT AUTO_INCREMENT PRIMARY KEY,
   activity_name VARCHAR (20) NOT NULL,
-  activity_group INT NOT NULL,
-  scoring VARCHAR (20) NOT NULL,
-  class_id INT,
-  FOREIGN KEY (class_id) REFERENCES CLASS (class_id)
+  activity_bracket VARCHAR(20) NOT NULL,
+  scoring VARCHAR (20) NOT NULL
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -92,6 +90,20 @@ if (!$result) {
     exit;
 }
 echo "ACTIVITY table made successfully" . "<br/>";
+
+$sql = "CREATE TABLE BRACKET (
+  bracket_id INT AUTO_INCREMENT PRIMARY KEY,
+  class_id INT NOT NULL,
+  activity_id INT NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
+  FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id)
+);";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    echo "Could not create BRACKET table" . mysqli_error($conn) . "<br/>";
+    exit;
+}
+echo "BRACKET table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE CERTIFICATE (
   certificate_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -146,10 +158,12 @@ $sql = "CREATE TABLE RACE_ENROLMENT (
   participant_id INT,
   score INT NOT NULL,
   boat_id INT,
+  event_id INT NOT NULL,
   FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
-  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id)
+  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id),
+  FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -165,10 +179,12 @@ $sql = "CREATE TABLE AWARD (
   certificate_id INT NOT NULL,
   participant_id INT NOT NULL,
   race_id INT,
+  event_id INT NOT NULL,
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (certificate_id) REFERENCES CERTIFICATE (certificate_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
-  FOREIGN KEY (race_id) REFERENCES RACE_ENROLMENT (race_id)
+  FOREIGN KEY (race_id) REFERENCES RACE_ENROLMENT (race_id),
+  FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -200,4 +216,34 @@ $sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUE
 $result = mysqli_query($conn, $sql);
 
 $sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Kayla', 'Trumper', '2008-10-10', '1', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Alicia', 'Vano', '2002-10-11', '1', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Bran', 'Jury', '2005-12-10', '2', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Megan', 'Noronha', '2006-10-10', '2', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Sam', 'Mebius', '2007-10-10', '2', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Mark', 'Sim-Smith', '1973-08-14', '1', 'other');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Mia', 'Nelson', '2009-10-10', '3', 'mariner');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Leo', 'Nelson', '2005-10-10', '3', 'other');";
+$result = mysqli_query($conn, $sql);
+
+$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior Junior', '8.0', '11.5');";
+$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior', '11.5', '13.5');";
+$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Intermediate', '13.5', '15.5');";
+$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior Junior', '15.5', '20.0');";
 $result = mysqli_query($conn, $sql);
