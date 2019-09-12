@@ -245,5 +245,5 @@ $sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior', '11.5
 $result = mysqli_query($conn, $sql);
 $sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Intermediate', '13.5', '15.5');";
 $result = mysqli_query($conn, $sql);
-$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior Junior', '15.5', '20.0');";
+$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Senior', '15.5', '20.0');";
 $result = mysqli_query($conn, $sql);
