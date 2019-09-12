@@ -4,9 +4,12 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-function activityform($result)
+//get event id from GET
+$event_id = $_GET['event_id'];
+
+function activityform($result, $event_id)
 {
-    ?>
+    $sql = "SELECT * FROM regattascoring.EVENT WHERE event_id = $event_id;"; ?>
   <html>
   <head>
       <title>Create Activity</title>
@@ -18,21 +21,26 @@ function activityform($result)
     Activity Name:
     <input type="text" name="activity_name" placeholder="Activity name">
     <br>
-    Scoring Type:
+    Scoring Method:
     <select name="scoring" placeholder="Calculation Method">
       <option value="placing">Placing</option>
       <option value="scoring">Scoring</option>
       <option value="time">Time</option>
     </select>
     <br>
-    Classes:
+    Unit or Classes:
+    <select name="bracket">
+      <option value="unit">Units</option>
+      <option value="class">Classes</option>
+    </select>
+    <br>
+    If classes selected, specify which classes:
     <br>
     <?php
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<input type='checkbox' name='class[]' value=" . $row['class_id'];
         echo ">" . $row['class_name'] . "</input>" . "<br>";
     } ?>
-    <br>
     <button type="submit" name="submit">Enter</button>
   </form>
   </body>
@@ -44,6 +52,7 @@ if (isset($_POST["submit"])) {
   //POST variables from form
     $activity_name = mysqli_real_escape_string($conn, $_POST['activity_name']);
     $scoring = mysqli_real_escape_string($conn, $_POST['scoring']);
+    $bracket = mysqli_real_escape_string($conn, $_POST['bracket']);
     $class = $_POST['class'];
 
     //array for input sanitsation errors
@@ -56,6 +65,9 @@ if (isset($_POST["submit"])) {
 
     if (preg_match('/[^A-Za-z \-]/', $activity_name)) {
         array_push($errors, "Please enter a valid activity name");
+    }
+    if ($bracket == "unit" and $class != "") {
+        array_push($errors, "Cannot select unit and classes");
     }
 
     //select all function from specific table
@@ -87,7 +99,17 @@ if (isset($_POST["submit"])) {
         } ?>>Time</option>
             </select>
             <br>
-            Classes:
+            Unit or Class:
+            <select name="bracket">
+              <option value="unit" <?php if ($_POST['bracket'] == "unit") {
+            echo " selected";
+        } ?>>Units</option>
+              <option value="class" <?php if ($_POST['bracket'] == "class") {
+            echo " selected";
+        } ?>>Classes</option>
+            </select>
+            <br>
+            If classes selected, specify which classes:
             <br>
             <?php
             while ($row = mysqli_fetch_assoc($result)) {
@@ -113,37 +135,43 @@ if (isset($_POST["submit"])) {
         close($conn, $issue, "activity", "Activities");
         exit;
     }
-    //find how many groups there are
-    $sql = "SELECT COUNT(DISTINCT activity_group) as total FROM regattascoring.ACTIVITY;";
-    $result = mysqli_query($conn, $sql);
-    $groups = mysqli_fetch_assoc($result);
-    $group = $groups['total'];
 
-    //increase group by one
-    $group++;
+    //Insert variables into activity table, if false echo error and exit
+    $sql = "INSERT INTO regattascoring.ACTIVITY (activity_name, scoring, activity_bracket) VALUES
+    ('$activity_name','$scoring', '$bracket');";
+    if (!mysqli_query($conn, $sql)) {
+        echo mysqli_error($conn);
+        close($conn, "Could not add data", "activity", "Activities");
+        exit;
+    }
 
-    //foreach loop of selected classes
-    foreach ($class as $class_id) {
-        //Insert variables into activity table, if false echo error and exit
-        $sql = "INSERT INTO regattascoring.ACTIVITY (activity_name, scoring, class_id, activity_group) VALUES
-      ('$activity_name','$scoring', '$class_id', '$group');";
-        if (!mysqli_query($conn, $sql)) {
-            close($conn, "Could not add data", "activity", "Activities");
-            exit;
+    //select most previous id
+    $activity_id = mysqli_insert_id($conn);
+
+    if ($bracket == "class") {
+        foreach ($class as $input) {
+            // add to bracket table
+            $sql = "INSERT INTO regattascoring.BRACKET (activity_id, class_id) VALUES
+            ('$activity_id', '$input');";
+            if (!mysqli_query($conn, $sql)) {
+                echo mysqli_error($conn);
+                close($conn, "Could not add data to bracket table", "activity", "Activities");
+                exit;
+            }
         }
     }
 
     //echo activity created
     echo $_POST['activity_name'] . " Activity Created"; ?>
     <br>
-    <a href = <?php echo "viewactivity.php?id=$group>Edit ";
+    <a href = <?php echo "viewactivity.php?id=$activiy_id>Edit ";
     echo $_POST['activity_name'] . " Activity</a>";
 
     //call select all function for form
     $row = selectall($conn, "class_name", "regattascoring.CLASS", "Class", "activity", "Activities");
 
     //call activity form
-    activityform($row);
+    activityform($row, $event_id);
 
     //call closing function
     close($conn, $error, "activity", "Activities");
@@ -153,7 +181,7 @@ if (isset($_POST["submit"])) {
     $row = selectall($conn, "class_name", "regattascoring.CLASS", "Class", "activity", "Activities");
 
     //call activity form
-    activityform($row);
+    activityform($row, $event_id);
 
     //call close
     close($conn, $error, "activity", "Activities");
