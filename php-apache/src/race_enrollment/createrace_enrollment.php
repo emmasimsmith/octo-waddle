@@ -4,8 +4,11 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
+//get event ID
+$event_id = $_GET['event_id'];
+
 //select all activities for the form
-$sql = "SELECT * FROM regattascoring.ACTIVITY NATURAL JOIN regattascoring.CLASS;";
+$sql = "SELECT * FROM regattascoring.ACTIVITY;";
 $result = mysqli_query($conn, $sql);
 
 //create dropdown form
@@ -16,13 +19,13 @@ $result = mysqli_query($conn, $sql);
   </head>
     <h1>Race Enrolment</h1>
   <body>
-    <form action ="createrace_enrollment.php" method='POST'>
-      <label for="activity_name">Activity:e</label>
-      <input type="text" name="activity_name" id="activity_name" list="activity_list">
+    <form action = <?php echo "inputrace_enrollment.php?id=" . $event_id ?> method='POST'>
+      Activity:
+      <input type="text" name="activity_name" list="activity_list">
       <datalist id="activity_list">
         <?php
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option value='" . $row['class_name'] . " " . $row['activity_name'] . "'></option>";
+            echo "<option value='". $row['activity_name'] . "'>" . $row['activity_name'] . "</option>";
         } ?>
       </datalist>
       <br>
