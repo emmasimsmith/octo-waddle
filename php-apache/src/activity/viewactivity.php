@@ -8,19 +8,20 @@ include_once '../functions.php';
 if (isset($_POST["delete"])) {
 
     // Get the id number
-    $activity_group = mysqli_real_escape_string($conn, $_GET['id']);
+    $activity_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     //Select activity name from the table
-    $sql = "SELECT DISTINCT activity_name FROM regattascoring.ACTIVITY WHERE
-    activity_group = '$activity_group';";
+    $sql = "SELECT activity_name FROM regattascoring.ACTIVITY WHERE
+    activity_id = '$activity_id';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
 
-    //delete variables with certain group
-    $sql = "DELETE FROM regattascoring.ACTIVITY WHERE activity_group = '$activity_group';";
+    //delete variables with certain id
+    $sql = "DELETE FROM regattascoring.ACTIVITY WHERE activity_id = '$activity_id';";
 
     //check activity was deleted
     if (!mysqli_query($conn, $sql)) {
+        echo mysqli_error($conn);
         close($conn, "Could not delete activity", "activity", "Activities");
         exit;
     }
@@ -32,7 +33,7 @@ if (isset($_POST["delete"])) {
 } elseif (isset($_POST["update"])) {
 
     //GET ID
-    $activity_group = mysqli_real_escape_string($conn, $_GET['id']);
+    $activity_id = mysqli_real_escape_string($conn, $_GET['id']);
 
     //POST variables from form
     $activity_name = mysqli_real_escape_string($conn, $_POST['activity_name']);
@@ -49,6 +50,18 @@ if (isset($_POST["delete"])) {
 
     if (preg_match('/[^A-Za-z \-]/', $activity_name)) {
         array_push($errors, "Please enter a valid activity name");
+    }
+
+    $sql = "SELECT * FROM regattascoring.ACTIVITY;";
+    $result = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        if ($row['activity_name'] == $activity_name) {
+            array_push($errors, "This activity already exists");
+        }
+    }
+
+    if ($bracket == "unit" and $class != "") {
+        array_push($errors, "Cannot select unit and classes");
     }
 
     //Select class table
@@ -109,8 +122,8 @@ if (isset($_POST["delete"])) {
         exit;
     }
 
-    //delete variables with certain group
-    $sql = "DELETE FROM regattascoring.ACTIVITY WHERE activity_group = '$activity_group';";
+    //delete variables with certain id
+    $sql = "DELETE FROM regattascoring.ACTIVITY WHERE activity_id = '$activity_id';";
 
     //check activity was deleted
     if (!mysqli_query($conn, $sql)) {
@@ -121,8 +134,8 @@ if (isset($_POST["delete"])) {
     //foreach loop of selected classes
     foreach ($class as $class_id) {
         //Insert variables into activity table, if false echo error and exit
-        $sql = "INSERT INTO regattascoring.ACTIVITY (activity_name, scoring, class_id, activity_group) VALUES
-      ('$activity_name','$scoring', '$class_id', '$activity_group');";
+        $sql = "INSERT INTO regattascoring.ACTIVITY (activity_name, scoring, class_id) VALUES
+      ('$activity_name','$scoring', '$class_id');";
         if (!mysqli_query($conn, $sql)) {
             echo mysqli_error($conn);
             close($conn, "Could not add data", "activity", "Activities");
@@ -135,10 +148,10 @@ if (isset($_POST["delete"])) {
     close($conn, $error, "activity", "Activities");
 } else {
     //GET ID from URL
-    $activity_group = mysqli_real_escape_string($conn, $_GET['id']);
+    $activity_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-    //select activities where matches activity group
-    $sql = "SELECT DISTINCT * FROM regattascoring.ACTIVITY WHERE activity_group = $activity_group;";
+    //select activities where matches activity id
+    $sql = "SELECT DISTINCT * FROM regattascoring.ACTIVITY WHERE activity_id = $activity_id;";
     $select = mysqli_query($conn, $sql);
 
     //check if selected
@@ -163,7 +176,7 @@ if (isset($_POST["delete"])) {
       </head>
       <h1>Create New Activity</h1>
       <body>
-        <form action= <?php echo "viewactivity.php?id=$activity_group" ?> method ="POST">
+        <form action= <?php echo "viewactivity.php?id=$activity_id" ?> method ="POST">
           Activity Name:
           <input type="text" name="activity_name" value="<?php echo $row['activity_name'] ?>" placeholder="Activity name">
           <br>
@@ -180,13 +193,24 @@ if (isset($_POST["delete"])) {
     } ?>>Time</option>
           </select>
           <br>
+          Unit or Class:
+          <select name="bracket">
+            <option value="unit" <?php if ($_POST['bracket'] == "unit") {
+        echo " selected";
+    } ?>>Units</option>
+            <option value="class" <?php if ($_POST['bracket'] == "class") {
+        echo " selected";
+    } ?>>Classes</option>
+          </select>
+          <br>
           Classes:
           <br>
           <?php
           while ($class_row = mysqli_fetch_assoc($result)) {
               echo "<input type='checkbox' name='class[]' value=" . $class_row['class_id'] . " ";
-              //select all classes entered for the group
-              $sql = "SELECT class_id FROM regattascoring.ACTIVITY WHERE activity_group = $activity_group;";
+              //select all classes entered for the id
+              $sql = "SELECT class_id FROM regattascoring.ACTIVITY NATURAL JOIN
+              regattascoring.BRACKET WHERE activity_id = $activity_id;";
               $activity_class = mysqli_query($conn, $sql);
               while ($activity_class_selected = mysqli_fetch_assoc($activity_class)) {
                   if ($class_row['class_id'] == $activity_class_selected['class_id']) {
