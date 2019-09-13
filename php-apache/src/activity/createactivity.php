@@ -11,39 +11,38 @@ function activityform($result, $event_id)
 {
     $sql = "SELECT * FROM regattascoring.EVENT WHERE event_id = $event_id;"; ?>
   <html>
-  <head>
-      <title>Create Activity</title>
-  </head>
-  <h1>Create New Activity</h1>
-  <body>
-
-  <form action="createactivity.php" method ="POST">
-    Activity Name:
-    <input type="text" name="activity_name" placeholder="Activity name">
-    <br>
-    Scoring Method:
-    <select name="scoring" placeholder="Calculation Method">
-      <option value="placing">Placing</option>
-      <option value="scoring">Scoring</option>
-      <option value="time">Time</option>
-    </select>
-    <br>
-    Unit or Classes:
-    <select name="bracket">
-      <option value="unit">Units</option>
-      <option value="class">Classes</option>
-    </select>
-    <br>
-    If classes selected, specify which classes:
-    <br>
-    <?php
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<input type='checkbox' name='class[]' value=" . $row['class_id'];
-        echo ">" . $row['class_name'] . "</input>" . "<br>";
-    } ?>
-    <button type="submit" name="submit">Enter</button>
-  </form>
-  </body>
+    <head>
+        <title>Create Activity</title>
+    </head>
+      <h1>Create New Activity</h1>
+    <body>
+      <form action="createactivity.php" method ="POST">
+        Activity Name:
+        <input type="text" name="activity_name" placeholder="Activity name">
+        <br>
+        Scoring Method:
+        <select name="scoring" placeholder="Calculation Method">
+          <option value="placing">Placing</option>
+          <option value="scoring">Scoring</option>
+          <option value="time">Time</option>
+        </select>
+        <br>
+        Unit or Classes:
+        <select name="bracket">
+          <option value="unit">Units</option>
+          <option value="class">Classes</option>
+        </select>
+        <br>
+        If classes selected, specify which classes:
+        <br>
+        <?php
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<input type='checkbox' name='class[]' value=" . $row['class_id'];
+            echo ">" . $row['class_name'] . "</input>" . "<br>";
+        } ?>
+        <button type="submit" name="submit">Enter</button>
+      </form>
+    </body>
   </html>
   <?php
 }
@@ -66,6 +65,15 @@ if (isset($_POST["submit"])) {
     if (preg_match('/[^A-Za-z \-]/', $activity_name)) {
         array_push($errors, "Please enter a valid activity name");
     }
+
+    $sql = "SELECT * FROM regattascoring.ACTIVITY;";
+    $result = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        if ($row['activity_name'] == $activity_name) {
+            array_push($errors, "This activity already exists");
+        }
+    }
+
     if ($bracket == "unit" and $class != "") {
         array_push($errors, "Cannot select unit and classes");
     }
@@ -164,7 +172,7 @@ if (isset($_POST["submit"])) {
     //echo activity created
     echo $_POST['activity_name'] . " Activity Created"; ?>
     <br>
-    <a href = <?php echo "viewactivity.php?id=$activiy_id>Edit ";
+    <a href = <?php echo "viewactivity.php?id=$activity_id>Edit ";
     echo $_POST['activity_name'] . " Activity</a>";
 
     //call select all function for form
