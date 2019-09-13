@@ -19,7 +19,7 @@ $result = mysqli_query($conn, $sql);
   </head>
     <h1>Race Enrolment</h1>
   <body>
-    <form action = <?php echo "inputrace_enrolment.php?id=" . $event_id ?> method='POST'>
+    <form autocomplete="off" action = <?php echo "inputrace_enrolment.php?id=" . $event_id ?> method='POST'>
       Activity:
       <input type="text" name="activity_name" list="activity_list">
       <datalist id="activity_list">
