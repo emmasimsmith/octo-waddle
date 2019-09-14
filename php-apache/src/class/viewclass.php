@@ -45,25 +45,25 @@ if (isset($_POST["update"])) {
           Junior Junior Class:
           <br>
           Minimum Age:
-          <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Junior Class:
           <br>
           Minimum Age:
-          <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Intermediate Class:
           <br>
           Minimum Age:
-          <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Senior Class:
           <br>
           Minimum Age:
-          <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Maximum Age:
-          <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" required>
+          <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
           <br>
           <button type="submit" name="update">Update</button>
         </form>
@@ -147,7 +147,7 @@ if (isset($_POST["update"])) {
           $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior Junior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Junior Class:
           <br>
@@ -157,7 +157,7 @@ if (isset($_POST["update"])) {
           $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    echo "value=" . $row['min_age'] ?>  placeholder="Minimum Age" step="any" required>
+    echo "value=" . $row['min_age'] ?>  placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Intermediate Class:
           <br>
@@ -167,7 +167,7 @@ if (isset($_POST["update"])) {
           $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Intermediate';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Senior Class:
           <br>
@@ -177,10 +177,10 @@ if (isset($_POST["update"])) {
           $sql = "SELECT * FROM regattascoring.CLASS WHERE class_name = 'Senior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
           <br>
           Maximum Age:
-          <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" required>
+          <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" min="0" required>
           <br>
           <button type="submit" name="update">Update</button>
         </form>
