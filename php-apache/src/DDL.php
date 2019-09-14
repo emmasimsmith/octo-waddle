@@ -80,9 +80,10 @@ echo "INDIVIDUAL table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE ACTIVITY (
   activity_id INT AUTO_INCREMENT PRIMARY KEY,
-  activity_name VARCHAR (20) NOT NULL,
+  activity_name VARCHAR (35) NOT NULL,
   activity_bracket VARCHAR(20) NOT NULL,
-  scoring VARCHAR (20) NOT NULL
+  scoring_method VARCHAR (20) NOT NULL,
+  scored_by VARCHAR (20) NOT NULL
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -237,13 +238,4 @@ $sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUE
 $result = mysqli_query($conn, $sql);
 
 $sql = "INSERT INTO INDIVIDUAL (first_name, last_name, dob, unit_id, role) VALUES ('Leo', 'Nelson', '2005-10-10', '3', 'other');";
-$result = mysqli_query($conn, $sql);
-
-$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior Junior', '8.0', '11.5');";
-$result = mysqli_query($conn, $sql);
-$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Junior', '11.5', '13.5');";
-$result = mysqli_query($conn, $sql);
-$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Intermediate', '13.5', '15.5');";
-$result = mysqli_query($conn, $sql);
-$sql = "INSERT INTO CLASS (class_name, min_age, max_age) VALUES ('Senior', '15.5', '20.0');";
 $result = mysqli_query($conn, $sql);
