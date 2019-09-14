@@ -1,6 +1,5 @@
 <?php
 //include navigation bar, functions and connection php files
-include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
@@ -48,6 +47,9 @@ function classform()
 $sql = "SELECT * FROM regattascoring.CLASS;";
 
 if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
+    //include navbar
+    include_once '../navbar.php';
+
     close($conn, "Classes have already been created", "class", "Classes");
     exit;
 
@@ -80,6 +82,10 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
 
     //if not valid echo error and form then exit
     if (count($errors) != 0) {
+
+      //include navbar
+        include_once '../navbar.php';
+
         //call form with existing values?>
         <html>
         <head>
@@ -146,16 +152,11 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
         VALUES ('Senior', '$senior_min_age_format','$senior_max_age_format');";
     $result = mysqli_query($conn, $sql);
 
-
-    //echo classes created
-    echo "Classes Created
-    </br>
-    <a href='viewclass.php'>Edit Classes</a>
-    <br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href='searchclass.php'>View Classes</a>";
+    header("Location: /activity/createactivity.php");
 } else {
+
+  //include navbar
+    include_once '../navbar.php';
 
     //call class form
     classform();
