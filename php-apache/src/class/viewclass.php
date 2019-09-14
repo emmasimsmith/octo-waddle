@@ -22,58 +22,28 @@ if (isset($_POST["delete"])) {
 //if update button is selected
 } elseif (isset($_POST["update"])) {
 
-    //while loop for each class
-    $count = 0;
+    //define POST variables
+    $jj_min_age = mysqli_real_escape_string($conn, $_POST['jj_min_age']);
+    $junior_min_age = mysqli_real_escape_string($conn, $_POST['junior_min_age']);
+    $intermediate_min_age = mysqli_real_escape_string($conn, $_POST['intermediate_min_age']);
+    $senior_min_age = mysqli_real_escape_string($conn, $_POST['senior_min_age']);
+    $senior_max_age = mysqli_real_escape_string($conn, $_POST['senior_max_age']);
 
     //array for validation errors
     $errors = array();
 
-    while ($count < $_GET['num_classes']) {
-
-        //increase count by one
-        $count++;
-
-        //define POST variables from form
-        $class_name = mysqli_real_escape_string($conn, $_POST["class$count"]);
-        $min_age = mysqli_real_escape_string($conn, $_POST["min_age$count"]);
-        if ($count == $_GET['num_classes']) {
-            $max_age = mysqli_real_escape_string($conn, $_POST['max_age']);
-        }
-
-        //validation of variables
-        if (!$class_name) {
-            array_push($errors, "Class $count name must be entered");
-        } elseif (preg_match('/[^A-Za-z ]/', $class_name)) {
-            array_push($errors, "Please enter a valid class $count name");
-        }
-        if (!$min_age) {
-            array_push($errors, "Minimum age for class $count must be entered");
-        } elseif (!is_numeric($min_age) or $min_age < 0) {
-            array_push($errors, "Please enter a valid minimum age for class $count");
-        }
-
-        //check min age is greater than the last
-        $amount = $_GET['num_classes'] - 1;
-        if ($count < $amount) {
-            $number = $count;
-            $number++;
-            if ($min_age > $_POST["min_age$number"]) {
-                array_push($errors, "Class $count minimum age cannot be greater than Class $number minimum age");
-            }
-        }
-
-        //if last class check max age
-        if ($count == $_GET['num_classes']) {
-            if (!$max_age) {
-                array_push($errors, "Maximum age for class $count must be entered");
-            }
-            if (!is_numeric($max_age) or $max_age < 0) {
-                array_push($errors, "Please enter a valid maximum age for class $count");
-            }
-            if ($min_age >= $max_age) {
-                array_push($errors, "The maximum age must be greater than the minimum age for class $count");
-            }
-        }
+    //input sanitsation
+    if ($jj_min_age > $junior_min_age) {
+        array_push($errors, "Junior Junior Class minimum age must be less than Junior Class minimum age");
+    }
+    if ($junior_min_age > $intermediate_min_age) {
+        array_push($errors, "Junior Class minimum age must be less than Intermediate Class minimum age");
+    }
+    if ($intermediate_min_age > $senior_min_age) {
+        array_push($errors, "Intermediate Class minimum age must be less than Senior Class minimum age");
+    }
+    if ($senior_min_age > $senior_max_age) {
+        array_push($errors, "Senior Class minimum age must be less than Senior Class maximum age");
     }
 
 
@@ -82,30 +52,38 @@ if (isset($_POST["delete"])) {
         //call form with existing values?>
       <html>
       <head>
-          <title>Update Classes</title>
+          <title>Create Class</title>
       </head>
-      <h1>Update Classes</h1>
+        <h1>Create New Class</h1>
       <body>
-      <form action= <?php echo "viewclass.php?num_classes=" . $_GET['num_classes'] ?> method ="POST">
-        <?php
-        $count = 0;
-        while ($count < $_GET['num_classes']) {
-            $count++;
-            echo "Class " . $count . ":" . "<br>";
-            echo "Class Name: ";
-            echo "<input type='text' name='class$count' value=" . $_POST["class$count"] . " placeholder='Class Name'>";
-            echo "<br>" . "Minimum Age: ";
-            echo "<input type='number' name='min_age$count' value=" . $_POST["min_age$count"] . " placeholder='Minimum Age' step='any'>";
-            echo "<br>";
-        }
-        echo "Maximum Age: ";
-        echo "<input type='number' name='max_age' value=" . $_POST["max_age"] . " step='any' placeholder='Maximum Age'>"; ?>
-        <br>
-        <button type="submit" name="update">Update</button>
-        <button type="submit" name="delete">Delete</button>
-      </form>
+        <form action= viewclass.php method ="POST">
+          Junior Junior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <br>
+          Junior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <br>
+          Intermediate Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <br>
+          Senior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" required>
+          <br>
+          Maximum Age:
+          <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" required>
+          <br>
+          <button type="submit" name="submit">Enter</button>
+        </form>
       </body>
-     </html>
+      </html>
       <?php
 
       $issue = '';
@@ -116,102 +94,114 @@ if (isset($_POST["delete"])) {
         exit;
     }
 
-    //select id from table
-    $sql = "SELECT * FROM regattascoring.CLASS;";
+    $jj_min_age_format = number_format($jj_min_age, 1, '.', ',');
+    $junior_min_age_format = number_format($junior_min_age, 1, '.', ',');
+    $intermediate_min_age_format = number_format($intermediate_min_age, 1, '.', ',');
+    $senior_min_age_format = number_format($senior_min_age, 1, '.', ',');
+    $senior_max_age_format = number_format($senior_max_age, 1, '.', ',');
+
+    //insert classes into table
+    $sql = "SELECT class_id FROM regattascoring.CLASS WHERE class_name = 'Junior Junior';";
     $result = mysqli_query($conn, $sql);
-    $count = 0;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $count++;
-        if ($count == mysqli_num_rows($result)) {
+    $row = mysqli_fetch_assoc($result);
+    $class_id = $row['class_id'];
+    $sql = "UPDATE regattascoring.CLASS set min_age = '$jj_min_age_format',
+        max_age = '$junior_min_age_format' WHERE class_id = '$class_id';";
+    $result = mysqli_query($conn, $sql);
 
-            //set variables for insert
-            $class_name = $_POST["class$count"];
-            $min_age = $_POST["min_age$count"];
-            $max_age = $_POST["max_age"];
-            $min_age_formated = number_format($min_age, 1, '.', ',');
-            $max_age_formated = number_format($max_age, 1, '.', ',');
+    $sql = "SELECT class_id FROM regattascoring.CLASS WHERE class_name = 'Junior';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $class_id = $row['class_id'];
+    $sql = "UPDATE regattascoring.CLASS set min_age = '$junior_min_age_format',
+        max_age = '$intermediate_min_age_format' WHERE class_id = '$class_id';";
+    $result = mysqli_query($conn, $sql);
 
-            //insert variables into class table, if false echo error and exit
-            $sql = "UPDATE regattascoring.CLASS set class_name = '$class_name',
-            min_age = '$min_age_formated', max_age = '$max_age_formated'
-            WHERE class_id = " . $row['class_id'] . ";";
+    $sql = "SELECT class_id FROM regattascoring.CLASS WHERE class_name = 'Intermediate';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $class_id = $row['class_id'];
+    $sql = "UPDATE regattascoring.CLASS set min_age = '$intermediate_min_age_format',
+        max_age = '$senior_min_age_format' WHERE class_id = '$class_id';";
+    $result = mysqli_query($conn, $sql);
 
-            //check class added
-            if (!mysqli_query($conn, $sql)) {
-                close($conn, "Could not update classes", "class", "Classes");
-                exit;
-            }
-        } else {
+    $sql = "SELECT class_id FROM regattascoring.CLASS WHERE class_name = 'Senior';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $class_id = $row['class_id'];
+    $sql = "UPDATE regattascoring.CLASS set min_age = '$senior_min_age_format',
+        max_age = '$senior_max_age_format' WHERE class_id = '$class_id';";
+    $result = mysqli_query($conn, $sql);
 
-        //set variables for insert
-            $number = $count;
-            $number++;
-            $class_name = $_POST["class$count"];
-            $min_age = $_POST["min_age$count"];
-            $max_age = $_POST["min_age$number"];
-            $min_age_formated = number_format($min_age, 1, '.', ',');
-            $max_age_formated = number_format($max_age, 1, '.', ',');
-
-            //insert variables into class table, if false echo error and exit
-            $sql = "UPDATE regattascoring.CLASS set class_name = '$class_name',
-              min_age = '$min_age_formated', max_age = '$max_age_formated'
-              WHERE class_id = " . $row['class_id'] . ";";
-
-            //check class added
-            if (!mysqli_query($conn, $sql)) {
-                echo mysqli_error($conn) . "</br>";
-                close($conn, "Could not update classes", "class", "Classes");
-                exit;
-            }
-        }
-    }
 
     //echo classes created
-    $count = 0;
-    while ($count < $_GET['num_classes']) {
-        $count++;
-        echo $_POST["class$count"] . " Class updated" . "</br>";
-    }
+    echo "Classes updated" . "</br>";
     echo "<a href='viewclass.php'>Edit Classes</a>";
-
-    //call closing function
-    close($conn, $error, "class", "Classes");
+    echo "<br>
+    <a href='/'>Return Home</a>
+    <br>
+    <a href='searchclass.php'>View all Classes</a>";
+    mysqli_close($conn);
 
 // if nothing has been selected
 } else {
-    //select all from class table
-    $sql = "SELECT * FROM regattascoring.CLASS;";
-    $result = mysqli_query($conn, $sql);
-    $count = mysqli_num_rows($result);
-    //call form with existing values?>
+
+    //call form with existing values;?>
     <html>
-    <head>
-        <title>Update Classes</title>
-    </head>
-    <h1>Update Classes</h1>
-    <body>
-    <form action= <?php echo "viewclass.php?num_classes=" . $count ?> method ="POST">
-      <?php
-      $count = 0;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $count++;
-        echo "Class " . $count . ":" . "<br>";
-        echo "Class Name: ";
-        echo "<input type='text' name='class$count' value='" . $row['class_name'] . "' placeholder='Class Name'>";
-        echo "<br>" . "Minimum Age: ";
-        echo "<input type='number' name='min_age$count' value=" . $row["min_age"] . " placeholder='Minimum Age' step='any'>";
-        echo "<br>";
-        if ($count == mysqli_num_rows($result)) {
-            echo "Maximum Age: ";
-            echo "<input type='number' name='max_age' value=" . $row["max_age"] . " step='any' placeholder='Maximum Age'>";
-        }
-    } ?>
-      <br>
-      <button type="submit" name="update">Update</button>
-      <button type="submit" name="delete">Delete</button>
-    </form>
-    </body>
-   </html>
+      <head>
+          <title>Udpate Classes</title>
+      </head>
+        <h1>Update Classes</h1>
+      <body>
+        <form action= viewclass.php method ="POST">
+          Junior Junior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="jj_min_age"
+          <?php
+          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior Junior';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+          <br>
+          Junior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="junior_min_age"
+          <?php
+          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    echo "value=" . $row['min_age'] ?>  placeholder="Minimum Age" step="any" required>
+          <br>
+          Intermediate Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="intermediate_min_age"
+          <?php
+          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Intermediate';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+          <br>
+          Senior Class:
+          <br>
+          Minimum Age:
+          <input type='number' name="senior_min_age"
+          <?php
+          $sql = "SELECT * FROM regattascoring.CLASS WHERE class_name = 'Senior';";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" required>
+          <br>
+          Maximum Age:
+          <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" required>
+          <br>
+          <button type="submit" name="update">Update</button>
+          <button type="submit" name="delete">Delete</button>
+        </form>
+      </body>
+    </html>
     <?php
 
   //call closing function
