@@ -4,23 +4,8 @@ include_once '../navbar.php';
 include_once "../connection.php";
 include_once '../functions.php';
 
-//if delete button is selected in form
-if (isset($_POST["delete"])) {
-
-    //Select class name from the table
-    $sql = "DELETE FROM regattascoring.CLASS;";
-    $result = mysqli_query($conn, $sql);
-
-    //echo class deleted and call closing
-    echo "Classes deleted
-    <br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href='createclass.php'>Create Classes</a>";
-    mysqli_close($conn);
-
 //if update button is selected
-} elseif (isset($_POST["update"])) {
+if (isset($_POST["update"])) {
 
     //define POST variables
     $jj_min_age = mysqli_real_escape_string($conn, $_POST['jj_min_age']);
@@ -80,7 +65,7 @@ if (isset($_POST["delete"])) {
           Maximum Age:
           <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" required>
           <br>
-          <button type="submit" name="submit">Enter</button>
+          <button type="submit" name="update">Update</button>
         </form>
       </body>
       </html>
@@ -198,7 +183,6 @@ if (isset($_POST["delete"])) {
           <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" required>
           <br>
           <button type="submit" name="update">Update</button>
-          <button type="submit" name="delete">Delete</button>
         </form>
       </body>
     </html>
