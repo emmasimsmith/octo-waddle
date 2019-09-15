@@ -14,8 +14,9 @@ function activityform()
     <form action= searchactivity.php method="POST">
       <input type="text" name="activity_name" placeholder="Search by activity name">
       <input type="text" name="activity_bracket" placeholder="Search by activity bracket">
-      <input type="text" name="scoring" placeholder="Search by scoring method">
-      <input type="text" name="class_name" placeholder="Search by class">
+      <input type="text" name="scoring_method" placeholder="Search by scoring method">
+      <input type="text" name="class_name" placeholder="Search by class name">
+      <input type="text" name="scored_by" placeholder="Search by scored group">
       <button type="submit" name="search">Enter</button>
     </form>
   </body>
@@ -31,12 +32,18 @@ if (isset($_POST['search'])) {
     //define POST variables
     $search_activity_name = mysqli_real_escape_string($conn, $_POST['activity_name']);
     $search_activity_bracket = mysqli_real_escape_string($conn, $_POST['activity_bracket']);
-    $search_scoring = mysqli_real_escape_string($conn, $_POST['scoring']);
+    $search_scoring_method = mysqli_real_escape_string($conn, $_POST['scoring_method']);
     $search_class_name = mysqli_real_escape_string($conn, $_POST['class_name']);
+    $search_scored_by = mysqli_real_escape_string($conn, $_POST['scored_by']);
 
     //validation if strings are empty
-    if (!$_POST['activity_name'] and !$_POST['activity_bracket'] and !$_POST['scoring'] and !$_POST['class_name']) {
-        close($conn, "Please search a value", "activity", "Activities");
+    if (!$_POST['activity_name'] and !$_POST['activity_bracket'] and
+    !$_POST['scoring_method'] and !$_POST['class_name'] and !$_POST['scored_by']) {
+        echo "Please search a value
+        <br>
+        <a href='/'>Return Home</a>
+        <br>
+        <a href='searchactivity.php'>View all Activities</a>";
         exit;
     }
 
@@ -46,11 +53,14 @@ if (isset($_POST['search'])) {
     if ($search_activity_name) {
         array_push($search, "activity_name LIKE '%$search_activity_name%'");
     }
-    if ($search_scoring) {
-        array_push($search, "scoring LIKE '%$search_scoring%'");
+    if ($search_scoring_method) {
+        array_push($search, "scoring_method LIKE '%$search_scoring_method%'");
     }
     if ($search_activity_bracket) {
         array_push($search, "activity_bracket LIKE '%$search_activity_bracket%'");
+    }
+    if ($search_scored_by) {
+        array_push($search, "scored_by LIKE '%$search_scored_by%'");
     }
     if ($search_class_name) {
         //set array
@@ -69,7 +79,6 @@ if (isset($_POST['search'])) {
 
     $join = join(" AND ", $search);
     $sql = $sql . $join . ";";
-    echo $sql;
 
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
@@ -78,9 +87,7 @@ if (isset($_POST['search'])) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href= 'viewactivity.php'>Edit Activities</a>
-        <br>
-          <a href='searchactivity.php'>View all Activities</a>";
+        <a href='searchactivity.php'>View all Activities</a>";
         mysqli_close($conn);
         exit;
     }
@@ -89,7 +96,12 @@ if (isset($_POST['search'])) {
     activity_view($conn, $search);
 
     //call close function
-    close($conn, $error, "activity", "Activities");
+    echo "<br>
+    <a href='/'>Return Home</a>
+    <br>
+    <a href='searchactivity.php'>View all Activities</a>";
+    mysqli_close($conn);
+    exit;
 } else {
     //call activity form
     activityform();
