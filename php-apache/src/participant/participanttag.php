@@ -6,18 +6,12 @@ include_once '../functions.php';
 //get event_id
 $event_id = $_GET['event_id'];
 
+//array for the largest unit of each class
+$class_num = array(1 => "", 2 => "", 3 => "", 4 => "");
+
 //Select all from unit table
 $sql = "SELECT * FROM regattascoring.UNIT;";
 $outcome = mysqli_query($conn, $sql);
-
-//array for the largest unit of each class
-$class_num = array();
-$sql = "SELECT * FROM regattascoring.CLASS;";
-$result = mysqli_query($conn, $sql);
-while ($row = mysqli_fetch_assoc($result)) {
-    array_push($class_num, $row['unit_id']);
-}
-
 while ($unit_row = mysqli_fetch_assoc($outcome)) {
 
     //select all from class table
@@ -30,16 +24,17 @@ while ($unit_row = mysqli_fetch_assoc($outcome)) {
         RIGHT JOIN regattascoring.INDIVIDUAL ON regattascoring.INDIVIDUAL.individual_id
         = regattascoring.PARTICIPANT.individual_id WHERE class_id = " . $row['class_id']
         . " AND unit_id = ". $unit_row['unit_id'] ." AND event_id = $event_id;";
+
         $count = mysqli_query($conn, $sql);
         $number = mysqli_fetch_assoc($count);
 
         foreach ($class_num as $class_key => $class_amount) {
-            if ($class_key == $unit_row['unit_id']) {
+            if ($class_key == $row['class_id']) {
                 if (!$class_amount) {
                     $class_amount = 0;
                 }
                 if ($number['total'] > $class_amount) {
-                    $replace = array($unit_row['unit_id'] => $number['total']);
+                    $replace = array($row['class_id'] => $number['total']);
                     $class_num = array_replace($class_num, $replace);
                 }
             }
@@ -52,63 +47,57 @@ $sql = "SELECT * FROM regattascoring.UNIT;";
 $unit = mysqli_query($conn, $sql);
 while ($unit_row = mysqli_fetch_assoc($unit)) {
 
-  //set index key as 0 to match array
-    $index_key = 0;
+    //define unit_id
+    $unit_id = $unit_row['unit_id'];
 
-    //set min for class id as 0
+    //set min to 0 for class age
     $min = 0;
 
-    //select participants in unit where specific class
-    $sql = "SELECT * FROM regattascoring.CLASS;";
-    $class = mysqli_query($conn, $sql);
-    while ($class_row = mysqli_fetch_assoc($class)) {
+    //for each class
+    foreach ($class_num as $class_id => $class_max) {
+        //if class max is empty set as 0
+        if (!$class_max) {
+            $class_max = 0;
+        }
 
-        //find max of this class
-        $max = $class_num[$index_key];
-
-        //increase index key by one
-        $index_key++;
-
-        //set count for participants as 0 after changing class and/or unit
+        //set tag as min for class
         $class_tag = $min;
 
-        //check to match participants
+        //select participants within event and unit
         $sql = "SELECT * FROM regattascoring.PARTICIPANT NATURAL JOIN
-            regattascoring.INDIVIDUAL WHERE event_id = $event_id;";
+          regattascoring.INDIVIDUAL WHERE event_id = '$event_id' AND unit_id = '$unit_id' AND class_id = '$class_id';";
+
         $result = mysqli_query($conn, $sql);
 
         if (!$result) {
-            echo "theres an error but how?";
+            echo "somethings wrong";
+            exit;
         }
 
-        //select participant if matches
+        //set tag for each participant
         while ($participant_row = mysqli_fetch_assoc($result)) {
-            if ($participant_row['unit_id'] == $unit_row['unit_id']
-                and $participant_row['class_id'] == $class_row['class_id']) {
 
-                //calculate participant tag
-                $participant_tag = $unit_row['unit_id'] * 100 + $class_tag;
+            //calculate participant tag
+            $participant_tag = ($unit_id * 100) + $class_tag;
 
-                //update participant tag
-                $sql = "UPDATE regattascoring.PARTICIPANT set participant_tag =
-                    $participant_tag WHERE participant_id = " . $participant_row['participant_id'] . ";";
-                $result = mysqli_query($conn, $sql);
+            //update participant tag
+            $sql = "UPDATE regattascoring.PARTICIPANT set participant_tag =
+              $participant_tag WHERE participant_id = " . $participant_row['participant_id'] . ";";
+            $tag = mysqli_query($conn, $sql);
 
-                //increase class tag by one for each participant
-                $class_tag++;
-            }
+            //increase tag by one for next participant
+            $class_tag++;
         }
-
-        //increase next class min, by adding max
-        $min = $min + $max;
+        $min = $min + $class_max;
     }
+
+
     //if participant has NULL class_id
     $sql = "SELECT * FROM regattascoring.PARTICIPANT NATURAL JOIN
-        regattascoring.INDIVIDUAL WHERE event_id = $event_id;";
+        regattascoring.INDIVIDUAL WHERE event_id = $event_id AND unit_id = $unit_id;";
     $woop = mysqli_query($conn, $sql);
     while ($participant_row = mysqli_fetch_assoc($woop)) {
-        if ($participant_row['unit_id'] == $unit_row['unit_id'] and
-          $participant_row['class_id'] == "") {
+        if ($participant_row['class_id'] == "") {
 
             //calculate participant tag
             $participant_tag = $unit_row['unit_id'] * 100 + $min;
