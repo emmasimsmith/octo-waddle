@@ -9,7 +9,7 @@ function activity_view($conn, $result)
       <th>Activity Bracket</th>
       <th>Scoring Method</th>
       <th>Classes</th>
-      <th>View</th>
+      <th>Scored Group</th>
       </tr>";
 
         while ($row = mysqli_fetch_assoc($result)) {
@@ -37,17 +37,16 @@ function activity_view($conn, $result)
             echo "<tr>";
             echo "<td>" . $row["activity_name"] . "</td>";
             echo "<td>" . $row["activity_bracket"] . "</td>";
-            echo "<td>" . $row["scoring"] . "</td>";
+            echo "<td>" . $row["scoring_method"] . "</td>";
             echo "<td>" . $classes . "</td>";
-            echo "<td> <a href= viewactivity.php?id=$activity_id>view</a></td>";
+            echo "<td>" . $row['scored_by'] . "</td>";
             echo "</tr>";
         }
 
         echo "</table>
       <br>
       <a href='/'>Return Home</a>
-      <br>
-      <a href='viewactivity.php'>Edit Activities</a>";
+      <br>";
     } else {
         //if no data in the table
         echo "No data to display" . "</br>"; ?>
