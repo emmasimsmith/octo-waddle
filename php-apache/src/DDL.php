@@ -108,8 +108,7 @@ echo "BRACKET table made successfully" . "<br/>";
 
 $sql = "CREATE TABLE CERTIFICATE (
   certificate_id INT AUTO_INCREMENT PRIMARY KEY,
-  certificate_name VARCHAR (20),
-  calculation VARCHAR (20) NOT NULL,
+  certificate_name VARCHAR (40),
   placing INT NOT NULL,
   recipient VARCHAR (20) NOT NULL
 );";
