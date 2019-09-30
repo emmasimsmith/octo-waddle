@@ -39,6 +39,10 @@ $result = mysqli_query($conn, $sql);
 $sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Senior Canoeing', '3', 'unit');";
 $result = mysqli_query($conn, $sql);
 
+//Canoeing Relay
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Canoeing Relay', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
 //Open Canoeing
 $sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Open Canoeing', '3', 'unit');";
 $result = mysqli_query($conn, $sql);
@@ -191,6 +195,10 @@ $result = mysqli_query($conn, $sql);
 $sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Senior Swimming', '3', 'unit');";
 $result = mysqli_query($conn, $sql);
 
+//Relay Swimming
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Swimming Relay', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
 //Open Swimming
 $sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Open Swimming', '3', 'unit');";
 $result = mysqli_query($conn, $sql);
@@ -224,13 +232,41 @@ $sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('
 $result = mysqli_query($conn, $sql);
 
 //Outstanding Mariner
-$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Outstanding Mariner', '1', 'unit');";
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Outstanding Mariner', '1', 'individual');";
 $result = mysqli_query($conn, $sql);
 
 //Leading Mariner
-$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Leading Mariner', '1', 'unit');";
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Leading Mariner', '1', 'individual');";
 $result = mysqli_query($conn, $sql);
 
 //Outstanding Mariner Runner Up
-$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Outstanding Mariner Runner Up', '1', 'unit');";
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Outstanding Mariner Runner Up', '1', 'individual');";
+$result = mysqli_query($conn, $sql);
+
+//Overall Open
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Overall Open', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Brian Orpen JJ Leadership
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Brian Orpen JJ Leadership', '1', 'individual');";
+$result = mysqli_query($conn, $sql);
+
+//Overall Top JJ Unit
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Overall Top JJ Unit', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Overall Top Junior Unit
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Overall Top Junior Unit', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Overall Top Intermediate Unit
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Overall Top Intermediate Unit', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Overall Top Senior Unit
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Overall Top Senior Unit', '3', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+// Top Unit
+$sql = "INSERT INTO CERTIFICATE (certificate_name, placing, recipient) VALUES ('Top Unit', '3', 'unit');";
 $result = mysqli_query($conn, $sql);

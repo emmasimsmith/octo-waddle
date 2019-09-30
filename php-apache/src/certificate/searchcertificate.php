@@ -3,6 +3,7 @@
 include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
+include_once '../morefunctions.php';
 
 // Form function
 function certificateform()
@@ -12,7 +13,6 @@ function certificateform()
     <body>
       <form action= searchcertificate.php method="POST">
       <input type="text" name="certificate_name" placeholder="Search certificate name">
-      <input type="text" name="calculation" placeholder="Search calculation">
       <input type="number" name="placing" placeholder="Search number of placings">
       <input type="text" name="recipient" placeholder="Search recipients">
       <button type="submit" name="search">Enter</button>
@@ -29,36 +29,64 @@ if (isset($_POST['search'])) {
     certificateform();
 
     //define searched variables
-    $certificate_name_escaped = mysqli_real_escape_string($conn, $_POST['certificate_name']);
-    $calculation_escaped = mysqli_real_escape_string($conn, $_POST['calculation']);
-    $placing_escaped = mysqli_real_escape_string($conn, $_POST['placing']);
-    $recipient_escaped = mysqli_real_escape_string($conn, $_POST['recipient']);
+    $certificate_name = mysqli_real_escape_string($conn, $_POST['certificate_name']);
+    $placing = mysqli_real_escape_string($conn, $_POST['placing']);
+    $recipient = mysqli_real_escape_string($conn, $_POST['recipient']);
 
     //validation check incase strings are empty
-    if (!$_POST['certificate_name'] and !$_POST['calculation'] and
-    !$_POST['placing'] and !$_POST['recipient']) {
-        close($conn, "Please search a valid value", "certificate", "Certificates");
+    if (!$_POST['certificate_name'] and !$_POST['placing'] and !$_POST['recipient']) {
+        echo "Please search a valid value
+      <br>
+      <a href='/'>Return Home</a>
+      <br>
+      <a href='searchcertificate.php'>View all Certificates</a>";
+        mysqli_close($conn);
         exit;
     }
-    //variable array for function
-    $variables = array('certificate_name' => array('Certificate Name' => $certificate_name_escaped),
-    'calculation' => array('Calculation' => $calculation_escaped),
-    'placing' => array('Placing' => $placing_escaped),
-    'recipient' => array('Recipient' => $recipient_escaped));
 
-    //call search function
-    search($conn, "certificate", $variables, "regattascoring.CERTIFICATE", "Certificate", "Certificates");
+    //call search
+    $search = array();
+    $sql = "SELECT * FROM regattascoring.CERTIFICATE WHERE ";
+    if ($certificate_name) {
+        array_push($search, "certificate_name LIKE '%$certificate_name%'");
+    }
+    if ($placing) {
+        array_push($search, "certificate_name LIKE '%$placing%'");
+    }
+    if ($recipient) {
+        array_push($search, "certificate_name LIKE '%$recipient%'");
+    }
 
-    //call close function
-    close($conn, $error, "certificate", "Certificates");
+    $join = join(" AND ", $search);
+    $sql = $sql . $join . ";";
+
+    //check if there are rows that match
+    $search = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($search) == 0) {
+        echo "No matches in table" . "</br>";
+        echo "<br>
+        <a href='/'>Return Home</a>
+        <br>
+        <a href='searchcertificate.php'>View all Certificates</a>";
+        mysqli_close($conn);
+        exit;
+    }
+
+    //call certificate view function
+    certificate_view($conn, $search);
+
+    //close
+    echo "<br>
+    <a href='/'>Return Home</a>
+    <br>
+    <a href='searchcertificate.php'>View all Certificates</a>";
 } else {
     //call certificate form
     certificateform();
 
-    //variables array
-    $variables = array('certificate_name' => 'Certificate Name', 'calculation' =>
-    'Calculation', 'placing' => 'Placing', 'recipient' => 'Recipient');
+    //echo all data from table
+    $sql = "SELECT * FROM regattascoring.CERTIFICATE;";
+    $result = mysqli_query($conn, $sql);
 
-    //echo all data from table and close
-    viewall($conn, "certificate", "regattascoring.CERTIFICATE", $variables, "certificate_id", "Certificates");
+    certificate_view($conn, $result);
 }
