@@ -8,6 +8,7 @@
     <li><a href="/class/createclass.php">Create Class</a></li>
     <li><a href="/class/searchclass.php">View Classes</a></li>
     <li><a href="/boat/createboat.php">Create Boat</a></li>
+    <li><a href="/boat/searchboat.php">View Boat</a></li>
     <li><a href="/event/createevent.php">Create Event</a></li>
     <li><a href="/event/searchevent.php">View Events</a></li>
     <li><a href="/certificate/searchcertificate.php">View Certificates</a></li>
