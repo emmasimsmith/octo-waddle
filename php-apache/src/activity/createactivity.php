@@ -17,7 +17,6 @@ if (!$delete) {
     echo "Could not delete all from activity table" . mysqli_error($conn) . "<br/>";
     exit;
 }
-echo "all in activity table deleted successfully" . "<br/>";
 
 //create all activities
 
