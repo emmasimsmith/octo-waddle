@@ -156,13 +156,12 @@ $sql = "CREATE TABLE RACE_ENROLMENT (
   activity_id INT NOT NULL,
   unit_id INT NOT NULL,
   participant_id INT,
-  score INT NOT NULL,
-  boat_id INT,
+  calculated_score INT NOT NULL,
+  original_score INT,
   event_id INT NOT NULL,
   FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
-  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id),
   FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
