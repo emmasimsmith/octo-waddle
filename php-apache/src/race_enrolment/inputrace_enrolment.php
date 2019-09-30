@@ -1,6 +1,5 @@
 <?php
-//include navigation bar, functions and connection php files
-include_once '../navbar.php';
+//include functions and connection php files
 include_once '../connection.php';
 include_once '../functions.php';
 
@@ -15,8 +14,9 @@ $sql = "SELECT * FROM regattascoring.ACTIVITY WHERE activity_name = '$activity_n
 $result = mysqli_query($conn, $sql);
 
 //check matches with activity_name
-if (!$result) {
-    close($conn, "Not a valid activity", "race_enrolment", "Race Enrolments");
+if (mysqli_num_rows($result) == 0) {
+    include_once '../navbar.php';
+    close($conn, "Please select a valid activity", "race_enrolment", "Race Enrolments");
     exit;
 }
 
@@ -28,7 +28,8 @@ $activity_id = $row['activity_id'];
 
 //if activity bracket is class, make user select class
 if ($row['activity_bracket'] == 'class') {
-    ?>
+    //include navbar
+    include_once '../navbar.php'; ?>
   <html>
     <head>
       <title>Race Enrolment</title>
@@ -50,7 +51,17 @@ if ($row['activity_bracket'] == 'class') {
       </form>
     </body>
   </html>
+  <br>
+  <a href='/'>Return Home</a>
+  <br>
+  <a href="createrace_enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
+  <br>
+  <a href="../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
   <?php
 } else {
+        //if activity is cutter, sunburst or opti rigging
+        if ($activity_id == 4 || $activity_id == 5 || $activity_id == 6) {
+            header("Location: rigging.php?event_id=$event_id&activity_id=$activity_id");
+        }
         //TODO make thing if activity bracket is unit
     }

@@ -11,6 +11,14 @@ $event_id = $_GET['event_id'];
 $sql = "SELECT * FROM regattascoring.ACTIVITY;";
 $result = mysqli_query($conn, $sql);
 
+if (!$result) {
+    echo "Cannot select from activity table";
+    home_close($conn);
+}
+if (mysqli_num_rows($result) == 0) {
+    echo "please create classes first";
+    home_close($conn);
+}
 //create dropdown form
 ?>
 <html>
@@ -19,7 +27,7 @@ $result = mysqli_query($conn, $sql);
   </head>
     <h1>Race Enrolment</h1>
   <body>
-    <form autocomplete="off" action = <?php echo "inputrace_enrolment.php?id=" . $event_id ?> method='POST'>
+    <form autocomplete="off" action = <?php echo "inputrace_enrolment.php?event_id=" . $event_id ?> method='POST'>
       Activity:
       <input type="text" name="activity_name" list="activity_list">
       <datalist id="activity_list">
@@ -33,3 +41,7 @@ $result = mysqli_query($conn, $sql);
     </form>
   </body>
 </html>
+<br>
+<a href='/'>Return Home</a>
+<br>
+<a href="../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
