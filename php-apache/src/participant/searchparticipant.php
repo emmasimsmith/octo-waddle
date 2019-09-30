@@ -97,7 +97,9 @@ if (isset($_POST['search'])) {
         <br>
         <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
         <br>
-        <a href='searchparticipant.php'>View all participants</a>";
+        <a href='searchparticipant.php'>View all participants</a>
+        <br>
+        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
         mysqli_close($conn);
         exit;
     }
@@ -135,7 +137,9 @@ if (isset($_POST['search'])) {
     <br>
     <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
     <br>
-    <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>";
+    <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>
+    <br>
+    <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
     mysqli_close($conn);
 } else {
 
@@ -186,7 +190,9 @@ if (isset($_POST['search'])) {
         <br>
         <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
         <br>
-        <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>";
+        <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>
+        <br>
+        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
         mysqli_close($conn);
     } else {
         //if no data in the table
@@ -195,7 +201,8 @@ if (isset($_POST['search'])) {
         <a href='/'>Return Home</a>
         <br>
         <a href='selectparticipant.php?event_id=$event_id'>Reselect participants</a>
-        <br>";
+        <br>
+        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
         mysqli_close($conn);
         exit;
     }

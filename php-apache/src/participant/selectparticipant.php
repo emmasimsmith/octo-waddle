@@ -67,4 +67,6 @@ $sql = "SELECT *, regattascoring.INDIVIDUAL.individual_id AS individual_id FROM 
 "<br>
 <a href='/'>Return Home</a>
 <br>
-<a href= searchparticipant.php?event_id=$event_id>View participants</a>";
+<a href= searchparticipant.php?event_id=$event_id>View participants</a>
+<br>
+<a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
