@@ -246,3 +246,12 @@ function participant_close($conn, $error, $event_id)
   <a href= <?php echo "searchparticipant.php?id=" . $event_id . ">View participants</a>";
     mysqli_close($conn);
 }
+
+function home_close($conn)
+{
+    echo "<br>
+<a href='/'>Return Home</a>
+<br>";
+    mysqli_close($conn);
+    exit;
+}

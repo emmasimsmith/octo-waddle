@@ -57,3 +57,41 @@ function activity_view($conn, $result)
         exit;
     }
 }
+
+
+
+function certificate_view($conn, $result)
+{
+    if (mysqli_num_rows($result) > 0) {
+        //create html table
+        echo "<table border = '1'>
+      <tr>
+      <th>Certificate ID</th>
+      <th>Certificate Name</th>
+      <th>Placing</th>
+      <th>Recipient</th>
+      </tr>";
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>" . $row["certificate_id"] . "</td>";
+            echo "<td>" . $row["certificate_name"] . "</td>";
+            echo "<td>" . $row["placing"] . "</td>";
+            echo "<td>" . $row['recipient'] . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>
+      <br>
+      <a href='/'>Return Home</a>
+      <br>";
+    } else {
+        //if no data in the table
+        echo "No data to display" . "</br>"; ?>
+      <br>
+      <a href="/">Return Home</a>
+      <?php
+      mysqli_close($conn);
+        exit;
+    }
+}
