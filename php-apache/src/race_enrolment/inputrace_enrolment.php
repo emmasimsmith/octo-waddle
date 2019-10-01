@@ -36,7 +36,7 @@ if ($row['activity_bracket'] == 'class') {
     </head>
       <h1>Race Enrolment</h1>
     <body>
-      <form action = <?php echo "inputrace_enrolment.php?id=$event_id&activity_id=$activity_id method='POST'>";
+      <form action = <?php echo "inputrace_enrolment.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
     echo "Select $activity_name Class:" ?>
         <select name="class">
           <?php
