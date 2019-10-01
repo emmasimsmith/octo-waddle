@@ -156,6 +156,7 @@ $sql = "CREATE TABLE RACE_ENROLMENT (
   activity_id INT NOT NULL,
   unit_id INT NOT NULL,
   participant_id INT,
+  race_result VARCHAR (20) NOT NULL,
   calculated_score INT NOT NULL,
   original_score INT,
   event_id INT NOT NULL,
