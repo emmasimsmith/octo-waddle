@@ -20,7 +20,7 @@ if (mysqli_num_rows($individual) == 0) {
 $sql = "SELECT * FROM regattascoring.CLASS;";
 $class = mysqli_query($conn, $sql);
 if (mysqli_num_rows($class) == 0) {
-    array_push($empty, "Please create a class first");
+    array_push($empty, "Please create classes first");
 }
 
 if (count($empty) != 0) {
