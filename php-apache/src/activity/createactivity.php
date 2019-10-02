@@ -153,8 +153,37 @@ $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, s
 $result = mysqli_query($conn, $sql);
 
 //Iron Woman
-$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Iron Woman', 'unit', 'score', 'unit');";
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Iron Woman', 'unit', 'place', 'unit');";
 $result = mysqli_query($conn, $sql);
+
+//Seamanship - Anchoring
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Anchoring', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - Boat Handling
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Boat Handling', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - First Aid
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - First Aid', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - Knots
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Knots', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - Navigation
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Navigation', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - Reefing
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Reefing', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
+//Seamanship - Sailing Rules
+$sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Seamanship - Sailing Rules', 'unit', 'score', 'unit');";
+$result = mysqli_query($conn, $sql);
+
 //echo classes created
 echo "Classes Created
 </br>
