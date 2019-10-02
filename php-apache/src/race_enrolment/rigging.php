@@ -179,8 +179,8 @@ if (mysqli_num_rows($result) != 0) {
             $placescore = $base-1;
             //insert value into table
             $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-          race_result, calculated_score, original_score, event_id) VALUES
-          ('$activity_id', '$unit_id', 'DNF', '$placescore', '$score', '$event_id');";
+          race_result, calculated_score, event_id) VALUES
+          ('$activity_id', '$unit_id', 'DNF', '$placescore', '$event_id');";
             $input = mysqli_query($conn, $sql);
             echo mysqli_error($conn);
         }
@@ -196,8 +196,8 @@ if (mysqli_num_rows($result) != 0) {
             $placescore = $base-2;
             //insert value into table
             $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-          race_result, calculated_score, original_score, event_id) VALUES
-          ('$activity_id', '$unit_id', 'DNC', '$placescore', '$score', '$event_id');";
+          race_result, calculated_score, event_id) VALUES
+          ('$activity_id', '$unit_id', 'DNC', '$placescore', '$event_id');";
             $input = mysqli_query($conn, $sql);
             echo mysqli_error($conn);
         }
