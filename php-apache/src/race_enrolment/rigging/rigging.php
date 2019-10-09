@@ -1,7 +1,8 @@
 <?php
 //include functions and connection php files
-include_once '../connection.php';
-include_once '../functions.php';
+include_once '../../connection.php';
+include_once '../../functions.php';
+include_once 'riggingfunctions.php';
 
 //define activity_id
 $activity_id = $_GET['activity_id'];
@@ -18,7 +19,7 @@ if (mysqli_num_rows($result) != 0) {
     header("Location: editrigging.php?event_id=$event_id&activity_id=$activity_id");
 } elseif (isset($_POST['submit'])) {
     //include navbar
-    include_once '../navbar.php';
+    include_once '../../navbar.php';
 
     //select all units
     $sql = "SELECT * FROM regattascoring.UNIT;";
@@ -101,9 +102,9 @@ if (mysqli_num_rows($result) != 0) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href=createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+        <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
         <br>
-        <a href=../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+        <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
         mysqli_close($conn);
         exit;
     }
@@ -133,10 +134,8 @@ if (mysqli_num_rows($result) != 0) {
 
     //sort array in descending order
     arsort($sort);
-
     //set count as 1
     $count = 0;
-
     //set score as 100
     $base = 100;
 
@@ -145,23 +144,15 @@ if (mysqli_num_rows($result) != 0) {
         //if first unit
         if ($count == 0) {
             //insert value into table
-            $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-              race_result, calculated_score, original_score, event_id) VALUES
-              ('$activity_id', '$unit_id', 'completed', '100', '$score', '$event_id');";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            input($conn, $activity_id, $unit_id, 'completed', '100', $score, $event_id);
         } else {
+            //if not first class
             //set number for calculate as one less than count
             $number = $count-1;
-            //TODO if not first class
+            //calculate place score
             $placescore = $base - ($numunits - $number);
             //insert value into table
-            $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-              race_result, calculated_score, original_score, event_id) VALUES
-              ('$activity_id', '$unit_id', 'completed', '$placescore', '$score', '$event_id');";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
-
+            input($conn, $activity_id, $unit_id, 'completed', $placescore, $score, $event_id);
             //set base as calculated score
             $base = $placescore;
         }
@@ -178,11 +169,7 @@ if (mysqli_num_rows($result) != 0) {
             //set score
             $placescore = $base-1;
             //insert value into table
-            $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-          race_result, calculated_score, event_id) VALUES
-          ('$activity_id', '$unit_id', 'DNF', '$placescore', '$event_id');";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            input($conn, $activity_id, $unit_id, 'DNF', $placescore, '', $event_id);
         }
     }
     //if did not compete (DNC)
@@ -195,24 +182,24 @@ if (mysqli_num_rows($result) != 0) {
             //set score
             $placescore = $base-2;
             //insert value into table
-            $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
-          race_result, calculated_score, event_id) VALUES
-          ('$activity_id', '$unit_id', 'DNC', '$placescore', '$event_id');";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            input($conn, $activity_id, $unit_id, 'DNC', $placescore, '', $event_id);
         }
     }
+    //check if any teams are tied
+    tied($conn);
 
     echo "Race results added";
     echo "<br>
+    <a href=editrigging.php?event_id=$event_id&activity_id=$activity_id>Edit Activity</a>
+    <br>
     <a href='/'>Return Home</a>
     <br>
-    <a href=createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+    <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
     <br>
-    <a href=../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+    <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
 } else {
     //include navbar
-    include_once '../navbar.php';
+    include_once '../../navbar.php';
 
     //Select Activity with activity id
     $sql = "SELECT * FROM regattascoring.ACTIVITY WHERE activity_id = '$activity_id';";
@@ -248,8 +235,8 @@ if (mysqli_num_rows($result) != 0) {
     <br>
     <a href='/'>Return Home</a>
     <br>
-    <a href="createrace_enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
+    <a href="../createrace_enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
     <br>
-    <a href="../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
+    <a href="../../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
     <?php
 }
