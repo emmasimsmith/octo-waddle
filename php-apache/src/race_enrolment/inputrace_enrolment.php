@@ -61,7 +61,7 @@ if ($row['activity_bracket'] == 'class') {
 } else {
         //if activity is cutter, sunburst or opti rigging
         if ($activity_id == 4 || $activity_id == 5 || $activity_id == 6) {
-            header("Location: rigging.php?event_id=$event_id&activity_id=$activity_id");
+            header("Location: rigging/rigging.php?event_id=$event_id&activity_id=$activity_id");
         }
         //TODO make thing if activity bracket is unit
     }
