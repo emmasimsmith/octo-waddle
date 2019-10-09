@@ -1,8 +1,9 @@
 <?php
 //include functions and connection php files
-include_once '../connection.php';
-include_once '../functions.php';
-include_once '../navbar.php';
+include_once '../../connection.php';
+include_once '../../functions.php';
+include_once '../../navbar.php';
+include_once 'riggingfunctions.php';
 
 //define activity_id
 $activity_id = $_GET['activity_id'];
@@ -19,6 +20,8 @@ if (isset($_POST['delete'])) {
     $result = mysqli_query($conn, $sql);
 
     echo $activity_row['activity_name'] . " results deleted";
+
+// if update selected
 } elseif (isset($_POST['update'])) {
     //TODO update option
 
@@ -102,9 +105,9 @@ if (isset($_POST['delete'])) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href=createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+        <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
         <br>
-        <a href=../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+        <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
         mysqli_close($conn);
         exit;
     }
@@ -145,38 +148,39 @@ if (isset($_POST['delete'])) {
     foreach ($sort as $unit_id => $score) {
         //if first unit
         if ($count == 0) {
-            //select race_id for update
-            $sql = "SELECT race_id FROM regattascoring.RACE_ENROLMENT WHERE
-            event_id = '$event_id' AND activity_id = '$activity_id' AND unit_id = '$unit_id';";
-            $race = mysqli_query($conn, $sql);
-            $race_row = mysqli_fetch_assoc($race);
-            $race_id = $race_row['race_id'];
 
-            //insert value into table
-            $sql = "UPDATE regattascoring.RACE_ENROLMENT set race_result = 'completed',
-            calculated_score = '100', original_score = '$score' WHERE race_id = '$race_id';";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            //select race_id for update
+            $race = race_id($conn, $event_id, $activity_id, $unit_id);
+            //if new value
+            if (mysqli_num_rows($race) == 0) {
+                //insert value into table
+                input($conn, $activity_id, $unit_id, 'completed', 100, $score, $event_id);
+            } else {
+                $race_row = mysqli_fetch_assoc($race);
+                $race_id = $race_row['race_id'];
+
+                //update value into table
+                updaterigging($conn, 'completed', 100, $score, $race_id);
+            }
         } else {
-            //select race_id for update
-            $sql = "SELECT race_id FROM regattascoring.RACE_ENROLMENT WHERE
-          event_id = '$event_id' AND activity_id = '$activity_id' AND unit_id = '$unit_id';";
-            $race = mysqli_query($conn, $sql);
-            $race_row = mysqli_fetch_assoc($race);
-            $race_id = $race_row['race_id'];
-
             //set number for calculate as one less than count
             $number = $count-1;
 
             //calculate score
             $placescore = $base - ($numunits - $number);
 
-            //insert value into table
-            $sql = "UPDATE regattascoring.RACE_ENROLMENT set race_result = 'completed',
-            calculated_score = '$placescore', original_score = '$score' WHERE race_id = '$race_id';";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            //select race_id for update
+            $race = race_id($conn, $event_id, $activity_id, $unit_id);
 
+            if (mysqli_num_rows($race) == 0) {
+                //insert value into table
+                input($conn, $activity_id, $unit_id, 'completed', $placescore, $score, $event_id);
+            } else {
+                $race_row = mysqli_fetch_assoc($race);
+                $race_id = $race_row['race_id'];
+                //insert value into table
+                updaterigging($conn, 'completed', $placescore, $score, $race_id);
+            }
             //set base as calculated score
             $base = $placescore;
         }
@@ -191,21 +195,21 @@ if (isset($_POST['delete'])) {
         $unit_id = $completed['unit_id'];
         if ($_POST["$unit_id"] == "DNF") {
 
-            //select race_id for update
-            $sql = "SELECT race_id FROM regattascoring.RACE_ENROLMENT WHERE
-        event_id = '$event_id' AND activity_id = '$activity_id' AND unit_id = '$unit_id';";
-            $race = mysqli_query($conn, $sql);
-            $race_row = mysqli_fetch_assoc($race);
-            $race_id = $race_row['race_id'];
-
             //set score
             $placescore = $base-1;
 
-            //insert value into table
-            $sql = "UPDATE regattascoring.RACE_ENROLMENT set race_result = 'DNF',
-            calculated_score = '$placescore' WHERE race_id = '$race_id';";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            //select race_id for update
+            $race = race_id($conn, $event_id, $activity_id, $unit_id);
+            //check if already existing
+            if (mysqli_num_rows($race) == 0) {
+                //insert value into table
+                input($conn, $activity_id, $unit_id, 'DNF', $placescore, '', $event_id);
+            } else {
+                $race_row = mysqli_fetch_assoc($race);
+                $race_id = $race_row['race_id'];
+                //insert value into table
+                updaterigging($conn, 'DNF', $placescore, '', $race_id);
+            }
         }
     }
     //if did not compete (DNC)
@@ -215,25 +219,30 @@ if (isset($_POST['delete'])) {
     while ($completed = mysqli_fetch_assoc($result)) {
         $unit_id = $completed['unit_id'];
         if ($_POST["$unit_id"] == "DNC") {
-
-            //select race_id for update
-            $sql = "SELECT race_id FROM regattascoring.RACE_ENROLMENT WHERE
-        event_id = '$event_id' AND activity_id = '$activity_id' AND unit_id = '$unit_id';";
-            $race = mysqli_query($conn, $sql);
-            $race_row = mysqli_fetch_assoc($race);
-            $race_id = $race_row['race_id'];
-
             //set score
             $placescore = $base-2;
 
-            //update
-            $sql = "UPDATE regattascoring.RACE_ENROLMENT set race_result = 'DNC',
-            calculated_score = '$placescore' WHERE race_id = '$race_id';";
-            $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            //select race_id for update
+            $race = race_id($conn, $event_id, $activity_id, $unit_id);
+            //check if unit score pre existing
+            if (mysqli_num_rows($race) == 0) {
+                //insert value into table
+                input($conn, $activity_id, $unit_id, 'DNC', $placescore, '', $event_id);
+            } else {
+                $race_row = mysqli_fetch_assoc($race);
+                $race_id = $race_row['race_id'];
+                //update
+                updaterigging($conn, 'DNC', $placescore, '', $race_id);
+            }
         }
     }
-    echo $activity_row['activity_name'] . " results updated";
+
+    //check if any teams are tied
+    tied($conn);
+
+    echo $activity_row['activity_name'] . " results updated
+    <br>
+    <a href=editrigging.php?event_id=$event_id&activity_id=$activity_id>Edit Activity</a>";
 } else {
     // present preentered results
 
@@ -291,9 +300,10 @@ if (isset($_POST['delete'])) {
   <?php
 }
 
-echo "<br>
+echo "
+<br>
 <a href='/'>Return Home</a>
 <br>
-<a href=createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+<a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
 <br>
-<a href=../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+<a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
