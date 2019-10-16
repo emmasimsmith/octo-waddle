@@ -54,14 +54,50 @@ if ($row['activity_bracket'] == 'class') {
   <br>
   <a href='/'>Return Home</a>
   <br>
-  <a href="createrace_enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
+  <a href="enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
   <br>
   <a href="../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
   <?php
 } else {
+        //if activity is sailing for cutter, sunburst, or optimist
+        if ($activity_id == 1 || $activity_id == 2 || $activity_id == 3) {
+            header("Location: sailing/sailing.php?event_id=$event_id&activity_id=$activity_id");
+        }
         //if activity is cutter, sunburst or opti rigging
         if ($activity_id == 4 || $activity_id == 5 || $activity_id == 6) {
             header("Location: rigging/rigging.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is pulling
+        if ($activity == 7) {
+            header("Location: pulling/pulling.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is canoeing
+        if ($activity == 8) {
+            header("Location: canoeing/canoeing.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is swimming
+        if ($activity == 9) {
+            header("Location: swimming/swimming.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is life saving
+        if ($activity == 10) {
+            header("Location: lifesaving/lifesaving.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is shooting
+        if ($activity == 11) {
+            header("Location: shooting/shooting.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is camping
+        if ($activity_id == 12 || $activity_id == 13 || $activity_id == 14 || $activity_id == 15 || $activity_id == 16 || $activity_id == 17 || $activity_id == 18) {
+            header("Location: camping/camping.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is iron woman
+        if ($activity_id == 19) {
+            header("Location: ironwoman/ironwoman.php?event_id=$event_id&activity_id=$activity_id");
+        }
+        //if activity is seamanship
+        if ($activity_id == 20 || $activity_id == 21 || $activity_id == 22 || $activity_id == 23 || $activity_id == 24 || $activity_id == 25 || $activity_id == 26) {
+            header("Location: seamanship/seamanship.php?event_id=$event_id&activity_id=$activity_id");
         }
         //TODO make thing if activity bracket is unit
     }
