@@ -102,7 +102,7 @@ if (mysqli_num_rows($result) != 0) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+        <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
         <br>
         <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
         mysqli_close($conn);
@@ -169,7 +169,7 @@ if (mysqli_num_rows($result) != 0) {
             //set score
             $placescore = $base-1;
             //insert value into table
-            input($conn, $activity_id, $unit_id, 'DNF', $placescore, '', $event_id);
+            input($conn, $activity_id, $unit_id, 'DNF', $placescore, 'NULL', $event_id);
         }
     }
     //if did not compete (DNC)
@@ -182,7 +182,7 @@ if (mysqli_num_rows($result) != 0) {
             //set score
             $placescore = $base-2;
             //insert value into table
-            input($conn, $activity_id, $unit_id, 'DNC', $placescore, '', $event_id);
+            input($conn, $activity_id, $unit_id, 'DNC', $placescore, 'NULL', $event_id);
         }
     }
     //check if any teams are tied
@@ -194,7 +194,7 @@ if (mysqli_num_rows($result) != 0) {
     <br>
     <a href='/'>Return Home</a>
     <br>
-    <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+    <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
     <br>
     <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
 } else {
@@ -235,7 +235,7 @@ if (mysqli_num_rows($result) != 0) {
     <br>
     <a href='/'>Return Home</a>
     <br>
-    <a href="../createrace_enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
+    <a href="../enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
     <br>
     <a href="../../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
     <?php

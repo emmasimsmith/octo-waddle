@@ -105,7 +105,7 @@ if (isset($_POST['delete'])) {
         echo "<br>
         <a href='/'>Return Home</a>
         <br>
-        <a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+        <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
         <br>
         <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
         mysqli_close($conn);
@@ -203,12 +203,12 @@ if (isset($_POST['delete'])) {
             //check if already existing
             if (mysqli_num_rows($race) == 0) {
                 //insert value into table
-                input($conn, $activity_id, $unit_id, 'DNF', $placescore, '', $event_id);
+                input($conn, $activity_id, $unit_id, 'DNF', $placescore, 'NULL', $event_id);
             } else {
                 $race_row = mysqli_fetch_assoc($race);
                 $race_id = $race_row['race_id'];
                 //insert value into table
-                updaterigging($conn, 'DNF', $placescore, '', $race_id);
+                updaterigging($conn, 'DNF', $placescore, 'NULL', $race_id);
             }
         }
     }
@@ -227,12 +227,12 @@ if (isset($_POST['delete'])) {
             //check if unit score pre existing
             if (mysqli_num_rows($race) == 0) {
                 //insert value into table
-                input($conn, $activity_id, $unit_id, 'DNC', $placescore, '', $event_id);
+                input($conn, $activity_id, $unit_id, 'DNC', $placescore, 'NULL', $event_id);
             } else {
                 $race_row = mysqli_fetch_assoc($race);
                 $race_id = $race_row['race_id'];
                 //update
-                updaterigging($conn, 'DNC', $placescore, '', $race_id);
+                updaterigging($conn, 'DNC', $placescore, 'NULL', $race_id);
             }
         }
     }
@@ -304,6 +304,6 @@ echo "
 <br>
 <a href='/'>Return Home</a>
 <br>
-<a href=../createrace_enrolment.php?event_id=$event_id>Select Activity</a>
+<a href=../enrolment.php?event_id=$event_id>Select Activity</a>
 <br>
 <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";

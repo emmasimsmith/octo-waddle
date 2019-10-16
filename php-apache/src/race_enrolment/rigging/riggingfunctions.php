@@ -31,7 +31,7 @@ function input($conn, $activity_id, $unit_id, $result, $calculated_score, $origi
     //insert value into table
     $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id,
   race_result, calculated_score, original_score, event_id) VALUES
-  ('$activity_id', '$unit_id', '$result', '$calculated_score', '$original_score', '$event_id');";
+  ('$activity_id', '$unit_id', '$result', '$calculated_score', $original_score, '$event_id');";
     $input = mysqli_query($conn, $sql);
     echo mysqli_error($conn);
 }
@@ -42,7 +42,6 @@ function updaterigging($conn, $result, $calculated_score, $original_score, $race
     ///update values in Countable
     $sql = "UPDATE regattascoring.RACE_ENROLMENT set race_result = '$result',
 calculated_score = $calculated_score, original_score = $original_score WHERE race_id = $race_id;";
-    echo $sql;
     $input = mysqli_query($conn, $sql);
     echo mysqli_error($conn);
 }
