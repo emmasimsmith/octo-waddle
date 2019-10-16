@@ -22,7 +22,7 @@ $row = mysqli_fetch_assoc($result);
     <br>
     <a href=/participant/searchparticipant.php?event_id=$event_id>View all Participants</a>
     <br>
-    <a href=/race_enrolment/createrace_enrolment.php?event_id=$event_id>Enroll Participants</a>";
+    <a href=/race_enrolment/enrolment.php?event_id=$event_id>Enroll Participants</a>";
      ?>
      <br>
   </body>
