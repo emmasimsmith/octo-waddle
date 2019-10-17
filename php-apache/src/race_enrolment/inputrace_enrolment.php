@@ -13,22 +13,20 @@ $activity_name = $_POST['activity_name'];
 $sql = "SELECT * FROM regattascoring.ACTIVITY WHERE activity_name = '$activity_name';";
 $result = mysqli_query($conn, $sql);
 
-//check matches with activity_name
-if (mysqli_num_rows($result) == 0) {
-    include_once '../navbar.php';
-    close($conn, "Please select a valid activity", "race_enrolment", "Race Enrolments");
-    exit;
-}
-
 //find if activity is class or unit based
 $row = mysqli_fetch_assoc($result);
 
 //define activity id
 $activity_id = $row['activity_id'];
 
+//check matches with activity_name
+if (mysqli_num_rows($result) == 0) {
+    include_once '../navbar.php';
+    close($conn, "Please select a valid activity", "race_enrolment", "Race Enrolments");
+    exit;
 //if activity bracket is class, make user select class
-if ($row['activity_bracket'] == 'class') {
-    //include navbar
+} elseif ($row['activity_bracket'] == 'class') {
+    //'];include navbar
     include_once '../navbar.php'; ?>
   <html>
     <head>
@@ -36,11 +34,10 @@ if ($row['activity_bracket'] == 'class') {
     </head>
       <h1>Race Enrolment</h1>
     <body>
-      <form action = <?php echo "inputrace_enrolment.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
-    echo "Select $activity_name Class:" ?>
-        <select name="class">
-          <?php
-          $sql = "SELECT * FROM regattascoring.BRACKET NATURAL JOIN regattascoring.CLASS WHERE activity_id = $activity_id;";
+      <form action = <?php echo "redirectenrolment.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
+    echo "Select $activity_name Class:
+        <select name='class_id'>";
+    $sql = "SELECT * FROM regattascoring.BRACKET NATURAL JOIN regattascoring.CLASS WHERE activity_id = $activity_id;";
     $result = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<option value=" . $row['class_id'] .">" . $row['class_name'] . "</option><br>";
@@ -59,45 +56,5 @@ if ($row['activity_bracket'] == 'class') {
   <a href="../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
   <?php
 } else {
-        //if activity is sailing for cutter, sunburst, or optimist
-        if ($activity_id == 1 || $activity_id == 2 || $activity_id == 3) {
-            header("Location: sailing/sailing.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is cutter, sunburst or opti rigging
-        if ($activity_id == 4 || $activity_id == 5 || $activity_id == 6) {
-            header("Location: rigging/rigging.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is pulling
-        if ($activity == 7) {
-            header("Location: pulling/pulling.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is canoeing
-        if ($activity == 8) {
-            header("Location: canoeing/canoeing.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is swimming
-        if ($activity == 9) {
-            header("Location: swimming/swimming.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is life saving
-        if ($activity == 10) {
-            header("Location: lifesaving/lifesaving.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is shooting
-        if ($activity == 11) {
-            header("Location: shooting/shooting.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is camping
-        if ($activity_id == 12 || $activity_id == 13 || $activity_id == 14 || $activity_id == 15 || $activity_id == 16 || $activity_id == 17 || $activity_id == 18) {
-            header("Location: camping/camping.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is iron woman
-        if ($activity_id == 19) {
-            header("Location: ironwoman/ironwoman.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //if activity is seamanship
-        if ($activity_id == 20 || $activity_id == 21 || $activity_id == 22 || $activity_id == 23 || $activity_id == 24 || $activity_id == 25 || $activity_id == 26) {
-            header("Location: seamanship/seamanship.php?event_id=$event_id&activity_id=$activity_id");
-        }
-        //TODO make thing if activity bracket is unit
+        header("Location: redirectenrolment.php?event_id=$event_id&activity_id=$activity_id");
     }
