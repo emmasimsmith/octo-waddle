@@ -154,7 +154,9 @@ echo "BOAT table made successfully" . "<br/>";
 $sql = "CREATE TABLE RACE_ENROLMENT (
   race_id INT PRIMARY KEY AUTO_INCREMENT,
   activity_id INT NOT NULL,
+  race_number INT,
   unit_id INT NOT NULL,
+  class_id INT,
   participant_id INT,
   race_result VARCHAR (20) NOT NULL,
   calculated_score INT NOT NULL,
@@ -162,6 +164,7 @@ $sql = "CREATE TABLE RACE_ENROLMENT (
   event_id INT NOT NULL,
   FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
+  FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
   FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
