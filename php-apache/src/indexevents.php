@@ -9,13 +9,12 @@ include_once 'connection.php';
   </head>
       <h1>Events</h1>
   <body>
-  <br>
     <?php
     //select all from event table
     $sql = "SELECT * FROM regattascoring.EVENT;";
     $result = mysqli_query($conn, $sql);
-    if (!$result) {
-        echo "No events created";
+    if (mysqli_num_rows($result) == 0) {
+        echo "No events created <br><br>";
         echo "<a href=/event/createevent.php>Create Event</a>";
         echo "<a href='/'>Return Home</a>";
     }
