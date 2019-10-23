@@ -1,0 +1,137 @@
+body {
+  background-image: url("../images/indexbackgroundimage.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: relative;
+}
+
+.container {
+  width: 60%;
+  margin: auto;
+  margin-top: 200px;
+  background-color: white;
+  border: 5px #e6e6e6 solid;
+}
+
+.container .content{
+  padding: 50px 70px;
+}
+
+.container .content h1{
+  text-align: center;
+  font-family: Arial;
+  font-size: 2em;
+}
+
+.container .content form{
+  font-size: 1.15em;
+  font-family: sans-serif;
+  margin-right: 50px
+}
+
+.container .content .labels{
+  float: left;
+  font-size: 1.15em;
+  font-family: sans-serif;
+  list-style-type: none;
+  width:40%;
+  box-sizing: border-box;
+  margin: 0;
+  padding-left: 270px
+}
+
+.container .content .labels li{
+  padding: 5.2px 0px;
+}
+
+.container .content .form input{
+  display: block;
+  padding: 3px 0px;
+  margin: 5px 0px;
+  width: 300px;
+}
+
+.container .content .form{
+  float: right;
+  width:53%;
+  box-sizing: border-box;
+  margin-bottom: 0px;
+}
+
+.container .content .form .select{
+  display: block;
+  padding: 3px 0px;
+  margin: 5px 0px;
+  width: 300px
+}
+
+.container .content .form .button{
+  background-color: #222;
+  color: white;
+  border: none;
+  margin-top: 1em;
+  width: 80px;
+  height: 40px;
+  font-size: 1em;
+  margin-left: 30px;
+}
+
+.container .content .form .button:hover{
+  background-color: #444;
+}
+
+.container .content .close{
+  font-family: arial;
+  margin-top: 70px;
+  padding-left: 0px;
+  margin-bottom: -25px;
+  display: inline-block;
+  width: 100%;
+  text-align:center;
+}
+
+.container .content .close ul{
+  list-style-type: none;
+}
+
+.container .content .close ul li{
+  padding: 0px 20px;
+  display: inline-block;
+
+}
+
+.container .content .close ul li a{
+  text-decoration: underline;
+  color: #424248;
+  font-size: 1em;
+}
+.container .content .close a:hover{
+  color: #1a1aff;
+  text-decoration: none;
+}
+
+.container .content .error{
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 1em;
+  font-family: arial;
+  padding-top: 20px;
+  color: #cc0000;
+}
+.container .content .message{
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 1.2em;
+  font-family: arial;
+}
+
+.container .content .message a{
+  color:#000099;
+}
+
+.container .content .message a:hover{
+  color:#0000ff;
+}
