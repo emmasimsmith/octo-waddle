@@ -1,0 +1,53 @@
+body {
+  background-image: url("../images/indexbackgroundimage.png");
+  background-repeat: no-repeat;
+  background-position: center -250px;
+  background-size: cover;
+  background-attachment: relative;
+}
+
+.outer-container{
+  width: 100%;
+  background-color: white;
+}
+.container {
+  width: 70%;
+  margin: auto;
+  margin-top: 1000px;
+  margin-bottom: 50px
+}
+
+.container .content {
+    background-color: #ebebeb;
+    border-top: 50px white solid;
+    padding: 50px;
+}
+
+.container .content h1{
+  font-family: sans-serif;
+  font-size: 2em;
+  text-align: center;
+  padding-top:-10px;
+
+}
+
+.container .content p{
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.bottom-bar{
+  background-color: #222;
+  width: 100%
+}
+
+.bottom-bar{
+  margin: 0px;
+  color: white;
+  font-size: .6em;
+  float: left;
+  height:50px;
+  padding:15px 60px;
+  line-height: 30px;
+  font-family: Arial;
+}
