@@ -102,14 +102,17 @@ function viewselect($conn, $name_id, $name, $table_name, $plural_name)
 function close($conn, $error, $name, $plural_name)
 {
     if ($error) {
-        echo $error . "</br>";
+        ?><div class="error"><?php echo $error ?></div><?php
     } ?>
-  <br>
-  <a href="/">Return Home</a>
-  <br>
-  <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-  <br>
-  <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+      <div class="close">
+        <ul>
+          <li><a href="/">Return Home</a></li>
+          <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+          <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <?php
   mysqli_close($conn);
 }
