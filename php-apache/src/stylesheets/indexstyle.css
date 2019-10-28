@@ -3,24 +3,29 @@ body {
   background-repeat: no-repeat;
   background-position: center -250px;
   background-size: cover;
-  background-attachment: relative;
+  width: 100%;
+  box-sizing: border-box;
+
 }
 
 .outer-container{
   width: 100%;
   background-color: white;
+  box-sizing: border-box;
+
 }
 .container {
   width: 70%;
   margin: auto;
   margin-top: 1000px;
-  margin-bottom: 50px
+  margin-bottom: 50px;
 }
 
 .container .content {
     background-color: #ebebeb;
     border-top: 50px white solid;
     padding: 50px;
+    overflow: auto;
 }
 
 .container .content h1{
@@ -36,9 +41,29 @@ body {
   text-align: center;
 }
 
-.bottom-bar{
-  background-color: #222;
-  width: 100%
+.container .content .content-one{
+  width: 50%;
+  box-sizing: border-box;
+  float: left;
+  padding: 0px 50px;
+  text-align: center;
+}
+
+.container .content h2{
+  margin-bottom: 5px;
+}
+
+.container .content p1{
+  font-size: 1.15em;
+}
+
+.container .content .content-two{
+  width: 50%;
+  box-sizing: border-box;
+  float: right;
+  border-left: 2px #717171 solid;
+  padding: 0px 50px;
+  text-align: center;
 }
 
 .bottom-bar{
@@ -50,4 +75,8 @@ body {
   padding:15px 60px;
   line-height: 30px;
   font-family: Arial;
+  box-sizing: border-box;
+  background-color: #222;
+  width: 100%;
+  overflow: auto;
 }
