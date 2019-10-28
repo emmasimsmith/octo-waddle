@@ -19,5 +19,3 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: admin
       MYSQL_PASSWORD: test
-    ports:
-      - 3306:3306
