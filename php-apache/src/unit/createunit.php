@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,20 +15,15 @@ include_once '../functions.php';
 function unitform()
 {
     ?>
-  <html>
-    <head>
-        <title>Create Unit</title>
-    </head>
-        <h1>Create New Unit</h1>
-    <body>
+    <h1>Create New Unit</h1>
+      <ul class="labels">
+        <li>Unit Name:</li>
+      </ul>
       <form action="createunit.php" method ="POST">
-        Unit Name:
         <input type="text" name="unit_name" placeholder="Unit Name" >
-        <br>
         <button type="submit" name="submit">Enter</button>
       </form>
     </body>
-  </html>
   <?php
 }
 
@@ -45,21 +47,20 @@ if (isset($_POST["submit"])) {
     //echo errors then exit
     if (count($errors) != 0) {
         //call form with existing values?>
-        <html>
-          <head>
-              <title>Create Unit</title>
-          </head>
+        <div class="container">
+          <div class="content">
+            <body>
               <h1>Create New Unit</h1>
-          <body>
-            <form action="createunit.php" method ="POST">
-              Unit Name:
-              <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name" >
-              <br>
-              <button type="submit" name="submit">Enter</button>
-            </form>
-          </body>
-        </html>
+              <ul class="labels">
+                <li>Unit Name:</li>
+              </ul>
+              <form action="createunit.php" method ="POST">
+                <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name" >
+                <button type="submit" name="submit">Enter</button>
+              </form>
+            </body>
       <?php
+
       //echo errors from the input sanisation
       $issue = '';
         foreach ($errors as $error) {
@@ -76,11 +77,14 @@ if (isset($_POST["submit"])) {
         exit;
     }
 
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     //echo unit created
-    echo $_POST['unit_name'] . " Unit Created";
+    echo "<div class='message'>" . $_POST['unit_name'] . " Unit Created";
     $unit_id = mysqli_insert_id($conn); ?>
     <br>
-    <a href= <?php echo "viewunit.php?id=$unit_id" ?>>Edit <?php echo $_POST['unit_name'] ?> Unit</a>
+    <a href= <?php echo "viewunit.php?id=$unit_id" ?>>Edit <?php echo $_POST['unit_name'] ?> Unit</a></div>
     <?php
 
     //call unit form
@@ -90,6 +94,9 @@ if (isset($_POST["submit"])) {
     close($conn, $error, "unit", "Units");
 } else {
     //call unit form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     unitform();
 
     //call close

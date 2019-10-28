@@ -11,7 +11,6 @@ include_once '../navbar.php';
 include_once '../connection.php';
 include_once '../functions.php';
 
-
 //function for the individual form
 function individualform($result)
 {
@@ -25,22 +24,22 @@ function individualform($result)
             <li>Role:</li>
             <li>Comments:</li>
           </ul>
-        <form class="form" action="createindividual.php" method ="POST">
+        <form action="createindividual.php" method ="POST">
           <input type="text" name="first" placeholder="First name">
           <input type="text" name="last" placeholder="Last name">
           <input type="date" name="dob" placeholder="Date of Birth">
-          <select class="select" name = "unit">
+          <select name = "unit">
           <?php
           while ($row = mysqli_fetch_assoc($result)) {
               echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
           } ?>
           </select>
-          <select class="select" name="role">
+          <select name="role">
             <option value="mariner">Mariner</option>
             <option value="other">Parent/Sibling/Leader</option>
           </select>
           <input type="text" name="comments" placeholder="Comments">
-          <button class="button" type="submit" name="submit">Enter</button>
+          <button type="submit" name="submit">Enter</button>
         </form>
       </body>
 
@@ -102,7 +101,7 @@ if (isset($_POST["submit"])) {
                 <li>Role:</li>
                 <li>Comments:</li>
               </ul>
-              <form class="form" action="createindividual.php" method ="POST">
+              <form action="createindividual.php" method ="POST">
                 <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
                 <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
                 <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
@@ -125,7 +124,7 @@ if (isset($_POST["submit"])) {
                   } ?>>Parent/Sibling/Leader</option>
                 </select>
                 <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
-                <button class="button" type="submit" name="submit">Enter</button>
+                <button type="submit" name="submit">Enter</button>
             </form>
           </body>
 

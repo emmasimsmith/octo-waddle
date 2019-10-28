@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../connection.php';
@@ -7,40 +14,23 @@ include_once '../functions.php';
 function classform()
 {
     ?>
-  <html>
-  <head>
-      <title>Create Class</title>
-  </head>
-  <h1>Create New Class</h1>
-  <body>
-  <form action= createclass.php method ="POST">
-    Junior Junior Class:
-    <br>
-    Minimum Age:
-    <input type='number' name="jj_min_age" placeholder="Minimum Age" step="any" min="0" required>
-    <br>
-    Junior Class:
-    <br>
-    Minimum Age:
-    <input type='number' name="junior_min_age" placeholder="Minimum Age" step="any" min="0" required>
-    <br>
-    Intermediate Class:
-    <br>
-    Minimum Age:
-    <input type='number' name="intermediate_min_age" placeholder="Minimum Age" step="any" min="0" required>
-    <br>
-    Senior Class:
-    <br>
-    Minimum Age:
-    <input type='number' name="senior_min_age" placeholder="Minimum Age" step="any" min="0" required>
-    <br>
-    Maximum Age:
-    <input type='number' name="senior_max_age" placeholder="Maximum Age" step="any" min="0" required>
-    <br>
-    <button type="submit" name="submit">Enter</button>
-  </form>
-  </body>
- </html>
+    <h1>Create New Classes</h1>
+      <ul class="labels">
+        <li>Junior Junior Class Minimum Age:</li>
+        <li>Junior Class Minimum Age:</li>
+        <li>Intermediate Class Minimum Age:</li>
+        <li>Senior Class Minimum Age:</li>
+        <li>Senior Class Maximum Age:</li>
+      </ul>
+      <form action="createclass.php" method ="POST">
+        <input type='number' name="jj_min_age" placeholder="Minimum Age" step="any" min="0" required>
+        <input type='number' name="junior_min_age" placeholder="Minimum Age" step="any" min="0" required>
+        <input type='number' name="intermediate_min_age" placeholder="Minimum Age" step="any" min="0" required>
+        <input type='number' name="senior_min_age" placeholder="Minimum Age" step="any" min="0" required>
+        <input type='number' name="senior_max_age" placeholder="Maximum Age" step="any" min="0" required>
+        <button type="submit" name="submit">Enter</button>
+      </form>
+    </body>
 <?php
 }
 
@@ -48,10 +38,7 @@ $sql = "SELECT * FROM regattascoring.CLASS;";
 
 if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     //include navbar
-    include_once '../navbar.php';
-
-    close($conn, "Classes have already been created", "class", "Classes");
-    exit;
+    header("Location: viewclass.php");
 
 //IF FORM SUBMITTED
 } elseif (isset($_POST["submit"])) {
@@ -87,40 +74,26 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
         include_once '../navbar.php';
 
         //call form with existing values?>
-        <html>
-        <head>
-            <title>Create Class</title>
-        </head>
-        <h1>Create New Class</h1>
-        <body>
-        <form action= createclass.php method ="POST">
-          Junior Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Intermediate Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Senior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Maximum Age:
-          <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
-          <br>
-          <button type="submit" name="submit">Enter</button>
-        </form>
-        </body>
-       </html>
+        <div class="container">
+          <div class="content">
+            <body>
+              <h1>Create New Class</h1>
+              <ul class="labels">
+                <li>Junior Junior Class Minimum Age:</li>
+                <li>Junior Class Minimum Age:</li>
+                <li>Intermediate Class Minimum Age:</li>
+                <li>Senior Class Minimum Age:</li>
+                <li>Senior Class Maximum Age:</li>
+              </ul>
+              <form action= createclass.php method ="POST">
+                <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
+                <button type="submit" name="submit">Enter</button>
+              </form>
+            </body>
         <?php
 
         $issue = '';
@@ -159,6 +132,9 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     include_once '../navbar.php';
 
     //call class form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     classform();
 
     //call class close

@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, connection and function files
 include_once '../navbar.php';
@@ -8,25 +15,17 @@ include_once '../functions.php';
 function eventform()
 {
     ?>
-  <html>
-  <head>
-      <title>Create Event</title>
-  </head>
-  <h1>Create New Event</h1>
-  <body>
-
-  <form action="createevent.php" method ="POST">
-    Location:
-    <input type="text" name="location" placeholder="Location">
-    <br>
-    Date:
-    <input type="date" name="date" placeholder="Date">
-    <br>
-    <button type="submit" name="submit">Enter</button>
-  </form>
-
+    <h1>Create New Event</h1>
+    <ul class="labels">
+      <li>Location:</li>
+      <li>Date:</li>
+    </ul>
+    <form action="createevent.php" method ="POST">
+      <input type="text" name="location" placeholder="Location">
+      <input type="date" name="date" placeholder="Date">
+      <button type="submit" name="submit">Enter</button>
+    </form>
   </body>
-  </html>
   <?php
 }
 
@@ -59,24 +58,22 @@ if (isset($_POST["submit"])) {
     //echo errors then exit
     if (count($errors) != 0) {
         //call form with existing values?>
-      <html>
-        <head>
-          <title>Create Event</title>
-        </head>
-        <h1>Create New Event</h1>
-        <body>
-          <form action="createevent.php" method ="POST">
-            Location:
-            <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
-            <br>
-            Date:
-            <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
-            <br>
-            <button type="submit" name="submit">Enter</button>
-          </form>
-        </body>
-      </html>
-      <?php
+        <div class="container">
+          <div class="content">
+            <body>
+              <h1>Create New Event</h1>
+              <ul class="labels">
+                <li>Location:</li>
+                <li>Date:</li>
+              </ul>
+              <form action="createevent.php" method ="POST">
+                <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
+                <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
+                <button type="submit" name="submit">Enter</button>
+              </form>
+            </body>
+          <?php
+
       //echo errors from the input sanitsation
       $issue = "";
         foreach ($errors as $error) {
@@ -94,11 +91,14 @@ if (isset($_POST["submit"])) {
         exit;
     }
 
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     //echo event created
-    echo "Regatta at " . $_POST['location'] . " created";
+    echo "<div class='message'>Regatta at " . $_POST['location'] . " created";
     $event_id = mysqli_insert_id($conn); ?>
     <br>
-    <a href = <?php echo "viewevent.php?id=$event_id"?>><?php echo "Edit " . $_POST['location'] . " Regatta"?></a>
+    <a href = <?php echo "viewevent.php?id=$event_id"?>><?php echo "Edit " . $_POST['location'] . " Regatta"?></a></div>
     <?php
 
     //call event form
@@ -108,6 +108,9 @@ if (isset($_POST["submit"])) {
     close($conn, $error, "event", "Events");
 } else {
     //call event form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     eventform();
 
     //call closing function
