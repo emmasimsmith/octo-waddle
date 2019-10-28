@@ -31,8 +31,8 @@
           <div class="nav-content">
             <div class="nav-sub">
               <ul>
-                <li><a href="/event/createclass.php">Create Classes</a></li>
-                <li><a href="/event/searchclasses.php">View Classes</a></li>
+                <li><a href="/class/createclass.php">Create Classes</a></li>
+                <li><a href="/class/searchclasses.php">View Classes</a></li>
               </ul>
             </div>
           </div>
