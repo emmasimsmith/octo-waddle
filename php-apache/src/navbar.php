@@ -11,6 +11,7 @@
               <ul>
                 <li><a href="/event/createevent.php">Create Event</a></li>
                 <li><a href="/event/searchevent.php">View Events</a></li>
+                <li><a href="indexevents.php">Select Event</a></li>
               </ul>
             </div>
           </div>
@@ -32,7 +33,7 @@
             <div class="nav-sub">
               <ul>
                 <li><a href="/class/createclass.php">Create Classes</a></li>
-                <li><a href="/class/searchclasses.php">View Classes</a></li>
+                <li><a href="/class/searchclass.php">View Classes</a></li>
               </ul>
             </div>
           </div>
