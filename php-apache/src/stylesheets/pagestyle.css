@@ -47,28 +47,34 @@ body {
   padding: 5.2px 0px;
 }
 
-.container .content form input{
+.container .content .inside-form input{
   display: block;
   padding: 3px 0px;
   margin: 5px 0px;
   width: 300px;
 }
 
-.container .content form{
+.container .content .inside-form{
   float: right;
-  width:53%;
+  width:55%;
   box-sizing: border-box;
   margin-bottom: 0px;
 }
 
-.container .content form select{
+.container .content .inside-form select{
   display: block;
   padding: 3px 0px;
   margin: 5px 0px;
   width: 300px
 }
 
-.container .content form button{
+.container .content .button{
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+}
+
+.container .content .button button{
   background-color: #222;
   color: white;
   border: none;
@@ -76,10 +82,10 @@ body {
   width: 80px;
   height: 40px;
   font-size: 1em;
-  margin-left: 30px;
+  margin: 15px;
 }
 
-.container .content form button:hover{
+.container .content .button button:hover{
   background-color: #444;
 }
 
