@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 // include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -35,41 +42,32 @@ if (isset($_POST["update"])) {
     //if not valid echo error and form then exit
     if (count($errors) != 0) {
         //call form with existing values?>
-      <html>
-      <head>
-          <title>Create Class</title>
-      </head>
-        <h1>Create New Class</h1>
-      <body>
-        <form action= viewclass.php method ="POST">
-          Junior Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Intermediate Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Senior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Maximum Age:
-          <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
-          <br>
-          <button type="submit" name="update">Update</button>
-        </form>
-      </body>
-      </html>
-      <?php
+        <div class='container'>
+            <div class='content'>
+              <body>
+                <h1>Edit Classes</h1>
+                  <ul class="labels">
+                    <li>Junior Junior Class Minimum Age:</li>
+                    <li>Junior Class Minimum Age:</li>
+                    <li>Intermediate Class Minimum Age:</li>
+                    <li>Senior Class Minimum Age:</li>
+                    <li>Senior Class Maximum Age:</li>
+                  </ul>
+                  <form action= viewclass.php method ="POST">
+                    <div class="inside-form">
+                      <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                      <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                      <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                      <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
+                      <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
+                    </div>
+                    <div class="button">
+                      <button type="submit" name="update">Update</button>
+                    </div>
+                  </form>
+                </body>
+                </html>
+                <?php
 
       $issue = '';
         foreach ($errors as $error) {
@@ -120,79 +118,81 @@ if (isset($_POST["update"])) {
 
 
     //echo classes created
-    echo "Classes updated" . "</br>";
-    echo "<a href='viewclass.php'>Edit Classes</a>";
-    echo "<br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href='searchclass.php'>View all Classes</a>";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'> Classes updated" . "</br>";
+    echo "<a href='viewclass.php'>Edit Classes</a><div>";
+    echo "<div class='close'>
+            <ul>
+              <li><a href='/'>Return Home</a></li>
+              <li><a href='searchclass.php'>View all Classes</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>";
     mysqli_close($conn);
 
 // if nothing has been selected
 } else {
 
     //call form with existing values;?>
-    <html>
-      <head>
-          <title>Udpate Classes</title>
-      </head>
-        <h1>Update Classes</h1>
-      <body>
-        <form action= viewclass.php method ="POST">
-          Junior Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="jj_min_age"
-          <?php
-          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior Junior';";
+    <div class='container'>
+        <div class='content'>
+          <body>
+            <h1>Edit Classes</h1>
+              <ul class="labels">
+                <li>Junior Junior Class Minimum Age:</li>
+                <li>Junior Class Minimum Age:</li>
+                <li>Intermediate Class Minimum Age:</li>
+                <li>Senior Class Minimum Age:</li>
+                <li>Senior Class Maximum Age:</li>
+              </ul>
+              <form action= viewclass.php method ="POST">
+                <div class="inside-form">
+                  <input type='number' name="jj_min_age"
+                  <?php
+                  $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior Junior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Junior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="junior_min_age"
-          <?php
-          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior';";
+                  <input type='number' name="junior_min_age"
+                  <?php
+                  $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Junior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     echo "value=" . $row['min_age'] ?>  placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Intermediate Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="intermediate_min_age"
-          <?php
-          $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Intermediate';";
+                  <input type='number' name="intermediate_min_age"
+                  <?php
+                  $sql = "SELECT min_age FROM regattascoring.CLASS WHERE class_name = 'Intermediate';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Senior Class:
-          <br>
-          Minimum Age:
-          <input type='number' name="senior_min_age"
-          <?php
-          $sql = "SELECT * FROM regattascoring.CLASS WHERE class_name = 'Senior';";
+                  <input type='number' name="senior_min_age"
+                  <?php
+                  $sql = "SELECT * FROM regattascoring.CLASS WHERE class_name = 'Senior';";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     echo "value=" . $row['min_age'] ?> placeholder="Minimum Age" step="any" min="0" required>
-          <br>
-          Maximum Age:
-          <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" min="0" required>
-          <br>
-          <button type="submit" name="update">Update</button>
-        </form>
-      </body>
-    </html>
-    <?php
+                  <input type='number' name="senior_max_age" value= '<?php echo $row['max_age'] ?>' placeholder="Maximum Age" step="any" required>
+                </div>
+                <div class="button">
+                  <button type="submit" name="update">Update</button>
+                </div>
+              </form>
+            </body>
+          </html>
+          <?php
 
   //call closing function
-  echo "<br>
-  <a href='/'>Return Home</a>
-  <br>
-  <a href='searchclass.php'>View all Classes</a>";
+  echo "<div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href='searchclass.php'>View all Classes</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>";
     mysqli_close($conn);
 }
 ?>
