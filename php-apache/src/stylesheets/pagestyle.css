@@ -1,5 +1,5 @@
 body {
-  background-image: url("../images/indexbackgroundimage.png");
+  background-image: url("../images/general_background.JPG");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -29,7 +29,6 @@ body {
 .container .content form{
   font-size: 1.15em;
   font-family: sans-serif;
-  margin-right: 50px
 }
 
 .container .content .labels{
@@ -56,7 +55,7 @@ body {
 
 .container .content .inside-form{
   float: right;
-  width:55%;
+  width:57.5%;
   box-sizing: border-box;
   margin-bottom: 0px;
 }
