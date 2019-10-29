@@ -44,7 +44,7 @@ include_once 'connection.php';
       </div>
     </div>
     <div class="bottom-bar">
-      <h1>Emma Sim-Smith &copy; 2019</h1>
+      <h3>Emma Sim-Smith &copy; 2019</h3>
     </div>
   </body>
 </html>
