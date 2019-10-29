@@ -2,7 +2,7 @@
   <head>
     <title>Create Individual</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
 
 <?php
@@ -21,9 +21,13 @@ function eventform()
       <li>Date:</li>
     </ul>
     <form action="createevent.php" method ="POST">
-      <input type="text" name="location" placeholder="Location">
-      <input type="date" name="date" placeholder="Date">
-      <button type="submit" name="submit">Enter</button>
+      <div class="inside-form">
+        <input type="text" name="location" placeholder="Location">
+        <input type="date" name="date" placeholder="Date">
+      </div>
+      <div class="button">
+        <button type="submit" name="submit">Enter</button>
+      </div>
     </form>
   </body>
   <?php
@@ -67,9 +71,13 @@ if (isset($_POST["submit"])) {
                 <li>Date:</li>
               </ul>
               <form action="createevent.php" method ="POST">
-                <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
-                <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
-                <button type="submit" name="submit">Enter</button>
+                <div class="inside-form">
+                  <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
+                  <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
+                </div>
+                <div class="button">
+                  <button type="submit" name="submit">Enter</button>
+                </div>
               </form>
             </body>
           <?php

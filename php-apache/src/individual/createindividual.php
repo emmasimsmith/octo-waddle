@@ -2,7 +2,7 @@
   <head>
     <title>Create Individual</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
 
 <?php
@@ -25,21 +25,25 @@ function individualform($result)
             <li>Comments:</li>
           </ul>
         <form action="createindividual.php" method ="POST">
-          <input type="text" name="first" placeholder="First name">
-          <input type="text" name="last" placeholder="Last name">
-          <input type="date" name="dob" placeholder="Date of Birth">
-          <select name = "unit">
-          <?php
-          while ($row = mysqli_fetch_assoc($result)) {
-              echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
-          } ?>
-          </select>
-          <select name="role">
-            <option value="mariner">Mariner</option>
-            <option value="other">Parent/Sibling/Leader</option>
-          </select>
-          <input type="text" name="comments" placeholder="Comments">
-          <button type="submit" name="submit">Enter</button>
+          <div class="inside-form">
+            <input type="text" name="first" placeholder="First name">
+            <input type="text" name="last" placeholder="Last name">
+            <input type="date" name="dob" placeholder="Date of Birth">
+            <select name = "unit">
+            <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
+            } ?>
+            </select>
+            <select name="role">
+              <option value="mariner">Mariner</option>
+              <option value="other">Parent/Sibling/Leader</option>
+            </select>
+            <input type="text" name="comments" placeholder="Comments">
+          </div>
+          <div class="button">
+            <button type="submit" name="submit">Enter</button>
+          </div>
         </form>
       </body>
 
@@ -102,29 +106,33 @@ if (isset($_POST["submit"])) {
                 <li>Comments:</li>
               </ul>
               <form action="createindividual.php" method ="POST">
-                <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
-                <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
-                <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
-                <select class="select" name="unit">
-                  <?php
-                  while ($row = mysqli_fetch_assoc($result)) {
-                      echo "<option value=" . $row['unit_id'] . " ";
-                      if ($_POST['unit'] == $row['unit_id']) {
-                          echo "selected";
-                      }
-                      echo " >" . $row['unit_name'] . "</option>";
-                  } ?>
-                </select>
-                <select class="select" name="role">
-                  <option value="mariner" <?php if ($_POST['role'] == "mariner") {
-                      echo "selected";
-                  } ?>>Mariner</option>
-                  <option value="other" <?php if ($_POST['role'] == "other") {
-                      echo "selected";
-                  } ?>>Parent/Sibling/Leader</option>
-                </select>
-                <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
-                <button type="submit" name="submit">Enter</button>
+                <div class="inside-form">
+                  <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
+                  <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
+                  <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
+                  <select class="select" name="unit">
+                    <?php
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value=" . $row['unit_id'] . " ";
+                        if ($_POST['unit'] == $row['unit_id']) {
+                            echo "selected";
+                        }
+                        echo " >" . $row['unit_name'] . "</option>";
+                    } ?>
+                  </select>
+                  <select class="select" name="role">
+                    <option value="mariner" <?php if ($_POST['role'] == "mariner") {
+                        echo "selected";
+                    } ?>>Mariner</option>
+                    <option value="other" <?php if ($_POST['role'] == "other") {
+                        echo "selected";
+                    } ?>>Parent/Sibling/Leader</option>
+                  </select>
+                  <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
+                </div>
+                <div class="button">
+                  <button type="submit" name="submit">Enter</button>
+                </div>
             </form>
           </body>
 

@@ -2,7 +2,7 @@
   <head>
     <title>Create Boat</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
 <?php
 //include navigation bar, functions and connection php files
@@ -22,20 +22,24 @@ function boatform($result)
             <li>Handicap:</li>
           </ul>
           <form action="createboat.php" method="POST">
-            <input type="text" name="boat_number" placeholder="Boat Number">
-            <select name="boat_type" placeholder="Boat Type">
-              <option value="cutter">Cutter</option>
-              <option value="sunburst">Sunburst</option>
-              <option value="optimist">Optimist</option>
-            </select>
-            <select name = "unit_id" placeholder="Unit Name">
-              <?php
-              while ($row = mysqli_fetch_assoc($result)) {
-                  echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
-              } ?>
-            </select>
-            <input type="number" name="boat_handicap" step="any" placeholder="Handicap">
-            <button type="submit" name="submit">Enter</button>
+            <div class="inside-form">
+              <input type="text" name="boat_number" placeholder="Boat Number">
+              <select name="boat_type" placeholder="Boat Type">
+                <option value="cutter">Cutter</option>
+                <option value="sunburst">Sunburst</option>
+                <option value="optimist">Optimist</option>
+              </select>
+              <select name = "unit_id" placeholder="Unit Name">
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
+                } ?>
+              </select>
+              <input type="number" name="boat_handicap" step="any" placeholder="Handicap">
+            </div>
+            <div class="button">
+              <button type="submit" name="submit">Enter</button>
+            </div>
           </form>
         </body>
   <?php
@@ -93,31 +97,35 @@ if (isset($_POST["submit"])) {
                   <li>Handicap:</li>
                 </ul>
                 <form action="createboat.php" method="POST">
-                   <input type="text" name="boat_number" value="<?php echo $_POST['boat_number']?>" placeholder="Boat Number">
-                   <br>
-                   <select name="boat_type" placeholder="Boat Type">
-                     <option value="cutter" <?php if ($_POST['boat_type'] == "cutter") {
+                  <div class="inside-form">
+                     <input type="text" name="boat_number" value="<?php echo $_POST['boat_number']?>" placeholder="Boat Number">
+                     <br>
+                     <select name="boat_type" placeholder="Boat Type">
+                       <option value="cutter" <?php if ($_POST['boat_type'] == "cutter") {
             echo "selected";
         } ?>>Cutter</option>
-                     <option value="sunburst"<?php if ($_POST['boat_type'] == "sunburst") {
+                       <option value="sunburst"<?php if ($_POST['boat_type'] == "sunburst") {
             echo "selected";
         } ?>>Sunburst</option>
-                     <option value="optimist"<?php if ($_POST['boat_type'] == "optimist") {
+                       <option value="optimist"<?php if ($_POST['boat_type'] == "optimist") {
             echo "selected";
         } ?>>Optimist</option>
-                   </select>
-                   <select name = "unit" placeholder="Unit">
-                     <?php
-                     while ($row = mysqli_fetch_assoc($result)) {
-                         echo "<option value=" . $row['unit_id'] . " ";
-                         if ($_POST['unit_id'] == $row['unit_id']) {
-                             echo "selected";
-                         }
-                         echo " >" . $row['unit_name'] . "</option>";
-                     } ?>
-                  </select>
-                   <input type="number" name="boat_handicap" value="<?php echo $boat_handicap?>" step="any" placeholder="Handicap">
-                   <button type="submit" name="submit">Enter</button>
+                     </select>
+                     <select name = "unit" placeholder="Unit">
+                       <?php
+                       while ($row = mysqli_fetch_assoc($result)) {
+                           echo "<option value=" . $row['unit_id'] . " ";
+                           if ($_POST['unit_id'] == $row['unit_id']) {
+                               echo "selected";
+                           }
+                           echo " >" . $row['unit_name'] . "</option>";
+                       } ?>
+                    </select>
+                     <input type="number" name="boat_handicap" value="<?php echo $boat_handicap?>" step="any" placeholder="Handicap">
+                   </div>
+                   <div class="button">
+                     <button type="submit" name="submit">Enter</button>
+                   </div>
                  </form>
                </body>
 

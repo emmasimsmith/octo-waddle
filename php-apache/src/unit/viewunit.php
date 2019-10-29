@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once "../connection.php";
@@ -19,7 +26,10 @@ if (isset($_POST["delete"])) {
     deletevariable($conn, "unit", $unit_id_escaped, "regattascoring.UNIT", "Units");
 
     //echo unit deleted and close
-    echo $_POST['unit_name'] . " deleted";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>" .  $_POST['unit_name'] . " deleted";
     close($conn, $error, "unit", "Units");
 
 //if update was selected
@@ -42,22 +52,24 @@ if (isset($_POST["delete"])) {
     }
     if (count($errors) != 0) {
         //call form with existing values?>
-        <html>
-          <head>
-              <title>Create Unit</title>
-          </head>
-              <h1>Create New Unit</h1>
-          <body>
-            <form action= <?php echo "viewunit.php?id=" . $_GET['id']?> method ="POST">
-              Unit Name:
-              <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name">
-              <br>
-              <button type="submit" name="update">Update</button>
-              <button type="submit" name="delete">Delete</button>
-            </form>
-          </body>
-        </html>
-        <?php
+        <div class='container'>
+            <div class='content'>
+              <body>
+                <h1>Create New Unit</h1>
+                  <ul class="labels">
+                    <li>Unit Name:</li>
+                  </ul>
+                  <form action= <?php echo "viewunit.php?id=" . $_GET['id']?> method ="POST">
+                    <div class="inside-form">
+                    <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name">
+                  </div>
+                  <div class="button">
+                    <button type="submit" name="update">Update</button>
+                    <button type="submit" name="delete">Delete</button>
+                  </div>
+                  </form>
+                </body>
+              <?php
 
         //echo input sanisation errors
         $issue = '';
@@ -79,7 +91,10 @@ if (isset($_POST["delete"])) {
     }
 
     //echo table updated and close
-    echo $_POST['unit_name'] . " updated";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>" . $_POST['unit_name'] . " updated";
     close($conn, $error, "unit", "Units");
 } else {
 
@@ -90,24 +105,25 @@ if (isset($_POST["delete"])) {
     $row = viewselect($conn, $unit_id, "unit", "regattascoring.UNIT", "Units");
 
     //call form with previous values?>
-  <html>
-    <head>
-        <title>Create Unit</title>
-    </head>
-        <h1>Create New Unit</h1>
-    <body>
-      <form action= <?php echo "viewunit.php?id=" . $_GET['id'] ?> method ="POST">
-        Unit Name:
-        <input type="text" name="unit_name" value="<?php echo $row['unit_name']?>"
-        placeholder="Unit Name">
-        <br>
-        <button type="submit" name="update">Update</button>
-        <button type="submit" name="delete">Delete</button>
-        <br>
-      </form>
-    </body>
-  </html>
-  <?php
+    <div class='container'>
+        <div class='content'>
+          <body>
+            <h1>Create New Unit</h1>
+              <ul class="labels">
+                <li>Unit Name:</li>
+              </ul>
+              <form action= <?php echo "viewunit.php?id=" . $_GET['id'] ?> method ="POST">
+                <div class="inside-form">
+                  <input type="text" name="unit_name" value="<?php echo $row['unit_name']?>"
+                  placeholder="Unit Name">
+                </div>
+                <div class="button">
+                  <button type="submit" name="update">Update</button>
+                  <button type="submit" name="delete">Delete</button>
+                </div>
+              </form>
+            </body>
+          <?php
 
   //call close
   close($conn, $error, "unit", "Units");

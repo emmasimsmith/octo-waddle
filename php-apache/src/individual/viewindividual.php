@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar ,functions and connection php files
 include_once '../navbar.php';
@@ -20,7 +27,10 @@ if (isset($_POST["delete"])) {
     deletevariable($conn, "individual", $individual_id_escaped, "regattascoring.INDIVIDUAL", "Individuals");
 
     //echo individual deleted and call closing function
-    echo $row['first_name'] . " " . $row['last_name'] . " deleted";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>" . $row['first_name'] . " " . $row['last_name'] . " deleted</div>";
     close($conn, $error, "individual", "Individuals");
 
 //if update was selected
@@ -66,52 +76,49 @@ if (isset($_POST["delete"])) {
     //if there are input sanitsation errors
     if (count($errors) != 0) {
         //call form with existing values?>
-      <html>
-        <head>
-          <title>Create Individual</title>
-        </head>
-          <h1>Create New Individual</h1>
-        <body>
+        <div class='container'>
+            <div class='content'>
+              <body>
+        <h1>Create New Individual</h1>
+          <ul class="labels">
+            <li>First Name:</li>
+            <li>Last Name:</li>
+            <li>Date of Birth:</li>
+            <li>Unit:</li>
+            <li>Role:</li>
+            <li>Comments:</li>
+          </ul>
           <form action= <?php echo "viewindividual.php?id=" . $_GET['id']?> method ="POST">
-            First Name:
-            <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
-            <br>
-            Last Name:
-            <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
-            <br>
-            Date of Birth:
-            <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
-            <br>
-            Unit:
-            <select name="unit">
-              <?php
-              while ($row = mysqli_fetch_assoc($result)) {
-                  echo "<option value=" . $row['unit_id'] . " ";
-                  if ($_POST['unit'] == $row['unit_id']) {
-                      echo "selected";
-                  }
-                  echo " >" . $row['unit_name'] . "</option>";
-              } ?>
-            </select>
-            <br>
-            Role:
-            <select name="role">
-              <option value="mariner" <?php if ($_POST['role'] == "mariner") {
-                  echo "selected";
-              } ?>>Mariner</option>
-              <option value="other" <?php if ($_POST['role'] == "other") {
-                  echo "selected";
-              } ?>>Parent/Sibling/Leader</option>
-            </select>
-            <br>
-            Comments:
-            <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
-            <br>
-            <button type="submit" name="update">Update</button>
-            <button type="submit" name="delete">Delete</button>
+            <div class="inside-form">
+              <input type="text" name="first" value= "<?php echo $_POST['first'] ?>" placeholder="First Name">
+              <input type="text" name="last" value="<?php echo $_POST['last'] ?>" placeholder="Last Name">
+              <input type="date" name="dob" value="<?php echo $_POST['dob'] ?>" placeholder="Date of Birth">
+              <select name="unit">
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value=" . $row['unit_id'] . " ";
+                    if ($_POST['unit'] == $row['unit_id']) {
+                        echo "selected";
+                    }
+                    echo " >" . $row['unit_name'] . "</option>";
+                } ?>
+              </select>
+              <select name="role">
+                <option value="mariner" <?php if ($_POST['role'] == "mariner") {
+                    echo "selected";
+                } ?>>Mariner</option>
+                <option value="other" <?php if ($_POST['role'] == "other") {
+                    echo "selected";
+                } ?>>Parent/Sibling/Leader</option>
+              </select>
+              <input type="text" name="comments" value="<?php echo $_POST['comments'] ?>" placeholder="Comments">
+            </div>
+            <div class="button">
+              <button type="submit" name="update">Update</button>
+              <button type="submit" name="delete">Delete</button>
+            </div>
           </form>
         </body>
-      </html>
       <?php
 
       //echo input sanitsation errors
@@ -137,7 +144,10 @@ if (isset($_POST["delete"])) {
     }
 
     //echo individual updated and close
-    echo $_POST['first'] . " " . $_POST['last'] . " updated";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>" . $_POST['first'] . " " . $_POST['last'] . " updated</div>";
     close($conn, $error, "individual", "Individuals");
 } else {
     //GET ID from URL
@@ -150,53 +160,50 @@ if (isset($_POST["delete"])) {
     $result = selectall($conn, "unit_name", "regattascoring.UNIT", "Unit", "individual", "Individuals");
 
     //call form with previous values?>
-  <html>
-    <head>
-        <title>Create Individual</title>
-    </head>
-      <h1>Create New Individual</h1>
-    <body>
-      <form action= <?php echo "viewindividual.php?id=" . $_GET['id'] ?> method ="POST">
-        First Name:
-        <input type="text" name="first" value= "<?php echo $row['first_name'] ?>" placeholder="First Name">
-        <br>
-        Last Name:
-        <input type="text" name="last" value="<?php echo $row['last_name'] ?>" placeholder="Last Name">
-        <br>
-        Date of Birth:
-        <input type="date" name="dob" value="<?php echo $row['dob'] ?>" placeholder="Date of Birth">
-        <br>
-        Unit:
-        <select name="unit">
-          <?php
-          while ($unit_row = mysqli_fetch_assoc($result)) {
-              echo "<option value=" . $unit_row['unit_id'] . " ";
-              if ($row['unit_id'] == $unit_row['unit_id']) {
-                  echo "selected";
-              }
-              echo " >" . $unit_row['unit_name'] . "</option>";
-          } ?>
-        </select>
-        <br>
-        Role:
-        <select name="role">
-          <option value="mariner" <?php if ($_POST['role'] == "mariner") {
-              echo "selected";
-          } ?>>Mariner</option>
-          <option value="other" <?php if ($_POST['role'] == "other") {
-              echo "selected";
-          } ?>>Parent/Sibling/Leader</option>
-        </select>
-        <br>
-        Comments:
-        <input type="text" name="comments" value="<?php echo $row['comments'] ?>" placeholder="Comments">
-        <br>
-          <button type="submit" name="update">Update</button>
-          <button type="submit" name="delete">Delete</button>
-        </form>
-      </body>
-    </html>
-  <?php
+    <div class='container'>
+        <div class='content'>
+          <body>
+            <h1>Create New Individual</h1>
+            <ul class="labels">
+              <li>First Name:</li>
+              <li>Last Name:</li>
+              <li>Date of Birth:</li>
+              <li>Unit:</li>
+              <li>Role:</li>
+              <li>Comments:</li>
+            </ul>
+            <form action= <?php echo "viewindividual.php?id=" . $_GET['id'] ?> method ="POST">
+              <div class="inside-form">
+                <input type="text" name="first" value= "<?php echo $row['first_name'] ?>" placeholder="First Name">
+                <input type="text" name="last" value="<?php echo $row['last_name'] ?>" placeholder="Last Name">
+                <input type="date" name="dob" value="<?php echo $row['dob'] ?>" placeholder="Date of Birth">
+                <select name="unit">
+                  <?php
+                  while ($unit_row = mysqli_fetch_assoc($result)) {
+                      echo "<option value=" . $unit_row['unit_id'] . " ";
+                      if ($row['unit_id'] == $unit_row['unit_id']) {
+                          echo "selected";
+                      }
+                      echo " >" . $unit_row['unit_name'] . "</option>";
+                  } ?>
+                </select>
+                <select name="role">
+                  <option value="mariner" <?php if ($_POST['role'] == "mariner") {
+                      echo "selected";
+                  } ?>>Mariner</option>
+                  <option value="other" <?php if ($_POST['role'] == "other") {
+                      echo "selected";
+                  } ?>>Parent/Sibling/Leader</option>
+                </select>
+                <input type="text" name="comments" value="<?php echo $row['comments'] ?>" placeholder="Comments">
+              </div>
+              <div class="button">
+                <button type="submit" name="update">Update</button>
+                <button type="submit" name="delete">Delete</button>
+              </div>
+              </form>
+            </body>
+        <?php
 
   //call closing function
   close($conn, $error, "individual", "Individuals");

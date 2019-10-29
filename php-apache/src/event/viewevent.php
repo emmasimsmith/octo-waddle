@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Create Individual</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -20,7 +27,10 @@ if (isset($_POST["delete"])) {
     deletevariable($conn, "event", $event_id_escaped, "regattascoring.EVENT", "Events");
 
     //echo event deleted and call closing function
-    echo "Regatta at " . $row['location'] . " deleted";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>Regatta at " . $row['location'] . " deleted</div>";
     close($conn, $error, "event", "Events");
 
 //if form submitted and update selected
@@ -53,25 +63,27 @@ if (isset($_POST["delete"])) {
     //if there are input sanitsation errors
     if (count($errors) != 0) {
         //call form with existing values?>
-        <html>
-          <head>
-            <title>Create Event</title>
-          </head>
-            <h1>Create New Event</h1>
-          <body>
-            <form action= <?php echo "viewevent.php?id=" . $_GET['id']?> method ="POST">
-              Location:
-              <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
-              <br>
-              Date:
-              <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
-              <br>
-              <button type="submit" name="update">Update</button>
-              <button type="submit" name="delete">Delete</button>
-            </form>
-          </body>
-        </html>
-        <?php
+        <div class='container'>
+            <div class='content'>
+              <body>
+                <h1>Create New Event</h1>
+                <ul class="labels">
+                  <li>Location:</li>
+                  <li>Date:</li>
+                </ul>
+                <form action= <?php echo "viewevent.php?id=" . $_GET['id']?> method ="POST">
+                  <div class="inside-form">
+                    <input type="text" name="location" value="<?php echo $_POST['location']?>" placeholder="Location">
+                    <input type="date" name="date" value="<?php echo $_POST['date']?>" placeholder="Date">
+                  </div>
+                  <div class="button">
+                    <button type="submit" name="update">Update</button>
+                    <button type="submit" name="delete">Delete</button>
+                  </div>
+                </form>
+              </body>
+            </html>
+            <?php
 
         //echo input sanitsation errors
         $issue = "";
@@ -93,7 +105,10 @@ if (isset($_POST["delete"])) {
     }
 
     //echo event updated and close
-    echo $_POST['location'] . " regatta updated";
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    echo "<div class='message'>" . $_POST['location'] . " regatta updated</div>";
     close($conn, $error, "event", "Events");
 } else {
     //GET ID
@@ -103,25 +118,27 @@ if (isset($_POST["delete"])) {
     $row = viewselect($conn, $event_id, "event", "regattascoring.EVENT", "Events");
 
     //call form with previous values?>
-  <html>
-  <head>
-    <title>Create Event</title>
-  </head>
-    <h1>Create New Event</h1>
-    <body>
-      <form action= <?php echo "viewevent.php?id=" . $_GET['id'] ?> method ="POST">
-        Location:
-        <input type="text" name="location" value="<?php echo $row['location']?>" placeholder="Location">
-        <br>
-        Date:
-        <input type="date" name="date" value="<?php echo $row['event_date']?>" placeholder="Date">
-        <br>
-        <button type="submit" name="update">Update</button>
-        <button type="submit" name="delete">Delete</button>
-      </form>
-    </body>
-  </html>
-  <?php
+    <div class='container'>
+        <div class='content'>
+          <body>
+            <h1>Create New Event</h1>
+            <ul class="labels">
+              <li>Location:</li>
+              <li>Date:</li>
+            </ul>
+            <form action= <?php echo "viewevent.php?id=" . $_GET['id'] ?> method ="POST">
+              <div class="inside-form">
+                <input type="text" name="location" value="<?php echo $row['location']?>" placeholder="Location">
+                <input type="date" name="date" value="<?php echo $row['event_date']?>" placeholder="Date">
+              </div>
+              <div class="button">
+                <button type="submit" name="update">Update</button>
+                <button type="submit" name="delete">Delete</button>
+              </div>
+            </form>
+          </body>
+        </html>
+        <?php
 
   //call close
   close($conn, $error, "event", "Events");

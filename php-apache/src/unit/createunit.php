@@ -2,7 +2,7 @@
   <head>
     <title>Create Individual</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/createpagestyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
 
 <?php
@@ -20,8 +20,12 @@ function unitform()
         <li>Unit Name:</li>
       </ul>
       <form action="createunit.php" method ="POST">
-        <input type="text" name="unit_name" placeholder="Unit Name" >
-        <button type="submit" name="submit">Enter</button>
+        <div class="inside-form">
+          <input type="text" name="unit_name" placeholder="Unit Name" >
+        </div>
+        <div class="button">
+          <button type="submit" name="submit">Enter</button>
+        </div>
       </form>
     </body>
   <?php
@@ -55,8 +59,12 @@ if (isset($_POST["submit"])) {
                 <li>Unit Name:</li>
               </ul>
               <form action="createunit.php" method ="POST">
-                <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name" >
-                <button type="submit" name="submit">Enter</button>
+                <div class="inside-form">
+                  <input type="text" name="unit_name" value= "<?php echo $_POST['unit_name']?>" placeholder="Unit Name">
+                </div>
+                <div class="button">
+                  <button type="submit" name="submit">Enter</button>
+                </div>
               </form>
             </body>
       <?php
