@@ -68,15 +68,20 @@ body {
 
 .bottom-bar{
   margin: 0px;
-  color: white;
-  font-size: .6em;
   float: left;
-  height:50px;
+  height:70px;
   padding:15px 60px;
-  line-height: 30px;
-  font-family: Arial;
+  line-height: 40px;
   box-sizing: border-box;
   background-color: #222;
   width: 100%;
   overflow: auto;
+}
+
+.bottom-bar h3{
+  font-size: 1.3em;
+  font-family: Arial;
+  color: white;
+  margin: 0px;
+
 }
