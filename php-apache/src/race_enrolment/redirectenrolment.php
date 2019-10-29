@@ -4,8 +4,14 @@ $event_id = $_GET['event_id'];
 $class_id = $_POST['class_id'];
 
 //if activity is sailing for cutter, sunburst, or optimist
-if ($activity_id == 1 || $activity_id == 2 || $activity_id == 3) {
-    header("Location: sailing/sailingindex.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id");
+if ($activity_id == 1) {
+    header("Location: sailing/sailingindex.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&boat_type=cutter");
+}
+if ($activity_id == 2) {
+    header("Location: sailing/sailingindex.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&boat_type=sunburst");
+}
+if ($activity_id == 3) {
+    header("Location: sailing/sailingindex.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&boat_type=optimist");
 }
 //if activity is cutter, sunburst or opti rigging
 if ($activity_id == 4 || $activity_id == 5 || $activity_id == 6) {
