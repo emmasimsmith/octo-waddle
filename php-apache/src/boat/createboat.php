@@ -35,7 +35,7 @@ function boatform($result)
                     echo "<option value=" . $row['unit_id'] . ">" . $row['unit_name'] . "</option>";
                 } ?>
               </select>
-              <input type="number" name="boat_handicap" step="any" placeholder="Handicap">
+              <input type="number" name="boat_handicap" step="any" max="1.99" placeholder="Handicap">
             </div>
             <div class="button">
               <button type="submit" name="submit">Enter</button>
@@ -99,7 +99,6 @@ if (isset($_POST["submit"])) {
                 <form action="createboat.php" method="POST">
                   <div class="inside-form">
                      <input type="text" name="boat_number" value="<?php echo $_POST['boat_number']?>" placeholder="Boat Number">
-                     <br>
                      <select name="boat_type" placeholder="Boat Type">
                        <option value="cutter" <?php if ($_POST['boat_type'] == "cutter") {
             echo "selected";
@@ -121,7 +120,7 @@ if (isset($_POST["submit"])) {
                            echo " >" . $row['unit_name'] . "</option>";
                        } ?>
                     </select>
-                     <input type="number" name="boat_handicap" value="<?php echo $boat_handicap?>" step="any" placeholder="Handicap">
+                     <input type="number" name="boat_handicap" value="<?php echo $boat_handicap?>" step="any" max="2" placeholder="Handicap">
                    </div>
                    <div class="button">
                      <button type="submit" name="submit">Enter</button>
@@ -143,7 +142,10 @@ if (isset($_POST["submit"])) {
     $sql = "INSERT INTO regattascoring.BOAT (boat_number, boat_type, unit_id,
       boat_handicap) VALUES ('$boat_number','$boat_type', '$unit_id', '$boat_handicap');";
     if (!mysqli_query($conn, $sql)) {
-        echo mysqli_error($conn);
+        echo "  <div class='container'>
+          <div class='content'>
+            <body>";
+        echo "<div class='error'>" . mysqli_error($conn) .  "<br>" . $sql . "</div>";
         close($conn, "Could not add data", "boat", "Boats");
         exit;
     }
