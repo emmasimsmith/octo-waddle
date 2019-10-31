@@ -280,7 +280,6 @@ if (isset($_POST['submit'])) {
     $sql ="SELECT * FROM regattascoring.UNIT;";
     $unit_result = mysqli_query($conn, $sql);
     while ($unit_row = mysqli_fetch_assoc($unit_result)) {
-        echo $unit_row['unit_name'] .'<br>';
         //select unit id for the where statement and input
         $unit_id = $unit_row['unit_id'];
         $sql = "SELECT * FROM regattascoring.BOAT WHERE unit_id = $unit_id and boat_type = '$boat_type';";
@@ -294,11 +293,9 @@ if (isset($_POST['submit'])) {
                 $sailing_time = 'NULL';
             }
             $sailing_result = $_POST["$boat_id"];
-            echo "sailing time: $sailing_time";
-            echo " sailing result: $sailing_result";
             //insert boat into regattascoring
-            $sql = "INSERT INTO regattascoring.SAILING (activity_id, unit_id, boat_id,
-          sailing_time, sailing_result) VALUES ('$activity_id', '$unit_id', '$boat_id',
+            $sql = "INSERT INTO regattascoring.SAILING (activity_id, race_number, unit_id, boat_id,
+          sailing_time, sailing_result) VALUES ('$activity_id', '$race_number', '$unit_id', '$boat_id',
           $sailing_time, '$sailing_result');";
             $input = mysqli_query($conn, $sql);
             if (!$input) {
