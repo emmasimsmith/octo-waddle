@@ -17,11 +17,11 @@ function classform()
       </ul>
       <form action="createclass.php" method ="POST">
         <div class="inside-form">
-          <input type='number' name="jj_min_age" placeholder="Minimum Age" step="any" min="0" required>
-          <input type='number' name="junior_min_age" placeholder="Minimum Age" step="any" min="0" required>
-          <input type='number' name="intermediate_min_age" placeholder="Minimum Age" step="any" min="0" required>
-          <input type='number' name="senior_min_age" placeholder="Minimum Age" step="any" min="0" required>
-          <input type='number' name="senior_max_age" placeholder="Maximum Age" step="any" min="0" required>
+          <input type='number' name="jj_min_age" placeholder="Minimum Age" step="any" min="0" max="99" required>
+          <input type='number' name="junior_min_age" placeholder="Minimum Age" step="any" min="0" rmax="99" equired>
+          <input type='number' name="intermediate_min_age" placeholder="Minimum Age" step="any" min="0" max="99" required>
+          <input type='number' name="senior_min_age" placeholder="Minimum Age" step="any" min="0" max="99" required>
+          <input type='number' name="senior_max_age" placeholder="Maximum Age" step="any" min="0" max="99" required>
         </div>
         <div class="button">
           <button type="submit" name="submit">Enter</button>
@@ -87,11 +87,11 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
               </ul>
               <form action= createclass.php method ="POST">
                 <div class="inside-form">
-                  <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-                  <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-                  <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-                  <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" required>
-                  <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" required>
+                  <input type='number' name="jj_min_age" value= '<?php echo $jj_min_age ?>' placeholder="Minimum Age" step="any" min="0" max="99" required>
+                  <input type='number' name="junior_min_age" value= '<?php echo $junior_min_age ?>' placeholder="Minimum Age" step="any" min="0" max="99" required>
+                  <input type='number' name="intermediate_min_age" value= '<?php echo $intermediate_min_age ?>' placeholder="Minimum Age" step="any" min="0" max="99" required>
+                  <input type='number' name="senior_min_age" value= '<?php echo $senior_min_age ?>' placeholder="Minimum Age" step="any" min="0" max="99" required>
+                  <input type='number' name="senior_max_age" value= '<?php echo $senior_max_age ?>' placeholder="Maximum Age" step="any" min="0" max="99" required>
                 </div>
                 <div class="button">
                   <button type="submit" name="submit">Enter</button>
