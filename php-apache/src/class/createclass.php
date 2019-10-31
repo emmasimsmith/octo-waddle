@@ -39,7 +39,8 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
 
 //IF FORM SUBMITTED
 } elseif (isset($_POST["submit"])) {
-    ?> <html>
+    //include navbar
+    include_once '../navbar.php'; ?> <html>
       <head>
         <title>Create Individual</title>
         <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
@@ -72,10 +73,6 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
 
     //if not valid echo error and form then exit
     if (count($errors) != 0) {
-
-      //include navbar
-        include_once '../navbar.php';
-
         //call form with existing values?>
         <div class="container">
           <div class="content">
