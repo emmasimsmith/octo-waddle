@@ -25,7 +25,7 @@ if (mysqli_num_rows($boats) == 0) {
 }
 
 //select all from race enrolment for this sailing class
-$sql = "SELECT * FROM regattascoring.RACE_ENROLMENT WHERE event_id = '$event_id'
+$sql = "SELECT DISTINCT race_number FROM regattascoring.RACE_ENROLMENT WHERE event_id = '$event_id'
  AND activity_id = '$activity_id' and class_id = $class_id;";
 $result = mysqli_query($conn, $sql);
 
@@ -37,10 +37,10 @@ if (mysqli_num_rows($result) != 0) {
     //echo links to all races avaliable
     echo "<ul>";
     while ($rows=mysqli_fetch_assoc($result)) {
-        $race_id = $rows['race_id'];
-        echo "<li><a href='editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_id=$race_id&boat_type=$boat_type'>Race $race_id</a></li>";
+        $race_number = $rows['race_number'];
+        echo "<li><a href='editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_id=$race_id&boat_type=$boat_type'>Race $race_number</a></li>";
     }
-    echo "</ul> or";
+    echo "</ul> or ";
     echo "<a href='sailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&boat_type=$boat_type'>Create New Race</a>";
     echo "<div class='close'>
       <ul>
