@@ -12,7 +12,7 @@ $boat_type = $_GET['boat_type'];
 $sql = "SELECT * FROM regattascoring.BOAT WHERE boat_type ='$boat_type';";
 $boats = mysqli_query($conn, $sql);
 if (mysqli_num_rows($boats) == 0) {
-    echo "Create Boats first";
+    echo "Create $boat_type boats first";
     echo "<div class='close'>
     <ul>
       <li><a href='/'>Return Home</a></li>
