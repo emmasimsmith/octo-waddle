@@ -66,7 +66,7 @@ if (mysqli_num_rows($result) != 0) {
     }
 
     //check if any teams are tied
-    tied($conn);
+    tied($conn, $event_id, $activity_id);
 
     echo "Race results added";
     echo "<br>

@@ -205,7 +205,7 @@ if (isset($_POST['delete'])) {
     }
 
     //check if any teams are tied
-    tied($conn);
+    tied($conn, $event_id, $activity_id);
 
     echo $activity_row['activity_name'] . " results updated
     <br>

@@ -1,18 +1,21 @@
 <?php
 
 //to check if any tied values
-function tied($conn)
+function tied($conn, $event_id, $activity_id)
 {
-    $sql = "SELECT original_score, COUNT(original_score) AS total FROM regattascoring.RACE_ENROLMENT GROUP BY original_score HAVING (COUNT(original_score) > 1);";
+    $sql = "SELECT original_score, COUNT(original_score) AS total FROM regattascoring.RACE_ENROLMENT WHERE event_id = $event_id
+    and activity_id= $activity_id GROUP BY original_score HAVING (COUNT(original_score) > 1);";
     $multiple = mysqli_query($conn, $sql);
     while ($original = mysqli_fetch_assoc($multiple)) {
         //select max of calculated score
-        $sql = "SELECT MAX(calculated_score) as max FROM regattascoring.RACE_ENROLMENT WHERE original_score =" . $original['original_score'] . ";";
+        $sql = "SELECT MAX(calculated_score) as max FROM regattascoring.RACE_ENROLMENT WHERE event_id = $event_id
+        and activity_id= $activity_id and original_score =" . $original['original_score'] . ";";
         $maxscore = mysqli_query($conn, $sql);
         $score = mysqli_fetch_assoc($maxscore);
         $placescore = $score['max'];
         //select all with tied with same original_score
-        $sql = "SELECT * FROM regattascoring.RACE_ENROLMENT WHERE original_score =" . $original['original_score'] . ";";
+        $sql = "SELECT * FROM regattascoring.RACE_ENROLMENT WHERE event_id = $event_id
+        and activity_id= $activity_id and original_score =" . $original['original_score'] . ";";
         $result = mysqli_query($conn, $sql);
 
         while ($tied = mysqli_fetch_assoc($result)) {
