@@ -175,6 +175,24 @@ if (!$result) {
 }
 echo "RACE_ENROLMENT table made successfully" . "<br/>";
 
+$sql = "CREATE TABLE SAILING(
+  sailing_id INT PRIMARY KEY AUTO_INCREMENT,
+  activity_id INT NOT NULL,
+  unit_id INT NOT NULL,
+  boat_id INT NOT NULL,
+  sailing_time INT,
+  sailing_result VARCHAR (20) NOT NULL,
+  FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
+  FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
+  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id)
+);";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    echo "Could not create SAILING table" . mysqli_error($conn) . "<br/>";
+    exit;
+}
+echo "SAILING table made successfully" . "<br/>";
+
 $sql = "CREATE TABLE AWARD (
   award_id INT PRIMARY KEY AUTO_INCREMENT,
   unit_id INT NOT NULL,
