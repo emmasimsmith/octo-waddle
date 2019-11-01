@@ -113,7 +113,7 @@ if (isset($_POST['delete'])) {
     </head>
       <h1><?php echo $activity_row['activity_name']?></h1>
     <body>
-      Rigging results have already been entered
+      Camping results have already been entered
       <br><br>
       <form action = <?php echo "editcamping.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
     while ($unit_row = mysqli_fetch_assoc($outcome)) {
