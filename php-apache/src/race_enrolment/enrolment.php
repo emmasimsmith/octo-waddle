@@ -16,7 +16,7 @@ if (!$result) {
     home_close($conn);
 }
 if (mysqli_num_rows($result) == 0) {
-    echo "please create activities first";
+    echo "please create classes first";
     home_close($conn);
 }
 //create dropdown form
