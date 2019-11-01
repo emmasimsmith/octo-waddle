@@ -11,7 +11,7 @@
               <ul>
                 <li><a href="/event/createevent.php">Create Event</a></li>
                 <li><a href="/event/searchevent.php">View Events</a></li>
-                <li><a href="../indexevents.php">Select Event</a></li>
+                <li><a href="../../indexevents.php">Select Event</a></li>
               </ul>
             </div>
           </div>
