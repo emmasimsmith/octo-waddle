@@ -38,7 +38,7 @@ if (mysqli_num_rows($result) != 0) {
     echo "<ul>";
     while ($rows=mysqli_fetch_assoc($result)) {
         $race_number = $rows['race_number'];
-        echo "<li><a href='editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_id=$race_id&boat_type=$boat_type'>Race $race_number</a></li>";
+        echo "<li><a href='editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type'>Race $race_number</a></li>";
     }
     echo "</ul> or ";
     echo "<a href='sailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&boat_type=$boat_type'>Create New Race</a>";

@@ -206,7 +206,7 @@ if (isset($_POST['submit'])) {
         $count++;
     }
 
-    //if did not finish (DNF)
+    //if did not compete (DNF)
     //select all units
     $sql = "SELECT * FROM regattascoring.UNIT;";
     $result = mysqli_query($conn, $sql);
@@ -214,22 +214,25 @@ if (isset($_POST['submit'])) {
         //define unit id
         $unit_id = $completed['unit_id'];
 
-        //check there is not already an input for the unit
-        $sql = "SELECT * FROM regattascoring.RACE_ENROLMENT WHERE event_id = '$event_id'
-      AND activity_id = '$activity_id' AND race_number = '$race_number' AND unit_id = '$unit_id' and class_id ='$class_id';";
-        $check = mysqli_query($conn, $sql);
+        //select boats from unit
+        $sql = "SELECT * FROM regattascoring.BOAT WHERE boat_type='$boat_type' AND unit_id = '$unit_id';";
+        $boat_result = mysqli_query($conn, $sql);
+        while ($boat_completed = mysqli_fetch_assoc($boat_result)) {
 
-        //if not
-        if (mysqli_num_rows($check) == 0) {
-            //select boats from unit
-            $sql = "SELECT * FROM regattascoring.BOAT WHERE boat_type='$boat_type' AND unit_id = '$unit_id';";
-            $boat_result = mysqli_query($conn, $sql);
-            while ($boat_completed = mysqli_fetch_assoc($boat_result)) {
+              //check there is not already an input for the unit
+            $sql = "SELECT * FROM regattascoring.RACE_ENROLMENT WHERE event_id = '$event_id'
+            AND activity_id = '$activity_id' AND race_number = '$race_number' AND
+            unit_id = '$unit_id' and class_id = '$class_id';";
+            $check = mysqli_query($conn, $sql);
+
+            //if not
+            if (mysqli_num_rows($check) == 0) {
+
                 //define boat id
                 $boat_id = $boat_completed['boat_id'];
 
                 //if the boat DNF Race
-                if ($_POST["$unit_id"] == "DNF") {
+                if ($_POST["$boat_id"] == "DNF") {
                     //set score
                     $placescore = $base-1;
                     //insert value into table
@@ -264,7 +267,7 @@ if (isset($_POST['submit'])) {
                 $boat_id = $boat_completed['boat_id'];
 
                 //if the boat DNF Race
-                if ($_POST["$unit_id"] == "DNC") {
+                if ($_POST["$boat_id"] == "DNC") {
                     //set score
                     $placescore = $base-2;
                     //insert value into table
@@ -294,8 +297,8 @@ if (isset($_POST['submit'])) {
             }
             $sailing_result = $_POST["$boat_id"];
             //insert boat into regattascoring
-            $sql = "INSERT INTO regattascoring.SAILING (activity_id, race_number, unit_id, boat_id,
-          sailing_time, sailing_result) VALUES ('$activity_id', '$race_number', '$unit_id', '$boat_id',
+            $sql = "INSERT INTO regattascoring.SAILING (event_id, activity_id, class_id, race_number, unit_id, boat_id,
+          sailing_time, sailing_result) VALUES ('$event_id', '$activity_id', '$class_id', '$race_number', '$unit_id', '$boat_id',
           $sailing_time, '$sailing_result');";
             $input = mysqli_query($conn, $sql);
             if (!$input) {
