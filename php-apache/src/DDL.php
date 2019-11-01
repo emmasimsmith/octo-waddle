@@ -178,13 +178,18 @@ echo "RACE_ENROLMENT table made successfully" . "<br/>";
 $sql = "CREATE TABLE SAILING(
   sailing_id INT PRIMARY KEY AUTO_INCREMENT,
   activity_id INT NOT NULL,
+  class_id INT NOT NULL,
+  race_number INT NOT NULL,
   unit_id INT NOT NULL,
   boat_id INT NOT NULL,
   sailing_time INT,
   sailing_result VARCHAR (20) NOT NULL,
+  event_id INT NOT NULL,
   FOREIGN KEY (activity_id) REFERENCES ACTIVITY (activity_id),
+  FOREIGN KEY (class_id) REFERENCES CLASS (class_id),
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
-  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id)
+  FOREIGN KEY (boat_id) REFERENCES BOAT (boat_id),
+  FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
 if (!$result) {
@@ -198,13 +203,11 @@ $sql = "CREATE TABLE AWARD (
   unit_id INT NOT NULL,
   place INT,
   certificate_id INT NOT NULL,
-  participant_id INT NOT NULL,
-  race_id INT,
+  participant_id INT,
   event_id INT NOT NULL,
   FOREIGN KEY (unit_id) REFERENCES UNIT (unit_id),
   FOREIGN KEY (certificate_id) REFERENCES CERTIFICATE (certificate_id),
   FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (participant_id),
-  FOREIGN KEY (race_id) REFERENCES RACE_ENROLMENT (race_id),
   FOREIGN KEY (event_id) REFERENCES EVENT (event_id)
 );";
 $result = mysqli_query($conn, $sql);
