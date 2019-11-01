@@ -18,12 +18,12 @@ $row = mysqli_fetch_assoc($result);
   <body>
     <?php
     echo
-    "<a href=/participant/selectparticipant.php?event_id=$event_id>Select Participants</a>
-    <br>
-    <a href=/participant/searchparticipant.php?event_id=$event_id>View all Participants</a>
-    <br>
-    <a href=/race_enrolment/enrolment.php?event_id=$event_id>Enroll Participants</a>";
+    "<ul>
+      <li><a href=/participant/selectparticipant.php?event_id=$event_id>Select Participants</a></li>
+      <li><a href=/participant/searchparticipant.php?event_id=$event_id>View all Participants</a></li>
+      <li><a href=/race_enrolment/enrolment.php?event_id=$event_id>Enroll Participants</a></li>
+      <li><a href=/award/calculateawards.php?event_id=$event_id>Calculate Awards</a></li>
+    </ul>";
      ?>
-     <br>
   </body>
 </html>
