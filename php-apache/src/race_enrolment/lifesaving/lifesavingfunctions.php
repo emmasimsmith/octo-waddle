@@ -34,7 +34,6 @@ function input($conn, $activity_id, $unit_id, $class_id, $result, $calculated_sc
     $sql = "INSERT INTO regattascoring.RACE_ENROLMENT (activity_id, unit_id, class_id,
   race_result, calculated_score, original_score, event_id) VALUES
   ('$activity_id', '$unit_id', $class_id, '$result', '$calculated_score', $original_score, '$event_id');";
-    echo $sql . "<br>";
     $input = mysqli_query($conn, $sql);
     echo mysqli_error($conn);
 }
