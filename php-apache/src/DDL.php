@@ -217,6 +217,19 @@ if (!$result) {
 }
 echo "AWARD table made successfully" . "<br/>";
 
+$sql = "CREATE TABLE PLACING (
+  placing_id INT PRIMARY KEY AUTO_INCREMENT,
+  unit_id INT NOT NULL,
+  score INT,
+  place INT
+);";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    echo "Could not create PLACING table" . mysqli_error($conn) . "<br/>";
+    exit;
+}
+echo "PLACING table made successfully" . "<br/>";
+
 //Insert values into tables for testing
 $sql = "INSERT INTO UNIT (unit_name) VALUES ('Pakuranga');";
 $result = mysqli_query($conn, $sql);
