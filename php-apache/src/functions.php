@@ -192,6 +192,7 @@ function viewall($conn, $name, $table_name, $variables, $name_id, $plural_name)
 {
     //echo all data from table
     $sql = "SELECT * FROM ".$table_name.";";
+    echo $sql;
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
@@ -257,4 +258,32 @@ function home_close($conn)
 <br>";
     mysqli_close($conn);
     exit;
+}
+
+function award_tied($conn)
+{
+    $sql = "SELECT score, COUNT(score) AS total FROM regattascoring.PLACING
+          GROUP BY score HAVING (COUNT(score)> 1);";
+    $multiple = mysqli_query($conn, $sql);
+
+    //foreach tied value
+    while ($tie = mysqli_fetch_assoc($multiple)) {
+        //select max of calculated score
+        $sql = "SELECT MIN(place) as min FROM regattascoring.PLACING WHERE score =
+    " . $tie['score'].";";
+        $minplacing = mysqli_query($conn, $sql);
+        $score = mysqli_fetch_assoc($minplacing);
+        $tiedplacing = $score['min'];
+
+        //select all tied with same score
+        $sql = "SELECT * FROM regattascoring.PLACING WHERE score =" . $tie['score']. ";";
+        $answer = mysqli_query($conn, $sql);
+
+        while ($tied = mysqli_fetch_assoc($answer)) {
+            //update placing score table
+            $sql = "UPDATE regattascoring.PLACING set place = $tiedplacing WHERE placing_id=" . $tied['placing_id'] . ";";
+            $update = mysqli_query($conn, $sql);
+            echo mysqli_error($conn);
+        }
+    }
 }
