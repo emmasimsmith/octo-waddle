@@ -12,6 +12,7 @@ body {
   margin-top: 200px;
   background-color: white;
   border: 5px #e6e6e6 solid;
+  margin-bottom: 100px;
 }
 
 .container .content{
@@ -19,13 +20,11 @@ body {
   padding-bottom: 25px;
   overflow: auto;
 }
-
 .container .content h1{
   text-align: center;
   font-family: Arial;
   font-size: 2em;
 }
-
 .container .content form{
   font-size: 1.15em;
   font-family: sans-serif;
@@ -41,9 +40,27 @@ body {
   margin: 0;
   text-align: right;
 }
-
 .container .content .labels li{
   padding: 5.2px 0px;
+}
+
+.container .content .event_list ul{
+  text-align: center;
+  font-size: 1.3em;
+  list-style-type: none;
+  padding: 0px;
+}
+.container .content .event_list ul li{
+  padding: 5px 0px;
+  color: #0073e6;
+}
+.container .content .event_list ul li a:visited{
+  color: #0073e6;
+}
+.container .content .event_list ul li a:hover{
+  color:  #004d99;
+  text-decoration: none;
+
 }
 
 .container .content .inside-form input{
@@ -52,14 +69,12 @@ body {
   margin: 5px 0px;
   width: 300px;
 }
-
 .container .content .inside-form{
   float: right;
   width:57.5%;
   box-sizing: border-box;
   margin-bottom: 0px;
 }
-
 .container .content .inside-form select{
   display: block;
   padding: 3px 0px;
@@ -72,7 +87,6 @@ body {
   text-align: center;
   display: inline-block;
 }
-
 .container .content .button button{
   background-color: #222;
   color: white;
@@ -83,10 +97,30 @@ body {
   font-size: 1em;
   margin: 15px;
 }
-
 .container .content .button button:hover{
   background-color: #444;
 }
+
+.container .content .search_button {
+  text-align: center;
+  display: inline-block;
+  float: right;
+  width: 80px;
+  box-sizing: border-box;
+}
+.container .content .search_button button{
+  background-color: #222;
+  margin: auto;
+  color: white;
+  border: none;
+  width: 60px;
+  height:21.5px;
+  font-size: 0.8em;
+}
+.container .content .search_button button:hover{
+  background-color: #444;
+}
+
 
 .container .content .close{
   font-family: arial;
@@ -96,24 +130,22 @@ body {
   width: 100%;
   text-align:center;
 }
-
 .container .content .close ul{
   list-style-type: none;
+  padding: 0px;
 }
-
 .container .content .close ul li{
   padding: 0px 20px;
   display: inline-block;
 
 }
-
 .container .content .close ul li a{
   text-decoration: underline;
   color: #424248;
   font-size: 1em;
 }
 .container .content .close a:hover{
-  color: #1a1aff;
+  color: #0073e6;
   text-decoration: none;
 }
 
@@ -121,11 +153,12 @@ body {
   width: 100%;
   text-align: center;
   display: inline-block;
-  font-size: 1em;
+  font-size: 1.1em;
   font-family: arial;
   padding-top: 20px;
   color: #cc0000;
 }
+
 .container .content .message{
   width: 100%;
   text-align: center;
@@ -133,11 +166,53 @@ body {
   font-size: 1.2em;
   font-family: arial;
 }
-
 .container .content .message a{
   color:#000099;
 }
-
 .container .content .message a:hover{
   color:#0000ff;
+}
+
+.container .content table{
+  width: 100%;
+  border-collapse: collapse;
+}
+.container .content th, td {
+  text-align: left;
+  padding: 8px;
+}
+.container .content tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.container .content .search_form{
+  margin: 0px;
+  width: 100%;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+.container .content .form_input{
+  width: calc(100% - 80px);
+  margin: 0px;
+  float: left;
+  box-sizing: border-box;
+}
+
+.container .content .form_input .two_input input{
+  width: 49.7%;
+}
+.container .content .form_input .three_input input{
+  width: 32.5%;
+}
+.container .content .form_input .four_input input{
+  width: 24.5%;
+}
+.container .content .form_input .five_input input{
+  width: 19.5%;
+}
+.container .content .form_input .six_input input{
+  width:16%;
+}
+.container .content .form_input .eight_input input{
+  width: 11.9%;
 }
