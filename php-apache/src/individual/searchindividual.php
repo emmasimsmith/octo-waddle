@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Individuals</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,25 +15,34 @@ include_once '../functions.php';
 function individualform()
 {
     ?>
-<html>
-  <body>
-    <form action= searchindividual.php method="POST">
-      <input type="text" name="search_first" placeholder="Search by first name">
-      <input type="text" name="search_last" placeholder="Search by last name">
-      <input type="text" name="search_dob" placeholder="Search by date of birth">
-      <input type="text" name="search_unit" placeholder="Search by unit">
-      <input type="text" name="search_role" placeholder="Search by role">
-      <input type="text" name="search_comments" placeholder="Search comments">
-      <button type="submit" name="search">Enter</button>
-    </form>
+    <h1>View Individuals</h1>
+    <div class="search_form">
+      <form action= searchindividual.php method="POST">
+        <div class="form_input">
+          <div class="six_input">
+            <input type="text" name="search_first" placeholder="Search by first name">
+            <input type="text" name="search_last" placeholder="Search by last name">
+            <input type="text" name="search_dob" placeholder="Search by date of birth">
+            <input type="text" name="search_unit" placeholder="Search by unit">
+            <input type="text" name="search_role" placeholder="Search by role">
+            <input type="text" name="search_comments" placeholder="Search comments">
+          </div>
+        </div>
+        <div class="search_button">
+          <button type="submit" name="search">Enter</button>
+        </div>
+      </form>
+    </div>
   </body>
-</html>
 <?php
 }
 
 //IF search is submitted
 if (isset($_POST['search'])) {
     //call individual form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     individualform();
 
     //define POST variables
@@ -67,6 +83,9 @@ if (isset($_POST['search'])) {
     close($conn, $error, "individual", "Individuals");
 } else {
     //call individual form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     individualform();
 
     //variables array
