@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Participants</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -6,27 +13,35 @@ include_once '../functions.php';
 
 //define event event_id
 $event_id = $_GET['event_id'];
+$sql = "SELECT location FROM regattascoring.EVENT WHERE event_id = '$event_id';";
+$location_result = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+$location = $location_result['location'];
 
 //Form function
-function participantform($event_id)
+function participantform($event_id, $location)
 {
     ?>
-<html>
-<h1>Participants</h1>
-  <body>
-    <?php echo "<form action= searchparticipant.php?event_id=$event_id method='POST'>" ?>
-      <input type="number" name="participant_tag" placeholder="Search participant tag">
-      <input type="text" name="first_name" placeholder="Search first name">
-      <input type="text" name="last_name" placeholder="Search last name">
-      <input type="text" name="dob" placeholder="Search date of birth">
-      <input type="text" name="class_name" placeholder="Search class name">
-      <input type="text" name="unit_name" placeholder="Search unit name">
-      <input type="text" name="role" placeholder="Search role">
-      <input type="text" name="comments" placeholder="Search comments">
-      <button type="submit" name="search">Enter</button>
-    </form>
-  </body>
-</html>
+    <h1>View Participants in <?php echo "$location" ?> Regatta</h1>
+      <div class="search_form">
+        <form action= searchparticipant.php?event_id=<?php echo $event_id?> method='POST'>
+          <div class="form_input">
+            <div class="eight_input">
+              <input type="number" name="participant_tag" placeholder="Participant Tag">
+              <input type="text" name="first_name" placeholder="First Name">
+              <input type="text" name="last_name" placeholder="Last Name">
+              <input type="text" name="dob" placeholder="Date of Birth">
+              <input type="text" name="class_name" placeholder="Class Name">
+              <input type="text" name="unit_name" placeholder="Unit Name">
+              <input type="text" name="role" placeholder="Role">
+              <input type="text" name="comments" placeholder="Comments">
+            </div>
+          </div>
+          <div class="search_button">
+            <button type="submit" name="search">Enter</button>
+          </div>
+        </form>
+      </div>
+    </body>
 <?php
 }
 
@@ -34,7 +49,10 @@ function participantform($event_id)
 if (isset($_POST['search'])) {
 
     //call form
-    participantform($_GET['event_id']);
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    participantform($event_id, $location);
 
     //define POST variables
     $participant_tag = mysqli_real_escape_string($conn, $_POST['participant_tag']);
@@ -91,21 +109,21 @@ if (isset($_POST['search'])) {
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
-        echo "No matches in table" . "</br>";
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
-        <br>
-        <a href='searchparticipant.php'>View all participants</a>
-        <br>
-        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
+        echo "<div class='error'>No matches in table<div>
+      <div class='close'>
+        <ul>
+          <li><a href='/'>Return Home</a></li>
+          <li><a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a></li>
+          <li><a href='searchparticipant.php'>View all participants</a></li>
+          <li><a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a></li>
+        </ul>
+      </div>";
         mysqli_close($conn);
         exit;
     }
 
     //create html table
-    echo "<table border = '1'>
+    echo "<table>
     <tr>
     <th>Participant Tag</th>
     <th>First Name</th>
@@ -132,19 +150,22 @@ if (isset($_POST['search'])) {
     }
     echo "</table>";
     //call close
-    echo "<br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
-    <br>
-    <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>
-    <br>
-    <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
+    echo "<div class='close'>
+      <ul>
+        <li><a href='/'>Return Home</a></li>
+        <li><a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a></li>
+        <li><a href='searchparticipant.php'>View all participants</a></li>
+        <li><a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a></li>
+      </ul>
+    </div>";
     mysqli_close($conn);
 } else {
 
     //call participant form
-    participantform($_GET['event_id']);
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
+    participantform($event_id, $location);
 
     //echo all data from table and close
     $sql = "SELECT * FROM regattascoring.PARTICIPANT NATURAL JOIN regattascoring.INDIVIDUAL
@@ -154,12 +175,12 @@ if (isset($_POST['search'])) {
     event_id = '$event_id' ORDER BY participant_tag ASC;";
     $result = mysqli_query($conn, $sql);
     if (!$result) {
-        echo 'what ' . mysqli_error($conn);
+        echo mysqli_error($conn);
     }
 
     if (mysqli_num_rows($result) > 0) {
         //create html table
-        echo "<table border = '1'>
+        echo "<table>
         <tr>
         <th>Participant Tag</th>
         <th>First Name</th>
@@ -185,24 +206,26 @@ if (isset($_POST['search'])) {
             echo "</tr>";
         }
         echo "</table>";
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a>
-        <br>
-        <a href='searchparticipant.php?event_id=$event_id'>View all participants</a>
-        <br>
-        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
+        echo "<div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a></li>
+            <li><a href='searchparticipant.php'>View all participants</a></li>
+            <li><a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a></li>
+          </ul>
+        </div>";
         mysqli_close($conn);
     } else {
         //if no data in the table
-        echo "No data to display
-        <br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href='selectparticipant.php?event_id=$event_id'>Reselect participants</a>
-        <br>
-        <a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a>";
+        echo "<div class='message'>No data to display</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href= 'selectparticipant.php?event_id=$event_id'>Reselect participants</a></li>
+            <li><a href='searchparticipant.php'>View all participants</a></li>
+            <li><a href='../indexselectedevent.php?event_id=$event_id'>Return to Event Page</a></li>
+          </ul>
+        </div>";
         mysqli_close($conn);
         exit;
     }
