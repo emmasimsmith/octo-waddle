@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Events</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,21 +15,30 @@ include_once '../functions.php';
 function eventsearch()
 {
     ?>
-  <html>
-    <body>
+    <h1>View Events</h1>
+    <div class="search_form">
       <form action= searchevent.php method="POST">
-        <input type="text" name="location" placeholder="Location">
-        <input type="date" name="Date" placeholder="Date">
-      <button type="submit" name="search">Enter</button>
+        <div class="form_input">
+          <div class="two_input">
+            <input type="text" name="location" placeholder="Location">
+            <input type="date" name="Date" placeholder="Date">
+          </div>
+        </div>
+        <div class="search_button">
+          <button type="submit" name="search">Enter</button>
+        </div>
       </form>
+    </div>
     </body>
-  </html>
   <?php
 }
 
 //if search is submitted
 if (isset($_POST['search'])) {
     //call search form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     eventsearch();
 
     //POST variables
@@ -46,6 +62,9 @@ if (isset($_POST['search'])) {
     close($conn, $error, "event", "Events");
 } else {
     //call event search form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     eventsearch();
 
     //variables array

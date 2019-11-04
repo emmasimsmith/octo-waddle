@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Create Individual</title>
+    <title>Edit Event</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
     <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
@@ -113,14 +113,14 @@ if (isset($_POST["delete"])) {
 } else {
     //GET ID
     $event_id = mysqli_real_escape_string($conn, $_GET['id']);
-
+    echo "<div class='container'>
+        <div class='content'>
+          <body>";
     ///call table select function
     $row = viewselect($conn, $event_id, "event", "regattascoring.EVENT", "Events");
 
     //call form with previous values?>
-    <div class='container'>
-        <div class='content'>
-          <body>
+
             <h1>Create New Event</h1>
             <ul class="labels">
               <li>Location:</li>
