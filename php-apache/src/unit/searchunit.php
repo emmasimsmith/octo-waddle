@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Units</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,20 +15,29 @@ include_once '../functions.php';
 function unitform()
 {
     ?>
-  <html>
-    <body>
+    <h1>View Units</h1>
+    <div class="search_form">
       <form action= searchunit.php method="POST">
-        <input type="text" name="unit_name" placeholder="Search unit name">
-        <input type="number" name="unit_id" placeholder="Search unit id">
-        <button type="submit" name="search">Enter</button>
+        <div class="form_input">
+          <div class="two_input">
+            <input type="text" name="unit_name" placeholder="Search unit name">
+            <input type="number" name="unit_id" placeholder="Search unit id">
+          </div>
+        </div>
+        <div class="search_button">
+          <button type="submit" name="search">Enter</button>
+        </div>
       </form>
-    </body>
-  </html>
+    </div>
+  </body>
   <?php
 }
 
 if (isset($_POST['search'])) {
     //call unit form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     unitform();
 
     //define POST variables
@@ -46,6 +62,9 @@ if (isset($_POST['search'])) {
 } else {
 
     //call unit form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     unitform();
 
     //variables array
