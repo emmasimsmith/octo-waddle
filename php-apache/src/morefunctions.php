@@ -3,7 +3,7 @@ function activity_view($conn, $result)
 {
     if (mysqli_num_rows($result) > 0) {
         //create html table
-        echo "<table border = '1'>
+        echo "<table>
       <tr>
       <th>Activity Name</th>
       <th>Activity Bracket</th>
@@ -43,28 +43,26 @@ function activity_view($conn, $result)
             echo "</tr>";
         }
 
-        echo "</table>
-      <br>
-      <a href='/'>Return Home</a>
-      <br>";
+        echo "</table>";
     } else {
         //if no data in the table
-        echo "No data to display" . "</br>"; ?>
-      <br>
-      <a href="/">Return Home</a>
-      <?php
-      mysqli_close($conn);
+        echo "
+        <div class='message'>No data to display</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+          </ul>
+        </div>";
+        mysqli_close($conn);
         exit;
     }
 }
-
-
 
 function certificate_view($conn, $result)
 {
     if (mysqli_num_rows($result) > 0) {
         //create html table
-        echo "<table border = '1'>
+        echo "<table>
       <tr>
       <th>Certificate ID</th>
       <th>Certificate Name</th>
@@ -81,17 +79,17 @@ function certificate_view($conn, $result)
             echo "</tr>";
         }
 
-        echo "</table>
-      <br>
-      <a href='/'>Return Home</a>
-      <br>";
+        echo "</table>";
     } else {
         //if no data in the table
-        echo "No data to display" . "</br>"; ?>
-      <br>
-      <a href="/">Return Home</a>
-      <?php
-      mysqli_close($conn);
+        echo "
+        <div class='message'>No data to display</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+          </ul>
+        </div>";
+        mysqli_close($conn);
         exit;
     }
 }

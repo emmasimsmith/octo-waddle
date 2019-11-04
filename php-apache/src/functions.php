@@ -7,13 +7,14 @@ function deletevariable($conn, $name, $name_id, $table_name, $plural_name)
 
     //check if individual was deleted
     if (!mysqli_query($conn, $sql)) {
-        echo "Could not delete ". $name . mysqli_error($conn) . "</br>"; ?>
-          <br>
-          <a href="/">Return Home</a>
-          <br>
-          <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-          <br>
-          <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+        echo " <div class='error'>Could not delete ". $name . mysqli_error($conn) . "</div>"; ?>
+          <div class="close">
+            <ul>
+              <li><a href="/">Return Home</a></li>
+              <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+              <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+            </ul>
+          </div>
           <?php
           mysqli_close($conn);
         exit;
@@ -26,13 +27,14 @@ function selectall($conn, $select_name, $select_table_name, $select_cap_name, $n
     $sql = "SELECT * FROM " . $select_table_name . ";";
     $result = mysqli_query($conn, $sql);
     if (!mysqli_num_rows($result)) {
-        echo "Please create a " . $select_cap_name . " first" . mysqli_error($conn); ?>
-      <br>
-      <a href="/">Return Home</a>
-      <br>
-      <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-      <br>
-      <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a>
+        echo "<div class='message'>Please create a " . $select_cap_name . " first" . mysqli_error($conn). "</div>"; ?>
+        <div class="close">
+          <ul>
+            <li><a href="/">Return Home</a></li>
+            <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+            <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+          </ul>
+        </div>
       <?php
       mysqli_close($conn);
         exit;
@@ -51,13 +53,17 @@ function viewselect($conn, $name_id, $name, $table_name, $plural_name)
 
     //check if can select
     if (!$select) {
-        echo "Could not select " . $table_name . " table"; ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-        <br>
-        <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a>
+        echo "<h1>Edit $plural_name</h1>
+        <div class='message'>Could not select " . $table_name . " table</div>"; ?>
+        <div class='close'>
+          <ul>
+            <li><a href="/">Return Home</a></li>
+            <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+            <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
         <?php
         mysqli_close($conn);
         exit;
@@ -65,14 +71,18 @@ function viewselect($conn, $name_id, $name, $table_name, $plural_name)
 
     //Check only one individual selected
     if (mysqli_num_rows($select) == 0) {
-        echo "Nothing Selected"; ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-        <br>
-        <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a>
-        <?php
+        echo "<h1>Edit $plural_name</h1>
+        <div class='message'>Nothing Selected</div>"; ?>
+        <div class='close'>
+          <ul>
+            <li><a href="/">Return Home</a></li>
+            <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+            <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name?></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <?php
         mysqli_close($conn);
         exit;
     } elseif (mysqli_num_rows($select) >1) {
@@ -94,9 +104,6 @@ function viewselect($conn, $name_id, $name, $table_name, $plural_name)
     //return $row
     return $row;
 }
-
-
-
 
 //Function for closing
 function close($conn, $error, $name, $plural_name)
@@ -120,11 +127,13 @@ function close($conn, $error, $name, $plural_name)
 function small_close($conn, $error)
 {
     if ($error) {
-        echo $error . "</br>";
+        echo "<div class='error'>$error</div>";
     } ?>
-  <br>
-  <a href="/">Return Home</a>
-  <br>
+    <div class="close">
+      <ul>
+        <li><a href="/">Return Home</a></li>
+      </ul>
+    </div>
   <?php
   mysqli_close($conn);
 }
@@ -147,20 +156,21 @@ function search($conn, $name, $variables, $table_name, $capitalised_name, $plura
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
-        echo "No matches in table" . "</br>"; ?>
-      <br>
-      <a href="/">Return Home</a>
-      <br>
-      <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-      <br>
-      <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+        ?><div class='message'>No matches in table</div>
+      <div class="close">
+        <ul>
+          <li><a href="/">Return Home</a></li>
+          <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+          <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+        </ul>
+      </div>
       <?php
       mysqli_close($conn);
         exit;
     }
 
     //create html table
-    echo "<table border = '1'>
+    echo "<table>
     <tr>";
     foreach ($variables as $column => $array) {
         foreach ($array as $column_name => $variable) {
@@ -178,26 +188,22 @@ function search($conn, $name, $variables, $table_name, $capitalised_name, $plura
                 echo "<td>" . $row["$column"] . "</td>";
             }
         }
-        echo "<td> <a href=\"view" . $name . ".php?id=$name_id\"> view </a> </td>";
+        echo "<td> <a href=view" . $name . ".php?id=".$name."_id> view </a></td>";
         echo "</tr>";
     }
     echo "</table>";
 }
-
-
-
 
 //function view all
 function viewall($conn, $name, $table_name, $variables, $name_id, $plural_name)
 {
     //echo all data from table
     $sql = "SELECT * FROM ".$table_name.";";
-    echo $sql;
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         //create html table
-        echo "<table border = '1'>
+        echo "<table>
         <tr>";
         foreach ($variables as $column => $column_name) {
             echo "<th>$column_name</th>";
@@ -212,50 +218,63 @@ function viewall($conn, $name, $table_name, $variables, $name_id, $plural_name)
             echo "<td> <a href=\"view" . $name . ".php?id=" . $row["$name_id"] . "\"> view </a> </td>";
             echo "</tr>";
         }
+        echo "</table>";
     } else {
-        //if no data in the table
-        echo "No data to display" . "</br>"; ?>
-        <br>
-        <a href="/">Return Home</a>
-        <br>
-        <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-        <br>
-        <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+        //if no data in the table?>
+        <div class="message">
+          No data to display
+        </div>
+        <div class="close">
+          <ul>
+            <li><a href="/">Return Home</a></li>
+            <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+            <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
         <?php
         mysqli_close($conn);
         exit;
-    }
-    echo "</table>"; ?>
-    <br>
-    <a href="/">Return Home</a>
-    <br>
-    <a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a>
-    <br>
-    <a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a>
+    } ?>
+    <div class="close">
+      <ul>
+        <li><a href="/">Return Home</a></li>
+        <li><a href= <?php echo "create" . $name . ".php" ?>>Submit another response</a></li>
+        <li><a href=<?php echo "search" . $name . ".php" ?>>View all <?php echo $plural_name ?></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
     <?php
     mysqli_close($conn);
 }
-
-
 
 //function for closing
 function participant_close($conn, $error, $event_id)
 {
     if ($error) {
-        echo $error . "</br>";
+        echo "<div class='error'>$error</div>";
     } ?>
-  <br>
-  <a href="/">Return Home</a>
-  <br>
-  <a href= <?php echo "searchparticipant.php?id=" . $event_id . ">View participants</a>";
+    <div class="close">
+      <ul>
+        <li><a href="/">Return Home</a></li>
+        <li><a href=searchparticipant.php?id=<?php echo $event_id ?>>View participants</a></li>
+      </ul>
+    </div>
+  <?php;
     mysqli_close($conn);
 }
 
 function home_close($conn)
 {
-    echo "<br>
-<a href='/'>Return Home</a>
-<br>";
+    ?>
+    <div class="close">
+      <ul>
+        <li><a href="/">Return Home</a></li>
+      </ul>
+    </div>
+    <?php
     mysqli_close($conn);
     exit;
 }
