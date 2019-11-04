@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Activities</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -9,24 +16,33 @@ include_once '../morefunctions.php';
 function activityform()
 {
     ?>
-<html>
-  <body>
-    <form action= searchactivity.php method="POST">
-      <input type="text" name="activity_name" placeholder="Search by activity name">
-      <input type="text" name="activity_bracket" placeholder="Search by activity bracket">
-      <input type="text" name="scoring_method" placeholder="Search by scoring method">
-      <input type="text" name="class_name" placeholder="Search by class name">
-      <input type="text" name="scored_by" placeholder="Search by scored group">
-      <button type="submit" name="search">Enter</button>
+    <h1>View Activities</h1>
+    <div class="search_form">
+      <form action= searchactivity.php method="POST">
+        <div class="form_input">
+          <div class="five_input">
+            <input type="text" name="activity_name" placeholder="Search by activity name">
+            <input type="text" name="activity_bracket" placeholder="Search by activity bracket">
+            <input type="text" name="scoring_method" placeholder="Search by scoring method">
+            <input type="text" name="class_name" placeholder="Search by class name">
+            <input type="text" name="scored_by" placeholder="Search by scored group">
+          </div>
+        </div>
+      <div class="search_button">
+        <button type="submit" name="search">Enter</button>
+      </div>
     </form>
-  </body>
-</html>
+  </div>
+</body>
 <?php
 }
 
 //IF search is submitted
 if (isset($_POST['search'])) {
     //call activity form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     activityform();
 
     //define POST variables
@@ -39,11 +55,15 @@ if (isset($_POST['search'])) {
     //validation if strings are empty
     if (!$_POST['activity_name'] and !$_POST['activity_bracket'] and
     !$_POST['scoring_method'] and !$_POST['class_name'] and !$_POST['scored_by']) {
-        echo "Please search a value
-        <br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href='searchactivity.php'>View all Activities</a>";
+        echo "<div class='error'>Please search a valid value</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href='searchactivity.php'>View all Activities</a></li>
+          </ul>
+        </div>
+        </div>
+        </div>";
         exit;
     }
 
@@ -83,11 +103,15 @@ if (isset($_POST['search'])) {
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
-        echo "No matches in table" . "</br>";
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href='searchactivity.php'>View all Activities</a>";
+        echo "<div class='message'>No matches in table</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href='searchactivity.php'>View all Activities</a></li>
+          </ul>
+        </div>
+        </div>
+        </div>";
         mysqli_close($conn);
         exit;
     }
@@ -96,14 +120,21 @@ if (isset($_POST['search'])) {
     activity_view($conn, $search);
 
     //call close function
-    echo "<br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href='searchactivity.php'>View all Activities</a>";
+    echo "<div class='close'>
+      <ul>
+        <li><a href='/'>Return Home</a></li>
+        <li><a href='searchactivity.php'>View all Activities</a></li>
+      </ul>
+    </div>
+    </div>
+    </div>";
     mysqli_close($conn);
     exit;
 } else {
     //call activity form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     activityform();
 
     //echo all data from table
@@ -111,4 +142,12 @@ if (isset($_POST['search'])) {
     $result = mysqli_query($conn, $sql);
 
     activity_view($conn, $result);
+
+    echo "<div class='close'>
+      <ul>
+        <li><a href='/'>Return Home</a></li>
+      </ul>
+    </div>
+    </div>
+    </div>";
 }
