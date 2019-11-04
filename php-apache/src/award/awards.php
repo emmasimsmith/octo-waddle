@@ -55,7 +55,7 @@ if (isset($_POST['search'])) {
         $conn,
         "award",
         $variables,
-        "regattascoring.AWARD NATURAL JOIN regattascoring.UNIT NATURAL JOIN regattascoring.CERTIFICATE NATURAL JOIN regattascoring.PARTICIPANT NATURAL JOIN regattascoring.INDIVIDUAL",
+        "regattascoring.AWARD NATURAL JOIN regattascoring.UNIT NATURAL JOIN regattascoring.CERTIFICATE",
         "award",
         "awards"
     );
@@ -74,7 +74,7 @@ if (isset($_POST['search'])) {
     viewall(
         $conn,
         "award",
-        "regattascoring.AWARD NATURAL JOIN regattascoring.UNIT NATURAL JOIN regattascoring.CERTIFICATE NATURAL JOIN regattascoring.PARTICIPANT NATURAL JOIN regattascoring.INDIVIDUAL",
+        "regattascoring.AWARD NATURAL JOIN regattascoring.UNIT NATURAL JOIN regattascoring.CERTIFICATE",
         $variables,
         "award_id",
         "awards"
