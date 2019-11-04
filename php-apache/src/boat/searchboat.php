@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Boats</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,23 +15,33 @@ include_once '../functions.php';
 function boatform()
 {
     ?>
-<html>
-  <body>
-    <form action= searchboat.php method="POST">
-      <input type="text" name="search_boat_number" placeholder="Search by boat number">
-      <input type="text" name="search_boat_type" placeholder="Search by boat type">
-      <input type="text" name="search_unit_name" placeholder="Search by unit name">
-      <input type="text" name="search_boat_handicap" placeholder="Search by boat handicap">
-      <button type="submit" name="search">Enter</button>
-    </form>
+    <h1>View Boats</h1>
+    <div class="search_form">
+      <form action= searchboat.php method="POST">
+        <div class="form_input">
+          <div class="four_input">
+            <input type="text" name="search_boat_number" placeholder="Search by boat number">
+            <input type="text" name="search_boat_type" placeholder="Search by boat type">
+            <input type="text" name="search_unit_name" placeholder="Search by unit name">
+            <input type="text" name="search_boat_handicap" placeholder="Search by boat handicap">
+          </div>
+        </div>
+        <div class="search_button">
+          <button type="submit" name="search">Enter</button>
+        </div>
+      </form>
+    </div>
   </body>
-</html>
+
 <?php
 }
 
 //IF search is submitted
 if (isset($_POST['search'])) {
     //call boat form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     boatform();
 
     //define POST variables
@@ -61,6 +78,9 @@ if (isset($_POST['search'])) {
     close($conn, $error, "boat", "Boats");
 } else {
     //call boat form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     boatform();
 
     //variables array

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Create Individual</title>
+    <title>Edit Boat</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
     <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
   </head>
