@@ -42,7 +42,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     //include navbar
     include_once '../navbar.php'; ?> <html>
       <head>
-        <title>Create Individual</title>
+        <title>Create Class</title>
         <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
         <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
       </head>

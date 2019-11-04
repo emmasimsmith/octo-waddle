@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>View Classes</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include the navigation bar, functions and connection php files
 include_once '../navbar.php';
@@ -8,16 +15,22 @@ include_once '../functions.php';
 function classform()
 {
     ?>
-<html>
-  <body>
-    <form action= searchclass.php method="POST">
-      <input type="text" name="class_name" placeholder="Search class name">
-      <input type="text" name="min_age" placeholder="Search minimum age">
-      <input type="text" name="max_age" placeholder="Search maximum age">
-      <button type="submit" name="search">Enter</button>
-    </form>
+    <h1>View Classes</h1>
+    <div class="search_form">
+      <form action= searchclass.php method="POST">
+        <div class="form_input">
+          <div class="three_input">
+            <input type="text" name="class_name" placeholder="Search class name">
+            <input type="text" name="min_age" placeholder="Search minimum age">
+            <input type="text" name="max_age" placeholder="Search maximum age">
+          </div>
+        </div>
+        <div class="search_button">
+          <button type="submit" name="search">Enter</button>
+        </div>
+      </form>
+    </div>
   </body>
-</html>
 <?php
 }
 
@@ -25,6 +38,9 @@ function classform()
 if (isset($_POST['search'])) {
 
   //call form
+    echo "  <div class='container'>
+      <div class='content'>
+        <body>";
     classform();
 
     //define POST variables
@@ -57,19 +73,20 @@ if (isset($_POST['search'])) {
     //check if there are rows that match
     $search = mysqli_query($conn, $sql);
     if (mysqli_num_rows($search) == 0) {
-        echo "No matches in table" . "</br>";
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href= 'viewclass.php'>Edit Classes</a>
-        <br>
-        <a href='searchclass.php'>View all Classes</a>";
+        echo "<div class='message'>No matches in table</div
+        <div class='close'>
+          <ul>
+           <li><a href='/'>Return Home</a></li>
+           <li><a href= 'viewclass.php'>Edit Classes</a></li>
+           <li><a href='searchclass.php'>View all Classes</a></li>
+          </ul>
+        </div>";
         mysqli_close($conn);
         exit;
     }
 
     //create html table
-    echo "<table border = '1'>
+    echo "<table>
     <tr>
     <th>Class Name</th>
     <th>Minimum Age</th>
@@ -86,15 +103,19 @@ if (isset($_POST['search'])) {
     }
     echo "</table>";
     //call close
-    echo "<br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href= 'viewclass.php'>Edit Classes</a>
-    <br>
-    <a href='searchclass.php'>View all Classes</a>";
+    echo "<div class='close'>
+      <ul>
+       <li><a href='/'>Return Home</a></li>
+       <li><a href= 'viewclass.php'>Edit Classes</a></li>
+       <li><a href='searchclass.php'>View all Classes</a></li>
+      </ul>
+    </div>";
     mysqli_close($conn);
 } else {
     //call class form
+    echo "  <div class='container'>
+        <div class='content'>
+          <body>";
     classform();
 
     //echo all data from table and close
@@ -103,7 +124,7 @@ if (isset($_POST['search'])) {
 
     if (mysqli_num_rows($result) > 0) {
         //create html table
-        echo "<table border = '1'>
+        echo "<table>
         <tr>
         <th>Class Name</th>
         <th>Minimum Age</th>
@@ -118,16 +139,20 @@ if (isset($_POST['search'])) {
         }
 
         echo "</table>
-        <br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href='viewclass.php'>Edit Classes</a>";
+        <div class='close'>
+          <ul>
+           <li><a href='/'>Return Home</a></li>
+           <li><a href= 'viewclass.php'>Edit Classes</a></li>
+          </ul>
+        </div>";
     } else {
         //if no data in the table
-        echo "No data to display" . "</br>"; ?>
-        <br>
-        <a href="/">Return Home</a>
-        <?php
+        echo "<div class='message'>No data to display</div>
+        <div class='close'>
+          <ul>
+           <li><a href='/'>Return Home</a></li>
+          </ul>
+        </div>" . "</br>";
         mysqli_close($conn);
         exit;
     }
