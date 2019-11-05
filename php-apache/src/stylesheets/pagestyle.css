@@ -25,6 +25,17 @@ body {
   font-family: Arial;
   font-size: 2em;
 }
+.container .content h2{
+  text-align: center;
+  font-family: arial;
+  font-size: 1.6em;
+}
+.container .content h3{
+  text-align: center;
+  font-family: arial;
+  font-size: 1em;
+  width: 100%;
+}
 .container .content form{
   font-size: 1.15em;
   font-family: sans-serif;
@@ -42,6 +53,33 @@ body {
 }
 .container .content .labels li{
   padding: 5.2px 0px;
+  list-style-type: none;
+}
+
+.container .content .race_label{
+  float: left;
+  font-size: 1.15em;
+  font-family: sans-serif;
+  list-style-type: none;
+  width:40%;
+  box-sizing: border-box;
+  text-align: right;
+}
+.container .content .race_label ul{
+  margin: 0;
+  margin-bottom: .5px;
+}
+.container .content .unit{
+  overflow: auto;
+}
+.container .content .unit .boat{
+  text-align: center;
+  font-size: 1em;
+}
+
+.container .content .race_label li{
+  padding: 19px 0px;
+  list-style-type: none;
 }
 
 .container .content .event_list ul{
@@ -60,7 +98,6 @@ body {
 .container .content .event_list ul li a:hover{
   color:  #004d99;
   text-decoration: none;
-
 }
 
 .container .content .inside-form input{
@@ -171,6 +208,13 @@ body {
 }
 .container .content .message a:hover{
   color:#0000ff;
+}
+
+.container .content .instruction{
+  width: 100%;
+  text-align: center;
+  font-size: 1.2em;
+  padding-bottom: 30px;
 }
 
 .container .content table{
