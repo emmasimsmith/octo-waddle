@@ -1,3 +1,10 @@
+<html>
+  <head>
+    <title>Sailing</title>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/navbarstyle.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/pagestyle.css">
+  </head>
+
 <?php
 //include functions and connection php files
 //include navbar
@@ -59,16 +66,15 @@ if (isset($_POST['submit'])) {
         $outcome = mysqli_query($conn, $sql);
 
         //create form for score input?>
-        <html>
-          <head>
-            <title><?php echo $class_row['class_name'] . " " . $row['activity_name']?></title>
-          </head>
+        <div class='container'>
+          <div class='content'>
+            <body>
             <h1><?php echo $class_row['class_name'] . " " . $row['activity_name']?></h1>
-            <h1>Race <?php echo $race_number ?></h1>
-          <body>
-            If unit completed sailing, select completed and enter score <br>
-            Input results in seconds
-            <br>
+            <h2>Race <?php echo $race_number ?></h2>
+            <div class="instruction">
+              If unit completed sailing, select completed and enter score <br>
+              Input results in seconds
+            </div>
             <form action = <?php echo "sailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type method='POST'>";
         while ($unit_row = mysqli_fetch_assoc($outcome)) {
             echo $unit_row['unit_name'] . "<br>";
@@ -109,7 +115,9 @@ if (isset($_POST['submit'])) {
                 }
             }
         } ?>
-              <button type="submit" name="submit">Enter</button>
+              <div class="button">
+                <button type="submit" name="submit">Enter</button>
+              </div>
             </form>
           </body>
         </html>
@@ -121,14 +129,16 @@ if (isset($_POST['submit'])) {
             $issue = $issue . $error . "</br>";
         }
 
-        echo $issue;
-
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
-        <br>
-        <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+        echo "<div class='message'>$issue<div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+            <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>";
         mysqli_close($conn);
         exit;
     }
@@ -302,22 +312,33 @@ if (isset($_POST['submit'])) {
           $sailing_time, '$sailing_result');";
             $input = mysqli_query($conn, $sql);
             if (!$input) {
-                echo "Could not add boats to sailing table<br>" . mysqli_error($conn);
+                echo "<div class='error'>Could not add boats to sailing table <br>".mysqli_error($conn)."<div>
+              <div class='close'>
+                <ul>
+                  <li><a href='/'>Return Home</a></li>
+                  <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+                  <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>";
                 mysqli_close($conn);
                 exit;
             }
         }
     }
 
-    echo "Race results added";
-    echo "<br>
-    <a href=editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type>Edit Activity</a>
-    <br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
-    <br>
-    <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+    echo "<div class='message'>Race results added<div>
+    <div class='close'>
+      <ul>
+        <li><a href=editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type>Edit Activity</a></li>
+        <li><a href='/'>Return Home</a></li>
+        <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+        <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+      </ul>
+    </div>
+  </div>
+</div>";
 } else {
     //select largest race number
     $sql = "SELECT MAX(race_number) as max FROM regattascoring.RACE_ENROLMENT WHERE activity_id = $activity_id
@@ -341,20 +362,31 @@ if (isset($_POST['submit'])) {
     $outcome = mysqli_query($conn, $sql);
 
     //create form for score input?>
-    <html>
-      <head>
-        <title><?php echo $class_row['class_name'] . " " . $row['activity_name']?></title>
-      </head>
-        <h1><?php echo $class_row['class_name'] . " " . $row['activity_name']?></h1>
-        <h1>Race <?php echo $race_number ?></h1>
-      <body>
-        If unit completed sailing, select completed and enter score
-        <br> Input result in seconds
-        <br>
-        <form action = <?php echo "sailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type method='POST'>";
+    <div class='container'>
+      <div class='content'>
+        <body>
+          <h1><?php echo $class_row['class_name'] . " " . $row['activity_name']?></h1>
+          <h2>Race <?php echo $race_number ?></h2>
+          <div class="instruction">
+            If unit completed sailing, select completed and enter score <br> Input result in seconds
+          </div>
+          <form action = <?php echo "sailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type method='POST'>";
     while ($unit_row = mysqli_fetch_assoc($outcome)) {
-        echo $unit_row['unit_name'] . "<br>";
+        echo "<h3>" . $unit_row['unit_name'] . "</h3>";
         $unit_id = $unit_row['unit_id'];
+        echo "<div class='unit'>";
+        //select boats from unit
+        $sql = "SELECT * FROM regattascoring.BOAT WHERE unit_id = $unit_id AND boat_type = '$boat_type'";
+        $boats = mysqli_query($conn, $sql);
+        //check if there are boats
+        if (mysqli_num_rows($boats) != 0) {
+            echo "<div class='race_label'>
+          <ul>";
+            while ($boat_row = mysqli_fetch_assoc($boats)) {
+                echo "<li>".$boat_row['boat_number'] . " Score:</li>";
+            }
+            echo "</div>";
+        }
 
         //select boats from unit
         $sql = "SELECT * FROM regattascoring.BOAT WHERE unit_id = $unit_id AND boat_type = '$boat_type'";
@@ -362,29 +394,34 @@ if (isset($_POST['submit'])) {
 
         //check if there are boats
         if (mysqli_num_rows($boats) == 0) {
-            echo "<br> No Boats <br>";
+            echo "<div class='boat'>No Boats</div>";
         } else {
+            echo "<div class='inside-form'>";
             while ($boat_row = mysqli_fetch_assoc($boats)) {
-                echo $boat_row['boat_number'] . " Score: ";
                 echo "<input type='number' name='" . $boat_row['boat_number']. "' placeholder='Score' min=0 max=5000 >";
                 echo "<select name='" . $boat_row['boat_id'] . "'>
-                <option value='completed'>completed</option>
-                <option value='DNC'>DNC</option>
-                <option value='DNF'>DNF</option>
-                </select>";
-                echo "<br>";
+                    <option value='completed'>completed</option>
+                    <option value='DNC'>DNC</option>
+                    <option value='DNF'>DNF</option>
+                    </select>";
             }
+            echo "</div>";
         }
+        echo "</div>";
     } ?>
-          <button type="submit" name="submit">Enter</button>
-        </form>
-      </body>
-    </html>
-    <br>
-    <a href='/'>Return Home</a>
-    <br>
-    <a href="../enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a>
-    <br>
-    <a href="../../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a>
+            <div class='button'>
+              <button type="submit" name="submit">Enter</button>
+            </div>
+          </form>
+        </body>
+        <div class="close">
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href="../enrolment.php?event_id=<?php echo $event_id ?>">Select Activity</a></li>
+            <li><a href="../../indexselectedevent.php?event_id=<?php echo $event_id ?>">Return to Event Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <?php
 }

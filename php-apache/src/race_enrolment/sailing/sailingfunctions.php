@@ -8,7 +8,7 @@ function tied($conn, $event_id, $activity_id, $class_id, $race_number)
     GROUP BY original_score HAVING (COUNT(original_score) > 1) ;";
     $multiple = mysqli_query($conn, $sql);
     while ($original = mysqli_fetch_assoc($multiple)) {
-      
+
         //select max of calculated score
         $sql = "SELECT MAX(calculated_score) as max FROM regattascoring.RACE_ENROLMENT WHERE event_id = $event_id
         and activity_id= $activity_id and class_id = $class_id and race_number = $race_number and original_score =" . $original['original_score'] . ";";
@@ -26,7 +26,7 @@ function tied($conn, $event_id, $activity_id, $class_id, $race_number)
             $sql = "UPDATE regattascoring.RACE_ENROLMENT set
       calculated_score = '$placescore' WHERE race_id = " . $tied['race_id'] . ";";
             $input = mysqli_query($conn, $sql);
-            echo mysqli_error($conn);
+            echo "<div class='error'>".mysqli_error($conn)."</div>";
         }
     }
 }
@@ -39,7 +39,7 @@ function input($conn, $activity_id, $unit_id, $class_id, $result, $calculated_sc
   race_result, calculated_score, original_score, event_id, race_number) VALUES
   ('$activity_id', '$unit_id', $class_id, '$result', '$calculated_score', $original_score, '$event_id', '$race_number');";
     $input = mysqli_query($conn, $sql);
-    echo mysqli_error($conn);
+    echo "<div class='error'>".mysqli_error($conn)."</div>";
 }
 
 //function to update values
@@ -50,7 +50,7 @@ function updatesailing($conn, $result, $calculated_score, $original_score, $race
 calculated_score = $calculated_score, original_score = $original_score WHERE
 race_id = $race_id AND race_number = $race_number;";
     $input = mysqli_query($conn, $sql);
-    echo mysqli_error($conn);
+    echo "<div class='error'>".mysqli_error($conn)."</div>";
 }
 
 //function to select race_id for update
