@@ -312,7 +312,10 @@ if (isset($_POST['submit'])) {
           $sailing_time, '$sailing_result');";
             $input = mysqli_query($conn, $sql);
             if (!$input) {
-                echo "<div class='error'>Could not add boats to sailing table <br>".mysqli_error($conn)."<div>
+                echo "<div class='container'>
+                  <div class='content'>
+                    <body>
+                    <div class='error'>Could not add boats to sailing table <br>".mysqli_error($conn)."<div>
               <div class='close'>
                 <ul>
                   <li><a href='/'>Return Home</a></li>
@@ -328,7 +331,9 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    echo "<div class='message'>Race results added<div>
+    echo "<div class='container'>
+      <div class='content'>
+        <body><div class='message'>Race results added<div>
     <div class='close'>
       <ul>
         <li><a href=editsailing.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id&race_number=$race_number&boat_type=$boat_type>Edit Activity</a></li>
@@ -375,6 +380,7 @@ if (isset($_POST['submit'])) {
         echo "<h3>" . $unit_row['unit_name'] . "</h3>";
         $unit_id = $unit_row['unit_id'];
         echo "<div class='unit'>";
+
         //select boats from unit
         $sql = "SELECT * FROM regattascoring.BOAT WHERE unit_id = $unit_id AND boat_type = '$boat_type'";
         $boats = mysqli_query($conn, $sql);
