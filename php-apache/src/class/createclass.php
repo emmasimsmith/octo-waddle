@@ -186,7 +186,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Optimist Rigging', 'unit', 'score', 'unit');";
     $result = mysqli_query($conn, $sql);
 
-    //Pulling
+    /*//Pulling
     $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Pulling', 'class', 'place', 'unit');";
     $result = mysqli_query($conn, $sql);
     $activity_id = mysqli_insert_id($conn);
@@ -221,7 +221,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     $sql = "INSERT INTO BRACKET (class_id, activity_id) VALUES ('3', '$activity_id');";
     $result = mysqli_query($conn, $sql);
     $sql = "INSERT INTO BRACKET (class_id, activity_id) VALUES ('4', '$activity_id');";
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);*/
 
     //Lifesaving
     $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Lifesaving', 'class', 'score', 'unit');";
@@ -236,7 +236,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     $sql = "INSERT INTO BRACKET (class_id, activity_id) VALUES ('4', '$activity_id');";
     $result = mysqli_query($conn, $sql);
 
-    //Shooting
+    /*//Shooting
     $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Shooting', 'class', 'score', 'individual');";
     $result = mysqli_query($conn, $sql);
     $activity_id = mysqli_insert_id($conn);
@@ -247,7 +247,7 @@ if (mysqli_num_rows(mysqli_query($conn, $sql)) != 0) {
     $sql = "INSERT INTO BRACKET (class_id, activity_id) VALUES ('3', '$activity_id');";
     $result = mysqli_query($conn, $sql);
     $sql = "INSERT INTO BRACKET (class_id, activity_id) VALUES ('4', '$activity_id');";
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);*/
 
     //Camping Set up
     $sql = "INSERT INTO ACTIVITY (activity_name, activity_bracket, scoring_method, scored_by) VALUES ('Camping Set Up', 'unit', 'score', 'unit');";
