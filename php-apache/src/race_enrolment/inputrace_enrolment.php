@@ -1,19 +1,10 @@
-<html>
-  <head>
-    <title>Enrolment</title>
-    <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
-  </head>
-
 <?php
 //include functions and connection php files
 include_once '../connection.php';
 include_once '../functions.php';
 
-//GET event id
+//GET and POST variables
 $event_id = $_GET['event_id'];
-
-//define POST variables
 $activity_name = $_POST['activity_name'];
 
 //select activity where matches POST
@@ -29,15 +20,27 @@ $activity_id = $row['activity_id'];
 //check matches with activity_name
 if (mysqli_num_rows($result) == 0) {
     include_once '../navbar.php';
-    echo "<div class='container'>
-      <div class='content'>
-        <body>";
+    echo '<html>
+      <head>
+        <title>Enrolment</title>
+        <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+        <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+      </head>
+      <div class="container">
+      <div class="content">
+        <body>';
     close($conn, "Please select a valid activity", "race_enrolment", "Race Enrolments");
     exit;
 //if activity bracket is class, make user select class
 } elseif ($row['activity_bracket'] == 'class') {
     //'];include navbar
     include_once '../navbar.php'; ?>
+    <html>
+      <head>
+        <title>Enrolment</title>
+        <link rel="stylesheet" type="text/css" href="../stylesheets/navbarstyle.css">
+        <link rel="stylesheet" type="text/css" href="../stylesheets/pagestyle.css">
+      </head>
     <div class='container'>
       <div class='content'>
         <body>
