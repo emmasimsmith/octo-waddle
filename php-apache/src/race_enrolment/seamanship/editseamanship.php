@@ -1,3 +1,12 @@
+<html>
+  <head>
+    <title>Seamanship</title>
+      <link rel="stylesheet" type="text/css" href="../../stylesheets/navbarstyle.css">
+      <link rel="stylesheet" type="text/css" href="../../stylesheets/pagestyle.css">
+  </head>
+  <div class='container'>
+    <div class='content'>
+      <body>
 <?php
 //include functions and connection php files
 include_once '../../connection.php';
@@ -19,7 +28,15 @@ if (isset($_POST['delete'])) {
     $sql = "DELETE FROM regattascoring.RACE_ENROLMENT WHERE event_id = '$event_id' AND activity_id = '$activity_id';";
     $result = mysqli_query($conn, $sql);
 
-    echo $activity_row['activity_name'] . " results deleted";
+    echo "<div class='message'>".$activity_row['activity_name'] . " results deleted</div><div class='close'>
+      <ul>
+        <li><a href='/'>Return Home</a></li>
+        <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+        <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+      </ul>
+    </div>
+  </div>
+</div>";
 
 // if update selected
 } elseif (isset($_POST['update'])) {
@@ -48,44 +65,51 @@ if (isset($_POST['delete'])) {
         }
     }
     if (count($errors) != 0) {
+        //create form for score input?>
+        <h1>Edit <?php echo $activity_row['activity_name']?></h1>
+        <div class="instruction">
+          Rigging results have already been entered<br>
+          If unit completed seamanship, select completed and enter score
+        </div>
+        <form action = <?php echo "editseamanship.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
+        echo "<div class='race_label'><ul>";
+        //select all units
+        $sql = "SELECT * FROM regattascoring.UNIT;";
+        $outcome = mysqli_query($conn, $sql);
+        while ($unit_row = mysqli_fetch_assoc($outcome)) {
+            echo "<li>".$unit_row['unit_name']." Score:</li>";
+        }
+        echo "</ul></div><div class='inside-form'>";
 
         //select all units
         $sql = "SELECT * FROM regattascoring.UNIT;";
         $outcome = mysqli_query($conn, $sql);
-        //create form for score input?>
-        <html>
-          <head>
-            <title><?php echo $activity_row['activity_name']?></title>
-          </head>
-            <h1><?php echo $activity_row['activity_name']?></h1>
-          <body>
-            Rigging results have already been entered
-            <br><br>
-            If unit completed seamanship, select completed and enter score
-            <br>
-            <form action = <?php echo "editseamanship.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
+
         while ($unit_row = mysqli_fetch_assoc($outcome)) {
             $unit_id = $unit_row['unit_id'];
             $unit_name = $unit_row['unit_name'];
-            echo $unit_row['unit_name'] . " Score: ";
+
             echo "<input type='number' name='$unit_name' placeholder='Score' min=0 max=100 value =" . $_POST["$unit_name"] . ">";
-            echo "<input type ='radio' name='$unit_id' value='completed'";
+            echo "<select name='$unit_id'>
+            <option value='completed'";
             if ($_POST["$unit_id"] == "completed") {
-                echo " checked";
+                echo " selected";
             }
-            echo "> completed </input>";
-            echo "<input type ='radio' name='$unit_id' value='DNC'" ;
+            echo "> completed </option>";
+            echo "<option value='DNC'" ;
             if ($_POST["$unit_id"] == "DNC") {
-                echo " checked";
+                echo " selected";
             }
-            echo "> DNC </input>";
-            echo "<br>";
+            echo "> DNC </option>
+            </select>";
         } ?>
+      </div>
+        <div class="button">
             <button type="submit" name="update">Update</button>
             <button type="submit" name="delete">Delete</button>
-            </form>
-          </body>
-        </html>
+          </div>
+        </form>
+      </body>
         <?php
 
         //echo errors from the input sanitsation
@@ -93,13 +117,16 @@ if (isset($_POST['delete'])) {
         foreach ($errors as $error) {
             $issue = $issue . $error . "</br>";
         }
-        echo $issue;
-        echo "<br>
-        <a href='/'>Return Home</a>
-        <br>
-        <a href=../enrolment.php?event_id=$event_id>Select Activity</a>
-        <br>
-        <a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
+        echo "<div class='error'>$issue</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+            <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>";
         mysqli_close($conn);
         exit;
     }
@@ -207,65 +234,76 @@ if (isset($_POST['delete'])) {
     //check if any teams are tied
     tied($conn, $event_id, $activity_id);
 
-    echo $activity_row['activity_name'] . " results updated
-    <br>
-    <a href=editseamanship.php?event_id=$event_id&activity_id=$activity_id>Edit Activity</a>";
+    echo "<div class='message'>".$activity_row['activity_name'] . " results updated</div>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+            <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>";
 } else {
     // present preentered results
+    //create form for score input?>
+    <h1>Edit <?php echo $activity_row['activity_name']?></h1>
+      <div class="instruction">
+        Rigging results have already been entered<br>
+        If unit completed seamanship, select completed and enter score
+      </div>
+      <form action = <?php echo "editseamanship.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
+    echo "<div class='race_label'><ul>";
+    //select all units
+    $sql = "SELECT * FROM regattascoring.UNIT;";
+    $outcome = mysqli_query($conn, $sql);
+    while ($unit_row = mysqli_fetch_assoc($outcome)) {
+        echo "<li>".$unit_row['unit_name']." Score:</li>";
+    }
+    echo "</ul></div><div class='inside-form'>";
 
     //select all units
     $sql = "SELECT * FROM regattascoring.UNIT;";
     $outcome = mysqli_query($conn, $sql);
-
-    //create form for score input?>
-  <html>
-    <head>
-      <title><?php echo $activity_row['activity_name']?></title>
-    </head>
-      <h1><?php echo $activity_row['activity_name']?></h1>
-    <body>
-      Rigging results have already been entered
-      <br><br>
-      If unit completed seamanship, select completed and enter score
-      <br>
-      <form action = <?php echo "editseamanship.php?event_id=$event_id&activity_id=$activity_id method='POST'>";
     while ($unit_row = mysqli_fetch_assoc($outcome)) {
         $unit_id = $unit_row['unit_id'];
         $unit_name = $unit_row['unit_name'];
 
         //Select Activity with activity id where matches unit_id
         $sql = "SELECT * FROM regattascoring.RACE_ENROLMENT NATURAL JOIN regattascoring.ACTIVITY
-      WHERE activity_id = '$activity_id' and event_id = '$event_id' and unit_id = '$unit_id';";
+                  WHERE activity_id = '$activity_id' and event_id = '$event_id' and unit_id = '$unit_id';";
         $result = mysqli_query($conn, $sql);
         $race_row = mysqli_fetch_assoc($result);
 
-
-        echo $unit_row['unit_name'] . " Score: ";
         echo "<input type='number' name='$unit_name' placeholder='Score' min=0 max=100 value =" . $race_row["original_score"] . ">";
-        echo "<input type ='radio' name='$unit_id' value='completed'";
+        echo "<select name='$unit_id'>
+                <option value='completed'";
         if ($race_row["race_result"] == "completed") {
-            echo " checked";
+            echo " selected";
         }
-        echo "> completed </input>";
-        echo "<input type ='radio' name='$unit_id' value='DNC'" ;
+        echo "> completed </option>";
+        echo "<option value='DNC'" ;
         if ($race_row["race_result"] == "DNC") {
-            echo " checked";
+            echo " selected";
         }
-        echo "> DNC </input>";
-        echo "<br>";
+        echo "> DNC </option>
+                </select>";
     } ?>
-      <button type="submit" name="update">Update</button>
-      <button type="submit" name="delete">Delete</button>
-      </form>
-    </body>
-  </html>
-  <?php
+            </div>
+            <div class="button">
+              <button type="submit" name="update">Update</button>
+              <button type="submit" name="delete">Delete</button>
+            </div>
+          </form>
+        </body>
+        <div class='close'>
+          <ul>
+            <li><a href='/'>Return Home</a></li>
+            <li><a href=../enrolment.php?event_id=$event_id>Select Activity</a></li>
+            <li><a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <?php
 }
-
-echo "
-<br>
-<a href='/'>Return Home</a>
-<br>
-<a href=../enrolment.php?event_id=$event_id>Select Activity</a>
-<br>
-<a href=../../indexselectedevent.php?event_id=$event_id>Return to Event Page</a>";
