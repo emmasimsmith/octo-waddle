@@ -50,9 +50,23 @@ $sql = "SELECT *, regattascoring.INDIVIDUAL.individual_id AS individual_id FROM 
   <div class='content'>
     <body>
       <h1>Select Participants</h1>
+      <div class="label-participant">
+        <ul> <?php
+          while ($row = mysqli_fetch_assoc($result)) {
+              echo "<li>" . $row['first_name'] . " " . $row['last_name'] . "</li>";
+          }?>
+        </ul>
+      </div>
         <form action=calculateparticipant.php?event_id=<?php echo $event_id ?> method='POST'>
-            <br>
+          <div class="inside-form-participant">
+            <div class="checkbox">
             <?php
+            //select all from individual and participant where joins
+            $sql = "SELECT *, regattascoring.INDIVIDUAL.individual_id AS individual_id FROM regattascoring.INDIVIDUAL LEFT JOIN regattascoring.PARTICIPANT
+              ON regattascoring.PARTICIPANT.individual_id = regattascoring.INDIVIDUAL.individual_id
+              AND event_id = $event_id OR event_id = '';";
+              $result = mysqli_query($conn, $sql);
+
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<input type='checkbox' name='selected[]' value=" . $row['individual_id'];
                 if ($row['participant_id']) {
@@ -60,11 +74,13 @@ $sql = "SELECT *, regattascoring.INDIVIDUAL.individual_id AS individual_id FROM 
                         echo " checked";
                     }
                 }
-                echo  ">" . $row['first_name'] . " " . $row['last_name'];
-                echo "</input>
-                <br>";
+                echo  "></input>";
             } ?>
+          </div>
+          </div>
+          <div class="button">
             <button name="select">Select</button>
+          </div>
           </form>
         </body>
         <div class="close">
