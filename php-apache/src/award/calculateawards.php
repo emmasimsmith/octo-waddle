@@ -34,54 +34,56 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
 
     //select original score from camping set up
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '12';";
+  = $unit_id and activity_id = '8';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from friday evening
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '13';";
+  = $unit_id and activity_id = '9';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from saturday morning
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '14';";
+  = $unit_id and activity_id = '10';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from saturday evening
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '15';";
+  = $unit_id and activity_id = '11';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from sunday morning
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '16';";
+  = $unit_id and activity_id = '12';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from sunday evening
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '17';";
+  = $unit_id and activity_id = '13';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
     //select original score from monday morning
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '18';";
+  = $unit_id and activity_id = '14';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 arsort($placing);
@@ -133,12 +135,14 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
 
     //select original score from camping set up
     $sql = "SELECT calculated_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '40';";
+  = $unit_id and activity_id = '15';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 $place = 1;
 foreach ($placing as $unit_id => $score) {
@@ -188,7 +192,9 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 $place = 1;
@@ -238,7 +244,9 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 $place = 1;
@@ -284,12 +292,14 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
 
     //select original score from lifesaving
     $sql = "SELECT calculated_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and class_id = '3' and activity_id = '10';";
+  = $unit_id and class_id = '3' and activity_id = '7';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 $place = 1;
@@ -339,7 +349,9 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 $place = 1;
@@ -390,6 +402,34 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
 
     //select original score from seamanship
     $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
+  = $unit_id and activity_id = '16';";
+    $score_result = mysqli_query($conn, $sql);
+    $score_row = mysqli_fetch_assoc($score_result);
+    $score = $score + $score_row['original_score'];
+
+    //select original score from seamanship
+    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
+  = $unit_id and activity_id = '17';";
+    $score_result = mysqli_query($conn, $sql);
+    $score_row = mysqli_fetch_assoc($score_result);
+    $score = $score + $score_row['original_score'];
+
+    //select original score from seamanship
+    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
+  = $unit_id and activity_id = '18';";
+    $score_result = mysqli_query($conn, $sql);
+    $score_row = mysqli_fetch_assoc($score_result);
+    $score = $score + $score_row['original_score'];
+
+    //select original score from seamanship
+    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
+  = $unit_id and activity_id = '19';";
+    $score_result = mysqli_query($conn, $sql);
+    $score_row = mysqli_fetch_assoc($score_result);
+    $score = $score + $score_row['original_score'];
+
+    //select original score from seamanship
+    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
   = $unit_id and activity_id = '20';";
     $score_result = mysqli_query($conn, $sql);
     $score_row = mysqli_fetch_assoc($score_result);
@@ -409,36 +449,9 @@ while ($unit_row = mysqli_fetch_assoc($result)) {
     $score_row = mysqli_fetch_assoc($score_result);
     $score = $score + $score_row['original_score'];
 
-    //select original score from seamanship
-    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '23';";
-    $score_result = mysqli_query($conn, $sql);
-    $score_row = mysqli_fetch_assoc($score_result);
-    $score = $score + $score_row['original_score'];
-
-    //select original score from seamanship
-    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '24';";
-    $score_result = mysqli_query($conn, $sql);
-    $score_row = mysqli_fetch_assoc($score_result);
-    $score = $score + $score_row['original_score'];
-
-    //select original score from seamanship
-    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '25';";
-    $score_result = mysqli_query($conn, $sql);
-    $score_row = mysqli_fetch_assoc($score_result);
-    $score = $score + $score_row['original_score'];
-    $placing += [$unit_id => $score];
-
-    //select original score from seamanship
-    $sql = "SELECT original_score FROM regattascoring.RACE_ENROLMENT WHERE unit_id
-  = $unit_id and activity_id = '26';";
-    $score_result = mysqli_query($conn, $sql);
-    $score_row = mysqli_fetch_assoc($score_result);
-    $score = $score + $score_row['original_score'];
-
-    $placing += [$unit_id => $score];
+    if ($score != 0) {
+        $placing += [$unit_id => $score];
+    }
 }
 
 $place = 1;
