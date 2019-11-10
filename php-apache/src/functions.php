@@ -306,3 +306,57 @@ function award_tied($conn)
         }
     }
 }
+
+//function view all
+function awardviewall($conn, $name, $table_name, $variables, $name_id, $plural_name, $event_id)
+{
+    //echo all data from table
+    $sql = "SELECT * FROM ".$table_name.";";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        //create html table
+        echo "<table>
+        <tr>";
+        foreach ($variables as $column => $column_name) {
+            echo "<th>$column_name</th>";
+        }
+        echo "<th>View " . $name . "</th>
+        </tr>";
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            foreach ($variables as $column => $column_name) {
+                echo "<td>" . $row["$column"] . "</td>";
+            }
+            echo "<td> <a href=\"view" . $name . ".php?id=" . $row["$name_id"] . "\"> view </a> </td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        //if no data in the table?>
+        <div class="message">
+          No race results have been inputted
+        </div>
+        <div class="close">
+          <ul>
+            <li><a href="/">Return Home</a></li>
+            <li><a href= <?php echo "../indexselectedevent.php?event_id=$event_id" ?>>Return to Event</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+        <?php
+        mysqli_close($conn);
+        exit;
+    } ?>
+    <div class="close">
+      <ul>
+        <li><a href="/">Return Home</a></li>
+        <li><a href= <?php echo "../indexselectedevent.php?event_id=$event_id" ?>>Return to Event</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+    <?php
+    mysqli_close($conn);
+}
