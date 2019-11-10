@@ -30,7 +30,7 @@ if ($activity_id == 9) {
     header("Location: swimming/swimming.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id");
 }*/
 //if activity is life saving
-if ($activity_id == 10) {
+if ($activity_id == 7) {
     header("Location: lifesaving/lifesaving.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id");
 }
 //if activity is shooting
@@ -38,14 +38,14 @@ if ($activity_id == 10) {
     header("Location: shooting/shooting.php?event_id=$event_id&activity_id=$activity_id&class_id=$class_id");
 }*/
 //if activity is camping
-if ($activity_id == 12 || $activity_id == 13 || $activity_id == 14 || $activity_id == 15 || $activity_id == 16 || $activity_id == 17 || $activity_id == 18) {
+if ($activity_id == 8 || $activity_id == 9 || $activity_id == 10 || $activity_id == 11 || $activity_id == 12 || $activity_id == 13 || $activity_id == 14) {
     header("Location: camping/camping.php?event_id=$event_id&activity_id=$activity_id");
 }
 //if activity is iron woman
-if ($activity_id == 19) {
+if ($activity_id == 15) {
     header("Location: ironwoman/ironwoman.php?event_id=$event_id&activity_id=$activity_id");
 }
 //if activity is seamanship
-if ($activity_id == 20 || $activity_id == 21 || $activity_id == 22 || $activity_id == 23 || $activity_id == 24 || $activity_id == 25 || $activity_id == 26) {
+if ($activity_id == 16 || $activity_id == 17 || $activity_id == 18 || $activity_id == 19 || $activity_id == 20 || $activity_id == 21 || $activity_id == 22) {
     header("Location: seamanship/seamanship.php?event_id=$event_id&activity_id=$activity_id");
 }
